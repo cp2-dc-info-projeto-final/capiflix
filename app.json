@@ -1,0 +1,7 @@
+{
+    "name": "Exemplo Projeto Final 2021",
+    "description": "Projeto exemplo simples",
+    "repository": "https://github.com/cp2-dc-info-projeto-final/2021",
+    "addons": [],
+    "stack": "heroku-20"
+  }
