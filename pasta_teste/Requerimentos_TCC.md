@@ -5,9 +5,7 @@
 - R4: O site deverá permitir que o usuário deixe uma avaliação de 1 até 5 estrelas.
 - R5: O site deverá ter opção de assistir o  trailer do filme escolhido.
 - R6: O site deverá fornecer um sistema de cadastro caso o usuário queira avaliar um filme e não esteja logado numa conta.
-
 # Requisitos não funcionais
-
 - R1: O site deverá ser multi-plataforma.
 - R2: O site deverá ter privacidade de dados.
 - R3: O site deverá enviar dados de um formulário entre 2s a 10s.
