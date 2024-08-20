@@ -1,13 +1,19 @@
-﻿# Fluxo principal
-## Caso de Uso:
-
-### Cadastro  de usuário:
+## Casos de Uso:
+### Caso de uso 1: Cadastro de usuário
+#### Atores:
+- Usuário.
+#### Fluxo principal:
 - O usuário clica no botão de cadastrar.
 - O sistema direciona o usuário para  a página de cadastro. 
 - O usuário  coloca um email,  cria um senha e um nome usuário.
 - O sistema registra  as informações no banco de dados, cria a conta para o novo usuário.
 
-### Login de usuário:
+#### Fluxo alternativo A: Email inválido
+- O usuário insere um email.
+- O sistema verifica se o email já está sendo usado por  alguma conta.
+- O sistema informa ao usuário que o email já está sendo usado e sugere o usuário que use outro email.
+
+### Login:
 - O sistema exibirá na página um formulário para o usuário efetuar o login. 
 - O usuário coloca seu email e senha e clica no botão entrar.
 - O sistema procura no banco de dados as informações do usuário.
@@ -73,180 +79,37 @@
 - O administrador usa a opção de remoção de gênero.
 - O sistema apaga o gênero no banco de dados.
 - O sistema atualiza a página de gênero.
-
-
+- 
+### Exclusão de perfil por Admin:
+- O Administrador clica no botão de excluir perfil.
+- O sistema procura no banco de dados a conta correspondente.
+- O sistema  apaga os dados da conta do usuário.
+- O sistema exibe uma janela de que a conta foi excluida com sucesso.
+ 
 ###  Assistir trailer:
 - O usuário seleciona um filme.
 - O sistema exibe a página do filme.
 - O usuário seleciona a opção de assistir trailer.
 - O sistema exibe o trailer do filme.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Fluxo alternativo
+###  email invalido:
+- O usuário insere o email.
+- O usuário envia o email. 
+- O sistema verifica se o email corresponde.
+- O sistema exibe uma mensagem de erro. 
+- O sistema dá uma opção de restauração de email.
+
+###  Erro  de  senha:
+- O usuário insere a senha.
+- O usuário envia a senha. 
+- O sistema verifica se a senha corresponde.
+- O sistema exibe uma mensagem de erro. 
+- O sistema dá uma opção de restauração de senha.
+
+### Erro  de  :
+- O usuário insere o nome  .
+- O usuário envia o email. 
+- O sistema verifica se o email corresponde.
+- O sistema exibe uma mensagem de erro. 
+- O sistema dá uma opção de restauração de email.
