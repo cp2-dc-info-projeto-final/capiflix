@@ -7,7 +7,6 @@
 - O sistema direciona o usuário para  a página de cadastro. 
 - O usuário  coloca um email,  cria um senha e um nome usuário.
 - O sistema registra  as informações no banco de dados, cria a conta para o novo usuário.
-
 #### Fluxo alternativo A: Email inválido.
 - O usuário insere um email.
 - O sistema verifica se o email já está sendo usado por  alguma conta.
