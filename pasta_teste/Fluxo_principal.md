@@ -4,12 +4,13 @@
 - Usuário.
 #### Fluxo principal:
 - O usuário clica no botão de cadastrar.
-- O sistema direciona o usuário para  a página de cadastro. 
-- O usuário  coloca um email,  cria um senha e um nome usuário.
+- O sistema direciona o usuário para a página de cadastro com um formulário. 
+- O usuário insere as informações do formulário(insere email, cria um senha e um nome usuário).
 - O sistema registra  as informações no banco de dados, cria a conta para o novo usuário.
+- O sistema redireciona o usuário para a página inicial do site.
 #### Fluxo alternativo A: Email inválido.
 - O usuário insere um email.
-- O sistema verifica se o email já está sendo usado por  alguma conta.
+- O sistema verifica se o email já está sendo usado por alguma conta.
 - O sistema informa ao usuário que o email já está sendo usado e sugere o usuário que use outro email.
 
 #### Fluxo alternativo B: Senha diferente dos padrões exigidos.
@@ -18,7 +19,6 @@
 - O sistema exibe uma mensagem de erro. 
 - O sistema informa ao usuário que a senha está fora dos padrões.
 -  O sistema exibe uma mensagem sugerindo que o usuário coloque a senha correta. 
-
 
 ### Caso de uso 2:Login.
 #### Atores:
