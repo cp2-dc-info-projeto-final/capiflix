@@ -131,11 +131,13 @@
 #### Atores:
 - Administrador.
 #### Fluxo principal:
-- O Administrador clica na opção de cadastrar novo filmes.
+- O Administrador clica no botão de cadastrar novo filme.
 - O sistema exibi uma pagina de cadastro com  formulário.
 - O Administrador insere os dados (nome,  sinopse, gênero , capa  e trailer.)
 - O sistema verifica se os dados foram inseridos corretamente.
-- O sistema adiciona os filme no catalogo.
+- O sistema envia os dados no banco de dados.
+- O sistema adiciona o filme no catalogo.
+- O sistema envia uma mensagem de sucesso.
 #### Fluxo Alternativo A: Campo vazio
  - O Administrador clica na opção de cadastrar novo filmes.
 - O sistema exibi uma pagina de cadastro com  formulário.
