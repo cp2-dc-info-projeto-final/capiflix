@@ -47,7 +47,7 @@
 - Usuário
 #### Fluxo principal:
 - O usuário clica no botão de avaliação do filme. 
-- O sistema mostra a avaliação de 5  estrelas .
+- O sistema exibe a avaliação de 1 até de 5 estrelas .
 - O usuário avalia o filme até 5 estrelas.
 - O sistema cadastra a avaliação do usuário no banco de dados
 - O sistema atualiza a avaliação do filme fazendo uma porcentagem entre todas as notas correspondentes ao filme.
