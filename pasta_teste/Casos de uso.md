@@ -57,6 +57,7 @@
 
 #### Atores:
 - Usuário
+- Administrador 
 #### Fluxo principal:
 - O usuário pressiona no botão de excluir conta.
 - O sistema solicita a senha do usuário para continuar o processo.
@@ -133,7 +134,7 @@
 #### Fluxo principal:
 - O Administrador clica no botão de cadastrar novo filme.
 - O sistema exibi uma pagina de cadastro com  formulário.
-- O Administrador insere os dados (nome,  sinopse, gênero , capa  e trailer.)
+- O Administrador insere os dados (nome,sinopse,gênero,data,capa e trailer.)
 - O sistema verifica se os dados foram inseridos corretamente.
 - O sistema envia os dados no banco de dados.
 - O sistema adiciona o filme no catalogo.
@@ -237,36 +238,10 @@
 - O sistema verifica se a senha esta correta.
 - O sistema altera o filme do banco de dados.
 - O sistema altera o filme da pagina e atualiza a lista de filmes.
-### Caso de uso 12:Exclusão de perfil por Admin.
-#### Atores : 
-- Administrador 
-#### Fluxo principal: 
-- O Administrador clica no botão de excluir perfil.
-- O sistema pede a senha ao administrador.
-- O administrador insere a senha corretamente.
-- O sistema procura no banco de dados a conta correspondente.
-- O sistema  apaga os dados da conta do usuário.
-- O sistema exibe uma notificação de que a conta foi excluida com sucesso.
+#### Fluxo Alternativo B: Gênero não encontrado
+- O administrador busca um gênero no banco de dados.
+- O sistema envia ao banco de dados o gênero buscado.
+- O banco de dados não encontra o gênero buscado.
+- O sistema exibe uma mensagem de "sistema não encontrado"
 
-#### Fluxo alternativo A: Senha invalida.
-- O Administrador seleciona uma conta no banco de dados.
-- O sistema exibe a conta buscada.
-- O administrador clica na opção de remover conta.
-- O sistema pede a senha do Administrador.
-- O Administrador insere a senha errada.
-- O sistema exibe uma mensagem de senha invalida.
-- O sistema pede para o Administrador inserir a senha corretamente.
-- O Administrador insere a senha novamente.
-- O sistema verifica se a senha esta correta.
-- O sistema remove a conta do banco de dados.
-- O sistema exibe uma notificação de que a conta foi excluida com sucesso.
-### Caso de uso 13: Assistir trailer:
-#### Atores : 
-- Usuário
-- Administrador 
-#### Fluxo principal: 
-- O usuário seleciona um filme.
-- O sistema exibe a página do filme.
-- O usuário seleciona a opção de assistir trailer.
-- O sistema exibe o trailer do filme.
 
