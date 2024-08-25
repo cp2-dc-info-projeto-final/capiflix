@@ -192,7 +192,8 @@
 - O sistema envia a senha ao banco de dados.
 - O banco de dados verifica a senha.
 - O banco de dados retorna verdadeiro.
-- O sistema atualiza as modificações do administrador no banco de dados.
+- O sistema atualiza as modificações.
+- O sistema envia ao banco de dados as modificações.
 - O sistema atualiza a página do filme.
 - O sistema exibe uma mensagem de sucesso.
 #### Fluxo Alternativo A: Senha invalida.
