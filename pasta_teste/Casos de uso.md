@@ -153,13 +153,15 @@
 - Administrador.
 #### Fluxo principal: 
 - O Administrador seleciona um filme no banco de dados.
-- O sistema exibe o filme buscado.
-- O administrador  clica a opção de remover  filme.
-- O sistema pede a senha do Administrador.
+- O administrador clica no botão de remover filme.
+- O sistema solicita a senha do Administrador.
 - O Administrador insere a senha corretamente.
-- O sistema apaga o filme do banco de dados.
+- O sistema envia a senha ao banco de dados.
+- O banco de dados verifica a senha.
+- O banco de dados retorna verdadeiro
+- O sistema deleta o filme do banco de dados.
 - O sistema atualiza a página de filmes.
-
+- O sistema exibe mensagem de sucesso.
 #### Fluxo Alternativo A: Senha invalida.
 - O Administrador seleciona um filme no banco de dados.
 - O sistema exibe o filme buscado.
