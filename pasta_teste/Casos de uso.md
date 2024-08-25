@@ -180,12 +180,21 @@
 - Administrador 
 #### Fluxo principal: 
 - O administrador busca o filme que deseja modificar.
+- O sistema envia ao banco de dados o filme buscado.
+- O banco de dados retorna o filme buscado.
 - O sistema exibe o filme buscado.
+- O administrador pressiona no botão de modificar filme.
+- O sistema envia exibe opções para modificar o filme.
 - O administrador seleciona o que deseja modificar.
 - O administrador modifica a característica selecionada.
 - O sistema pede a senha do Administrador.
 - O Administrador insere a senha corretamente.
+- O sistema envia a senha ao banco de dados.
+- O banco de dados verifica a senha.
+- O banco de dados retorna verdadeiro.
 - O sistema atualiza as modificações do administrador no banco de dados.
+- O sistema atualiza a página do filme.
+- O sistema exibe uma mensagem de sucesso.
 #### Fluxo Alternativo A: Senha invalida.
 - O Administrador seleciona um filme no banco de dados.
 - O sistema exibe o filme buscado.
