@@ -61,9 +61,14 @@
 - O usuário pressiona no botão de excluir conta.
 - O sistema solicita a senha do usuário para continuar o processo.
 - O usuário insere a senha.
-- O sistema verifica no banco de dados se a senha está correta.
+- O sistema envia a senha ao banco de dados.
+- O banco de dados verifca se a senha está correta
+- O banco de dados retorna verdadeiro
 - O sistema apaga os dados da conta do usuário.
-- O sistema exibe a janela de login ou cadastro do site.
+- O banco de dados atualiza as contas.
+- O banco de dados retorna verdadeiro.
+- o sistema exibe mensagem de sucesso.
+- O sistema exibe a janela de cadastro do site.
 #### Fluxo alternativo A: Senha incorreta.
 - O sistema pede que o usuário insira a senha para continuar o processo de exclusão da conta.
 - O usuário insera a senha.
