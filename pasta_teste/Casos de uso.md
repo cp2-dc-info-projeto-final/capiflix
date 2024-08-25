@@ -27,8 +27,8 @@
 - Usuário
 #### Fluxo principal:
 - O sistema exibirá na página um formulário para o usuário efetuar o login. 
-- O usuário coloca seu email e senha e clica no botão entrar.
-- O sistema procura no banco de dados as informações do usuário.
+- O usuário insere seu email e senha e clica no botão entrar.
+- O sistema busca no banco de dados as informações do usuário.
 - O sistema verifica se as informações do usuário são corretas.
 - O usuário é redirecionado a página inicial com acesso a conta. 
 #### Fluxo alternativo A: Email inválido.
