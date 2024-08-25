@@ -59,7 +59,6 @@
 - Usuário
 #### Fluxo principal:
 - O usuário pressiona no botão de excluir conta.
-- O sistema busca no banco de dados a conta correspondente.
 - O sistema solicita a senha do usuário para continuar o processo.
 - O usuário insere a senha.
 - O sistema verifica no banco de dados se a senha está correta.
