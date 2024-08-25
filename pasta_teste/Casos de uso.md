@@ -46,7 +46,7 @@
 #### Atores:
 - Usuário
 #### Fluxo principal:
-- O usuário clica no botão de avaliação do filme. 
+- O usuário pressiona no botão de avaliação do filme. 
 - O sistema exibe a avaliação de 1 até de 5 estrelas .
 - O usuário avalia o filme até 5 estrelas.
 - O sistema cadastra a avaliação do usuário no banco de dados
