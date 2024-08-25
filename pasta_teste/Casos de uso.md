@@ -107,19 +107,24 @@
 #### Atores : 
 - Usuário
 #### Fluxo principal:
-- O usuário clica na barra de pesquisa.
+- O usuário pressiona na barra de pesquisa.
 - O sistema disponibiliza a opção de procurar um filme pelo nome.
-- O usuário digita o nome de um filme.
+- O usuário insere o nome de um filme.
 - O sistema procura no banco de dados o filme com o nome inserido.
+- O banco de dados retorna o filme buscado.
 - O sistema exibe o filme correspondente. 
 
 ### Caso de uso 7: Busca de filmes por gênero.
 #### Atores : 
 - Usuário
 #### Fluxo principal: 
-- O usuário clica em gêneros.
-- O sistema mostra opções de gêneros.
-- O usuário escolhe um gênero exibido pelo sistema.
+- O usuário clica no botão gêneros.
+- O sistema busca no banco de dados opções de gêneros.
+- O banco de dados retorna ao sistema opções de gêneros.
+- O sistema exibe as opções de gêneros.
+- O usuário seleciona um gênero exibido pelo sistema.
+- O sistema busca no banco de dados filmes com o gênero escolhido.
+- O banco de dados retorna os filmes de acordo com o gênero buscado.
 - O sistema exibe os filmes correspondentes.
 
 ### Caso de uso 8: Cadastro de filmes.
