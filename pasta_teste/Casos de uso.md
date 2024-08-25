@@ -6,7 +6,9 @@
 - O usuário clica no botão de cadastrar.
 - O sistema direciona o usuário para a página de cadastro com um formulário. 
 - O usuário insere as informações do formulário(insere email, cria um senha e um nome usuário).
-- O sistema registra  as informações no banco de dados, cria a conta para o novo usuário.
+- O sistema verifica no banco de dados se as informações estão disponíveis.
+- O sistema retorna verdadeiro,
+- O sistema cria a conta para o novo usuário e registra as informações no banco de dados.
 - O sistema redireciona o usuário para a página inicial do site.
 #### Fluxo alternativo A: Email inválido.
 - O usuário insere um email.
