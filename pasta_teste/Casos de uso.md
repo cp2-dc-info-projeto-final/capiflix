@@ -58,12 +58,12 @@
 #### Atores:
 - Usuário
 #### Fluxo principal:
-- O usuário clica no botão de excluir conta.
-- O sistema procura no banco de dados a conta correspondente.
-- O sistema pede a senha do usuário para continuar o processo.
+- O usuário pressiona no botão de excluir conta.
+- O sistema busca no banco de dados a conta correspondente.
+- O sistema solicita a senha do usuário para continuar o processo.
 - O usuário insere a senha.
 - O sistema verifica no banco de dados se a senha está correta.
-- O sistema  apaga os dados da conta do usuário.
+- O sistema apaga os dados da conta do usuário.
 - O sistema exibe a janela de login ou cadastro do site.
 #### Fluxo alternativo A: Senha incorreta.
 - O sistema pede que o usuário insira a senha para continuar o processo de exclusão da conta.
