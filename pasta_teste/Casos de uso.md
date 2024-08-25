@@ -212,13 +212,19 @@
 #### Atores : 
 - Administrador 
 #### Fluxo principal: 
-- O Administrador seleciona um gênero no banco de dados.
+- O Administrador busca um gênero no banco de dados.
+- O sistema busca no banco de dados o gênero buscado.
+- O banco de dados retorna o gênero buscado.
 - O sistema exibe o gênero buscado.
-- O administrador usa a opção de remoção de gênero.
-- O sistema pede a senha ao administrador
+- O administrador usa o botão de remoção de gênero.
+- O sistema solicita a senha ao administrador
 - O administrador insere a senha.
+- O sistema envia a senha ao banco de dados.
+- O banco de dados verifica a senha.
+- O banco de dados retorna verdadeiro.
 - O sistema apaga o gênero no banco de dados.
 - O sistema atualiza a página de gênero.
+- O sistema envia uma mensagem de sucesso.
 #### Fluxo Alternativo A: Senha invalida.
 - O Administrador seleciona um filme no banco de dados.
 - O sistema exibe o filme buscado.
