@@ -81,14 +81,14 @@
 - Usuário 
 - Admin.
 #### Fluxo principal:
-- O Usuário clica em conta.
-- O sistema abre a página do usuário.
-- O usuário clica em logout.
-- O sistema pede a senha do usuário.
+- O usuário Pressiona no botão de logout.
+- O sistema solicita a senha do usuário.
 - O usuário insere a senha.
-- O sistema verifica se a senha esta correta.
-- O sistema tira o login do usuário.
-- O sistema faz a operação exigida e envia o usuário para a área de login e cadastro.
+- O sistema envia a senha ao banco de dados.
+- O banco de dados verifica a senha.
+- O banco de dados retorna true
+- O sistema remove o login do usuário.
+- O sistema direciona o usuário a página inicial.
 #### Fluxo Alternativo A: erro de senha.
 - O Usuário clica em conta.
 - O sistema abre a página do usuário.
