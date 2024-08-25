@@ -49,7 +49,8 @@
 - O usuário pressiona no botão de avaliação do filme. 
 - O sistema exibe a avaliação de 1 até de 5 estrelas .
 - O usuário avalia o filme até 5 estrelas.
-- O sistema cadastra a avaliação do usuário no banco de dados
+- O sistema cadastra a avaliação do usuário no banco de dados.
+- O Banco de dados registra as informações e retorna verdadeiro.
 - O sistema atualiza a avaliação do filme fazendo uma porcentagem entre todas as notas correspondentes ao filme.
 
 ### Caso de uso 4: Exclusão de perfil.
