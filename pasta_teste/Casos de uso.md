@@ -14,7 +14,6 @@
 - O usuário insere um email.
 - O sistema verifica se o email já está sendo usado por alguma conta.
 - O sistema informa ao usuário que o email já está sendo usado e sugere o usuário que use outro email.
-
 #### Fluxo alternativo B: Senha diferente dos padrões exigidos.
 - O usuário insere uma senha
 - O sistema verifica se a senha está dentro dos padrões exigidos (no mínimo 8 caracteres, máximo de 16)
