@@ -19,7 +19,19 @@
 - O sistema verifica se a senha está dentro dos padrões exigidos (no mínimo 8 caracteres, máximo de 16)
 - O sistema exibe uma mensagem de erro. 
 - O sistema informa ao usuário que a senha está fora dos padrões.
--  O sistema exibe uma mensagem sugerindo que o usuário coloque a senha correta. 
+-  O sistema exibe uma mensagem sugerindo que o usuário coloque a senha correta.
+
+#### Fluxo Alternativo C: Campo vazio
+- O usuário clica no botão de cadastrar.
+- O sistema direciona o usuário para a página de cadastro com um formulário. 
+- O usuário insere algumas das informações do formulário(insere email, cria um senha e um nome usuário).
+- O usuário esquece esquece de preencher um ou algun campos.
+- O sistema exibe uma mensagem no campo vazio e solicita ao usuário  que insira os dadsos no campo vazio.
+- O usuário insere todas as informações no  formulário(insere email, cria um senha e um nome usuário).
+- O sistema verifica no banco de dados se as informações estão disponíveis.
+- O banco de dados retorna verdadeiro.
+- O sistema cria a conta para o novo usuário registrando as informações no banco de dados.
+- O sistema redireciona o usuário para a página inicial do site.
 
 ### Caso de uso 2:Login.
 #### Atores:
@@ -40,7 +52,17 @@
 - O usuário insere uma senha
 - O sistema verifica se a senha está correta.
 - O sistema exibe uma mensagem dizendo que a senha está inválida. 
-- O sistema exibe uma mensagem sugerindo que o usuário insira a senha correta. 
+- O sistema exibe uma mensagem sugerindo que o usuário insira a senha correta.
+
+#### Fluxo Alternativo C: Campo vazio
+- O sistema exibirá na página um formulário para o usuário efetuar o login
+- - O usuário esquece esquece de preencher um ou algun campos.
+- O sistema exibe uma mensagem no campo vazio e solicita ao usuário que insira os dados no campo vazio.
+- O usuário insere todas as informações no  formulário(insere email e a senha )
+- O sistema verifica no banco de dados se as informações estão corretas.
+- O banco de dados retorna verdadeiro.
+- O sistema redireciona o usuário para a página inicial do site.
+
 ### Caso de uso 3: Avaliação.
 #### Atores:
 - Usuário
