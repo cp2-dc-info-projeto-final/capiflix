@@ -1,8 +1,8 @@
-const form = document.querySelector('.form_exemplo');
+const form = document.querySelector('.formulario');
 const nome = document.getElementById('nome');
 const email = document.getElementById('email');
 const senha = document.getElementById('senha');
-const conf_senha = document.getElementById('conf_senha');
+const confirma_senha = document.getElementById('confirma_senha');
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -11,7 +11,7 @@ form.addEventListener('submit', async (e) => {
         nome: nome.value,
         email: email.value,
         senha: senha.value,
-        conf_senha: conf_senha.value
+        confirma_senha: confirma_senha.value
     };
 
     try{

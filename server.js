@@ -10,17 +10,17 @@ app.use(express.static('public'));
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public','formulario.html' ));
+    res.sendFile(path.join(__dirname, 'public','cadastro_usuario.html' ));
 });
 
 app.post('/registra-usuario', (req, res) => {
-    const {nome, email, senha, conf_senha} = req.body;
+    const {nome, email, senha, confirma_senha} = req.body;
     // Aqui começa a validação dos campos do formulário
     let erro = "";
-    if(nome.length < 1 || email.length < 1 || senha.length < 1 || conf_senha.length < 1){
+    if(nome.length < 1 || email.length < 1 || senha.length < 1 || confirma_senha.length < 1){
         erro += 'Por favor, preencha todos os campos corretamente!<br>';
     }
-    if(senha != conf_senha){
+    if(senha != confirma_senha){
         erro += 'As senhas digitadas não são iguais!<br>';
     }
     if(erro){
@@ -31,7 +31,7 @@ app.post('/registra-usuario', (req, res) => {
     }
     else{
         // aqui começa o código para inserir o registro no banco de dados
-        let db = new sqlite3.Database('./db/exemplo_tcc.db', (err) => {
+        let db = new sqlite3.Database('./banco_de_dados/capiflix.db', (err) => {
             if (err) {
                 return console.error(err.message);
             }
