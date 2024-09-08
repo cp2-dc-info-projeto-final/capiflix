@@ -1,4 +1,4 @@
-const form = document.querySelector('.formulario');
+const form = document.getElementById('formulario');
 const nome = document.getElementById('nome');
 const email = document.getElementById('email');
 const senha = document.getElementById('senha');
