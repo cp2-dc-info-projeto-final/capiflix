@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
 app.post('/registra-usuario', (req, res) => {
     const {nome, email, senha, confirma_senha} = req.body;
     // Aqui começa a validação dos campos do formulário
+    
     let erro = "";
     if(nome.length < 1 || email.length < 1 || senha.length < 1 || confirma_senha.length < 1){
         erro += 'Por favor, preencha todos os campos corretamente!<br>';
