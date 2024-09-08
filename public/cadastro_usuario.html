@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,43 +18,29 @@
 </div>
     <div style="width:30%;" class="form-floating mb-3 mt-3 position-flex" id="div_cadastro">
         <h1 style="font-size: 200%; text-align: center;" class="form-floating mb-3 mt-3 position-flex">Cadastro:</h1>
-        <form class="row g-1 needs-validation" novalidate>
-            <div class="form-floating mt-3 mb-3">
+        <form class="row g-1 needs-validation" id="formulario" novalidate>
+            <div class="form-floating mt-1 mb-3">
                 <input type="text" class=" shadow p-3 bg-body rounded form-control" id="nome" placeholder="Nome" name="nome" required>
                 <label for="nome">Nome</label>
             </div>
-            <div class="form-floating mt-3 mb-3">
+            <div class="form-floating mt-1 mb-3">
                 <input type="text" class="form-control shadow p-3 bg-body rounded " id="email" placeholder="Email" name="email" required>
                 <label for="email">Email</label>
             </div>
-            <div class="form-floating mt-3 mb-3">
-                <input type="password" class="form-control shadow p-3 bg-body rounded " id="pwd" placeholder="Enter password" name="pswd" required>
-                <label for="pwd">Senha</label>
+            <div class="form-floating mt-1 mb-3">
+                <input type="password" class="form-control shadow p-3 bg-body rounded " id="senha" placeholder="Enter password" name="pswd" required>
+                <label for="senha">Senha</label>
             </div>
+            <div class="form-floating mt-1 mb-3">
+              <input type="password" class="form-control shadow p-3 bg-body rounded " id="confirma_senha" placeholder="Enter password" name="pswd" required>
+              <label for="confirma_senha">confirmar senha</label>
+          </div>
               <button type="submit" class="btn btn-dark"  style="--bs-btn-padding-y: .70rem; --bs-btn-padding-x: .70rem; --bs-btn-font-size: .90rem; margin-bottom: 30px;">Enviar</button>
               <a href="login_usuario.html"><h6>Deseja fazer login? Clique aqui</h6></a>
+              <p id="message"></p>
         </form>
+        
+        <script src="app.js"></script>
     </div>
- <script>
-    (() => {
-    'use strict'
-
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    const forms = document.querySelectorAll('.needs-validation')
-
-  // Loop over them and prevent submission
-  Array.from(forms).forEach(form => {
-    form.addEventListener('submit', event => {
-      if (!form.checkValidity()) {
-        event.preventDefault()
-        event.stopPropagation()
-      }
-
-      form.classList.add('was-validated')
-    }, false)
-  })
-})()
- </script>   
-
 </body>
 </html>
