@@ -149,7 +149,5 @@
           </table>
         {/if}
       </div>
-        
-        <script src="app.js"></script>
     </div>
 </main>
