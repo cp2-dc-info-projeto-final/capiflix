@@ -8,6 +8,8 @@ const app = express();
 app.use(express.json());
 const port = 3000;
 
+const databasePath = "./capiflix.db";
+
 function geraNumeroAleatorio(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
@@ -24,7 +26,7 @@ app.get('/hello', (req, res) => {
 });
 
 app.get('/usuarios', (req, res) => {
-  let db = new sqlite3.Database('./users.db', (err) => {
+  let db = new sqlite3.Database(databasePath, (err) => {
     if (err) {
       return console.error(err.message);
     }
@@ -69,6 +71,9 @@ app.post('/usuarios/novo', (req, res) => {
   if (senha != conf_senha) {
     erro += 'As senhas digitadas não são iguais!';
   }
+  if (senha.length < 6 && conf_senha.length < 6){
+    erro += 'por favor, preencha os campos com pelo menos 6 digitos';
+  }
   if (erro) {
     res.status(500).json({
       status: 'failed',
@@ -77,7 +82,7 @@ app.post('/usuarios/novo', (req, res) => {
   }
   else {
     // aqui começa o código para inserir o registro no banco de dados
-    let db = new sqlite3.Database('./users.db', (err) => {
+    let db = new sqlite3.Database(databasePath, (err) => {
       if (err) {
         return console.error(err.message);
       }
@@ -127,7 +132,7 @@ app.delete('/usuarios/:id_usuario', (req, res) => {
   const { id_usuario } = req.params;
 
   // Conectar ao banco de dados SQLite
-  let db = new sqlite3.Database('./users.db', (err) => {
+  let db = new sqlite3.Database(databasePath, (err) => {
     if (err) {
       return res.status(500).json({
         status: 'failed',
