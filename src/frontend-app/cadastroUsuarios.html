@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capiflix!</title>
+  </head>
+  <body>
+    <script type="module">
+          import './src/app.css';
+          import CadastroUsuarios from './src/CadastroUsuarios.svelte';
+
+          const cadastrousuarios = new CadastroUsuarios({
+            target: document.getElementById('cadastroUsuarios'),
+          })
+
+          export default cadastrousuarios
+    </script>
+    <div id="cadastroUsuarios"></div>
+  </body>
+</html>
