@@ -5,3 +5,7 @@ left: 50%;
 transform: translate(-50%, -50%);
 
 }
+
+body, .card{
+    background-color:bisque !important;
+}

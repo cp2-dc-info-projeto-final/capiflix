@@ -7,9 +7,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        login: './login.html',
-        cadastroUsuarios: './cadastroUsuarios.html'
-      }
-    }
-  }
+        cadastroUsuarios: './cadastroUsuarios.html',
+        login: './login.html'
+        // cadastroUsuarios: './cadastroUsuarios.html'
+      },
+    },
+  },
+  server: {
+    open: '/cadastroUsuarios.html',
+  },
 })

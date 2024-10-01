@@ -113,18 +113,17 @@
                 </div>
                     <button id="button_emviar"type="submit" class="btn btn-dark"  style="--bs-btn-padding-y: .70rem; --bs-btn-padding-x: .70rem; --bs-btn-font-size: .90rem; margin-bottom: 30px;">Enviar</button>
                     <p id="message"></p>
-                    <a href="./login.html"> Clique aqui</a>
 
               </form>
             </div>
             <div class="form">
               <form on:submit|preventDefault={cadastrarUsuario}>
               {#if error}
-                <p style="color: red;">{error.message}</p>
-                <a href="./login.hmtl"> Clique aqui</a>
+                <p style="color: red;">{error}</p>
               {/if}
               {#if resultado && resultado.message}
                 <p style="color: green;">{resultado.message}</p>
+                <a href="./login.html"> Clique aqui</a>
                
                {/if}
               </form>
