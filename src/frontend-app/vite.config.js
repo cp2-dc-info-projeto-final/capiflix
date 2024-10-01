@@ -8,7 +8,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         cadastroUsuarios: './cadastroUsuarios.html',
-        login: './login.html'
+        login: './login.html',
+        administracao: './administracao.html'
         // cadastroUsuarios: './cadastroUsuarios.html'
       },
     },
