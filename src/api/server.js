@@ -1,28 +1,26 @@
 const express = require('express');
 const cors = require('cors');
+const session = require('express-session');
 const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require("bcryptjs")
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const port = 3000;
 
 const databasePath = "./capiflix.db";
 
-function geraNumeroAleatorio(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
 app.use(cors());
 
-app.get('/hello', (req, res) => {
-  let aleatorio = geraNumeroAleatorio(0,100);
-  res.status(200).json({
-    texto_completo:`Olá mundo! Sorteei o número ${aleatorio}!`,
-    saudacao: 'Olá mundo!',
-    numero: aleatorio
-  });
-});
+app.use(session({
+  secret: 'your_secret_key', // Altere para uma chave secreta segura
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Mude para true se estiver usando HTTPS
+}))
+
+
 
 app.get('/usuarios', (req, res) => {
   let db = new sqlite3.Database(databasePath, (err) => {
@@ -218,7 +216,13 @@ app.delete('/usuarios/:id_usuario', (req, res) => {
   });
 });
 
-  
+app.get('/home', (req, res) => {
+  if (req.session.userId) {
+    res.send(`Bem-vindo, ${req.session.userId}! Você está logado.`);
+  } else {
+    res.status(403).send('Você não está logado.');
+  }
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
