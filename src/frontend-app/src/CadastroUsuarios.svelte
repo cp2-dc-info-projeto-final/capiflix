@@ -94,6 +94,7 @@
         <div style="width:35%;" class="form-floating mb-5 mt-3 position-flex" id="div_cadastro">
             <h1 style="font-size: 200%; text-align: center;" class="form-floating mb-3 mt-3 position-flex">CADASTRO:</h1>
             <div class="mb-4 mt-5">
+              <div  id="div_de_boasvindas"></div>
               <form class="row g-1 needs-validation" id="formulario" on:submit|preventDefault={cadastrarUsuario}>
                   <div class="form-floating mt-1 mb-3">
                       <input type="text" class=" shadow p-3 bg-body rounded form-control" id="nome" placeholder="Nome" name="nome" required bind:value={nome}>
