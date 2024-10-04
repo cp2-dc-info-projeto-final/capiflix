@@ -92,30 +92,36 @@
         </div>
       </div>
         <div style="width:35%;" class="form-floating mb-5 mt-3 position-flex" id="div_cadastro">
-            <h1 style="font-size: 200%; text-align: center;" class="form-floating mb-3 mt-3 position-flex">CADASTRO:</h1>
             <div class="mb-4 mt-5">
-              <div  id="div_de_boasvindas"></div>
-              <form class="row g-1 needs-validation" id="formulario" on:submit|preventDefault={cadastrarUsuario}>
-                  <div class="form-floating mt-1 mb-3">
-                      <input type="text" class=" shadow p-3 bg-body rounded form-control" id="nome" placeholder="Nome" name="nome" required bind:value={nome}>
-                      <label for="nome">Nome</label>
+              <div  id="div_de_boasvindas" style="width: 90%;">
+                <div style="display:flex; margin-bottom: 2%;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16" style="margin-left:32%">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                  </svg>
+              </div>
+                <form class="row g-1 needs-validation" id="formulario" on:submit|preventDefault={cadastrarUsuario}>
+                    <div class="form-floating mt-1 mb-3">
+                        <input type="text" class=" shadow p-3 bg-body rounded form-control" id="nome" placeholder="Nome" name="nome" required bind:value={nome}>
+                        <label for="nome">Nome</label>
+                    </div>
+                    <div class="form-floating mt-1 mb-3">
+                        <input type="text" class="form-control shadow p-3 bg-body rounded " id="email" placeholder="Email" name="email" required  bind:value={email}>
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="form-floating mt-1 mb-3">
+                        <input type="password" class="form-control shadow p-3 bg-body rounded " id="senha" placeholder="Enter password" name="pswd" required  bind:value={senha}>
+                        <label for="senha">Senha</label>
+                    </div>
+                    <div class="form-floating mt-1 mb-3">
+                      <input type="password" class="form-control shadow p-3 bg-body rounded " id="confirma_senha" placeholder="Enter password" name="pswd" required bind:value={conf_senha}>
+                      <label for="confirma_senha">confirmar senha</label>
                   </div>
-                  <div class="form-floating mt-1 mb-3">
-                      <input type="text" class="form-control shadow p-3 bg-body rounded " id="email" placeholder="Email" name="email" required  bind:value={email}>
-                      <label for="email">Email</label>
-                  </div>
-                  <div class="form-floating mt-1 mb-3">
-                      <input type="password" class="form-control shadow p-3 bg-body rounded " id="senha" placeholder="Enter password" name="pswd" required  bind:value={senha}>
-                      <label for="senha">Senha</label>
-                  </div>
-                  <div class="form-floating mt-1 mb-3">
-                    <input type="password" class="form-control shadow p-3 bg-body rounded " id="confirma_senha" placeholder="Enter password" name="pswd" required bind:value={conf_senha}>
-                    <label for="confirma_senha">confirmar senha</label>
-                </div>
-                    <button id="button_emviar"type="submit" class="btn btn-dark"  style="--bs-btn-padding-y: .70rem; --bs-btn-padding-x: .70rem; --bs-btn-font-size: .90rem; margin-bottom: 30px;">Enviar</button>
-                    <p id="message"></p>
+                      <button id="button_emviar"type="submit" class="btn btn-dark"  style="--bs-btn-padding-y: .70rem; --bs-btn-padding-x: .70rem; --bs-btn-font-size: .90rem; margin-bottom: 30px;">Enviar</button>
+                      <p id="message"></p>
+                      <a href="./administrador.html">clique aqui</a>
 
-              </form>
+                </form>
+              </div>
             </div>
             <div class="form">
               <form on:submit|preventDefault={cadastrarUsuario}>

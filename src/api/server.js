@@ -125,12 +125,19 @@ app.post('/usuarios/novo', (req, res) => {
   }
 });
 
-app.put('/usuarios/mudar/:id_usuario', (req, res) => {
-  const { id_usuario } = req.params;
-  const { nome, senha } = req.body; // Extraindo nome e senha do corpo da requisição
+app.put('/usuarios/mudar-nome/:id_usuario', (req, res) => {
+  const id_usuario = req.params.id_usuario; // Renomeado para corresponder ao estilo de código
+  const { nome } = req.body;
 
-  // conectar ao banco de dados SQLite
-  let db = new Database(databasePath, (err) => {
+  if (!nome) {
+    return res.status(400).json({
+      status: 'failed',
+      message: 'Nome é obrigatório!'
+    });
+  }
+
+  // Conectar ao banco de dados SQLite
+  let db = new sqlite3.Database(databasePath, (err) => {
     if (err) {
       return res.status(500).json({
         status: 'failed',
@@ -141,13 +148,13 @@ app.put('/usuarios/mudar/:id_usuario', (req, res) => {
     console.log('Conectou no banco de dados!');
   });
 
-  // modificar o usuario pelo id
-  db.run('UPDATE usuario SET nome=?, senha=? WHERE id=?', [nome, senha, id_usuario], function (err) {
+  // Modificar o nome do usuário pelo ID
+  db.run('UPDATE usuario SET nome = ? WHERE id_usuario = ?', [nome, id_usuario], function (err) {
     if (err) {
       db.close();
       return res.status(500).json({
         status: 'failed',
-        message: `Erro ao tentar modificar o usuário ${id_usuario}!`,
+        message: `Erro ao tentar modificar o nome do usuário ${id_usuario}!`,
         error: err.message
       });
     }
@@ -155,7 +162,10 @@ app.put('/usuarios/mudar/:id_usuario', (req, res) => {
     // Verifica se alguma linha foi afetada
     if (this.changes === 0) {
       db.close();
-      return res.status(404).json({ status: 'failed', message: 'Usuário não encontrado!' });
+      return res.status(404).json({
+        status: 'failed',
+        message: 'Usuário não encontrado!'
+      });
     }
 
     // Fechar a conexão com o banco de dados
@@ -169,10 +179,12 @@ app.put('/usuarios/mudar/:id_usuario', (req, res) => {
     // Retornar uma resposta de sucesso
     return res.status(200).json({
       status: 'success',
-      message: `Usuário com nome: ${nome} atualizado com sucesso!`
+      message: `Nome do usuário atualizado com sucesso!`
     });
   });
 });
+
+
 
 
 

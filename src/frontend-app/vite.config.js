@@ -9,7 +9,7 @@ export default defineConfig({
       input: {
         cadastroUsuarios: './cadastroUsuarios.html',
         login: './login.html',
-        administracao: './administracao.html'
+        administrador: './administrador.html'
         // cadastroUsuarios: './cadastroUsuarios.html'
       },
     },

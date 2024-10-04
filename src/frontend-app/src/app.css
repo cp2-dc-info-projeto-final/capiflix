@@ -1,15 +1,14 @@
-#div_cadastro{
+#div_cadastro, #div_de_boasvindas{
 position: absolute;
-top: 380%;
+top: 270%;
 left: 50%;
 transform: translate(-50%, -50%);
 
 }
 
 body, .card{
-    background-color:bisque !important;
+    background-color:rgb(241, 187, 121) !important;
 }
-
-#div_de_boasvindas{
-    background-color: aquamarine!important;
+.card{
+    border: none!important;
 }
