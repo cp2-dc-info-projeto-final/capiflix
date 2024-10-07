@@ -8,6 +8,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         paginaHome: 'paginaHome.html',
+        menu: 'menu.html',
         cadastroUsuarios: './cadastroUsuarios.html',
         login: './login.html',
         administrador: './administrador.html'

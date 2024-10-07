@@ -79,6 +79,7 @@
                       <button id="button_emviar"type="submit" class="btn btn-dark"  style="--bs-btn-padding-y: .70rem; --bs-btn-padding-x: .70rem; --bs-btn-font-size: .90rem; margin-bottom: 30px;">Enviar</button>
                       <p id="message"></p>
                       <a href="./administrador.html">clique aqui</a>
+                      <a href="./menu.html">clique para ver o menu</a>
 
                 </form>
               </div>
