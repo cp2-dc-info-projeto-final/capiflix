@@ -1,14 +1,20 @@
 #div_cadastro, #div_de_boasvindas{
 position: absolute;
-top: 270%;
+top: 300%;
 left: 50%;
 transform: translate(-50%, -50%);
 
 }
 
 body, .card{
-    background-color:rgb(241, 187, 121) !important;
+    background-color:NavajoWhite!important;
+
 }
+
 .card{
-    border: none!important;
+    border-style: none !important;
+}
+
+#imagem_boas_vindas{
+    background-color: blueviolet!important;
 }
