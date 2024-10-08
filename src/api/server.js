@@ -125,6 +125,8 @@ app.post('/usuarios/novo', (req, res) => {
   }
 });
 
+// FUNÇÃ DE MUDAR NOME
+
 app.put('/usuarios/mudar-nome/:id_usuario', (req, res) => {
   const id_usuario = req.params.id_usuario; // Renomeado para corresponder ao estilo de código
   const { nome } = req.body;
@@ -184,9 +186,105 @@ app.put('/usuarios/mudar-nome/:id_usuario', (req, res) => {
   });
 });
 
+// FUNÇÃO DE MUDAR SENHA
 
+app.put('/usuarios/mudar-senha/:id_usuario', (req, res) => {
+  const id_usuario = req.params.id_usuario;
+  const { senhaAtual, novaSenha } = req.body;
 
+  if (!senhaAtual || !novaSenha) {
+    return res.status(400).json({
+      status: 'failed',
+      message: 'Senha atual e nova senha são obrigatórias!'
+    });
+  }
 
+  // Conectar ao banco de dados SQLite
+  let db = new sqlite3.Database(databasePath, (err) => {
+    if (err) {
+      return res.status(500).json({
+        status: 'failed',
+        message: 'Erro ao conectar ao banco de dados!',
+        error: err.message
+      });
+    }
+    console.log('Conectou no banco de dados!');
+  });
+
+  // Verificar se a senha atual está correta
+  db.get('SELECT senha FROM usuarios WHERE id = ?', [id_usuario], (err, row) => {
+    if (err) {
+      return res.status(500).json({
+        status: 'failed',
+        message: 'Erro ao consultar o banco de dados!',
+        error: err.message
+      });
+    }
+
+    if (!row) {
+      return res.status(404).json({
+        status: 'failed',
+        message: 'Usuário não encontrado!'
+      });
+    }
+
+    const senhaCorreta = row.senha;
+
+    // Comparar a senha atual com a senha armazenada (hash)
+    bcrypt.compare(senhaAtual, senhaCorreta, (err, resultado) => {
+      if (err) {
+        return res.status(500).json({
+          status: 'failed',
+          message: 'Erro ao verificar a senha!',
+          error: err.message
+        });
+      }
+
+      if (!resultado) {
+        return res.status(401).json({
+          status: 'failed',
+          message: 'Senha atual está incorreta!'
+        });
+      }
+
+      // Hash a nova senha antes de armazená-la
+      bcrypt.hash(novaSenha, 10, (err, hashNovaSenha) => {
+        if (err) {
+          return res.status(500).json({
+            status: 'failed',
+            message: 'Erro ao hash a nova senha!',
+            error: err.message
+          });
+        }
+
+        // Atualizar a senha no banco de dados
+        db.run('UPDATE usuarios SET senha = ? WHERE id = ?', [hashNovaSenha, id_usuario], function(err) {
+          if (err) {
+            return res.status(500).json({
+              status: 'failed',
+              message: 'Erro ao atualizar a senha!',
+              error: err.message
+            });
+          }
+
+          return res.status(200).json({
+            status: 'success',
+            message: 'Senha atualizada com sucesso!'
+          });
+        });
+      });
+    });
+  });
+
+  // Fechar a conexão com o banco de dados
+  db.close((err) => {
+    if (err) {
+      console.error('Erro ao fechar a conexão com o banco de dados:', err.message);
+    }
+  });
+});
+
+// FUNÇÃ DE MUDAR DELETAR USUARIO
 
 app.delete('/usuarios/:id_usuario', (req, res) => {
   const { id_usuario } = req.params;

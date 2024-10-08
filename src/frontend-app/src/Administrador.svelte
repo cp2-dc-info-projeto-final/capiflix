@@ -4,12 +4,10 @@
     import "./app.css"
     import axios from "axios";
     let novoNome = "";
-    let email = "";
-    let senha = "";
-    let conf_senha = "";
+    let senhaAtual = "";
+    let novaSenha = "";
     let error = null;
     let resultado = null;
-    let paginaatual = "home";
     let usuarios = null;
     let colunas_usuarios = null;
     const api_base_url = "http://localhost:3000";
@@ -52,7 +50,7 @@
       }
     };
 
-    // Função para editar o usuário pelo ID
+    // Função para editar nome do usuário pelo ID
     const editarNomeUsuario = async (id, novoNome) => {
   try {
     console.log("Enviando:", { nome: novoNome }); // Log para verificar o que está sendo enviado
@@ -65,19 +63,39 @@
         Accept: "application/json",
       },
     });
-
-    resultado = res.data;
-    error = null;
-    await carregarUsuarios();
-  } catch (err) {
-    error = "Erro ao editar usuário: " + (err.response?.data?.message || err.message);
-    console.error(err.response?.data); // Adicione esta linha para verificar a resposta do erro
-    resultado = null;
+  } catch (error) {
+    console.error("Erro ao editar nome:", error); // Adicione tratamento de erro se necessário
   }
+  carregarUsuarios()
+};
+
+    // Função para editar senha do usuário pelo ID
+    const mudarSenhaUsuario = async (id, senhaAtual, novaSenha) => {
+  try {
+    console.log("Enviando:", { senhaAtual, novaSenha }); // Log para verificar o que está sendo enviado
+
+    let res = await axios.put(`${api_base_url}/usuarios/mudar-senha/${id}`, {
+      senhaAtual,
+      novaSenha,
+    }, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    console.log("Resposta do servidor:", res.data); // Log para verificar a resposta
+    return res.data; // Retorna a resposta do servidor
+
+  } catch (error) {
+    console.error("Erro ao mudar a senha:", error.response ? error.response.data : error.message);
+    throw error; // Lança o erro para ser tratado onde a função for chamada
+  }
+  carregarUsuarios()
 };
 
 
-    carregarUsuarios()
+  carregarUsuarios()
 </script>
 <main>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -117,6 +135,20 @@
                         </li>
                         <li>
                           <button on:click={() => editarNomeUsuario(linha_usuario.id_usuario, novoNome)}>Salvar</button>
+                        </li>
+                        <li>
+                          <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                          <label for="senhaAtual">Senha Atual</label>
+                          <input type="password" id="senhaAtual" bind:value={senhaAtual}>  
+                        </li>
+                        <li>
+                          <label for="novaSenha">Nova Senha</label>
+                          <input type="password" id="novaSenha" bind:value={novaSenha}>  
+                        </li>
+                        <li>
+                          <button on:click={() => mudarSenhaUsuario(linha_usuario.id_usuario, senhaAtual, novaSenha)}>Salvar Senha</button>
                         </li>
                       </ul>
                     </div>
