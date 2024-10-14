@@ -2,7 +2,6 @@
     // import { onMount } from 'svelte';
     import "./app.css"
     import axios from "axios";
-    import Menu from './Menu.svelte';
     let nome = "";
     let email = "";
     let senha = "";
@@ -42,7 +41,6 @@
   <main class=".bg-primário-sutil">
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-      <Menu></Menu>
       
       <div class="card">
       <div class="container text-center mt-3">
@@ -50,10 +48,10 @@
             <h1 style="font-size: 90px;">Capflix</h1>
         </div>
       </div>
-        <div class="mt-5 container" id="div_de_boasvindas" style="background-color:Bisque; border-color:blue; border-radius: 28px; width:40%">
-          <div style="background-color:aquamarine;">
-            <h1>Bem-vindo</h1>
-          </div>
+        <div class="mt-5 container" id="div_de_boasvindas" style="border-radius: 28px; width:40%">
+                <div id="Divlateral" style="height: 500px; width:200px;">
+                  <h1>oi</h1>
+                </div>
                 <form class="row g-1 needs-validation mt-1" id="formulario" on:submit|preventDefault={cadastrarUsuario}>
                     <div class="form-floating mt-5 mb-3" style="width: 80%; left:10%;">
                         <input class=" shadow p-3 bg-body rounded form-control" id="nome" placeholder="Nome" name="nome" required bind:value={nome}>
