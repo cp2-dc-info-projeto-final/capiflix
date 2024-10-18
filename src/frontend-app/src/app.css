@@ -1,14 +1,26 @@
-#div_cadastro, #div_de_boasvindas{
-position: absolute;
-top: 300%;
-left: 50%;
-transform: translate(-50%, -50%);
 
-
+#formulario{
+    padding-left: 6px;
+    padding-right: 9px;
+    background-color:Chocolate;
+    height: 482px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
+#div_de_boasvindas{
+    padding-left: 1px !important;
+    padding-right: 1px !important;
+    position: absolute;
+    top: 300%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 400px;
+}
+
+
 body, .card{
-    background-color:NavajoWhite!important;
+    background-color:rgb(161, 102, 29)!important;
 
 }
 
@@ -16,14 +28,17 @@ body, .card{
     border-style: none !important;
 }
 
-#imagem_boas_vindas{
-    background-color: blueviolet!important;
+#Divlateral{
+        position:block;
+        background-color:rgb(223, 140, 81);
+        float: left;
+        color: aliceblue;
+        border-bottom-left-radius: 20px;
+        border-top-left-radius: 20px;
 }
 
-#Divlateral{
-        top: 90px;
-        left: 3%;
-        position:block;
-        background-color: rgb(0, 0, 0);
-        float: left;
+.basic-addon2{
+    padding-top: 1px !important;
+    padding-left: 1px !important;
+
 }
