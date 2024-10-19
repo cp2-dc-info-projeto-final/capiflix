@@ -1,13 +1,3 @@
-
-#formulario{
-    padding-left: 6px;
-    padding-right: 9px;
-    background-color:Chocolate;
-    height: 482px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
 #div_de_boasvindas{
     padding-left: 1px !important;
     padding-right: 1px !important;
@@ -20,7 +10,7 @@
 
 
 body, .card{
-    background-color:rgb(161, 102, 29)!important;
+    background-color:antiquewhite!important;
 
 }
 
@@ -30,12 +20,22 @@ body, .card{
 
 #Divlateral{
         position:block;
-        background-color:rgb(223, 140, 81);
+        background-color:rgb(219, 117, 44);
         float: left;
         color: aliceblue;
         border-bottom-left-radius: 20px;
         border-top-left-radius: 20px;
 }
+
+#formulario{
+    padding-left: 6px;
+    padding-right: 9px;
+    background-color:rgb(100, 50, 14);
+    height: 482px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
 
 .basic-addon2{
     padding-top: 1px !important;
