@@ -2,7 +2,7 @@
     padding-left: 1px !important;
     padding-right: 1px !important;
     position: absolute;
-    top: 300%;
+    top: 250%;
     left: 50%;
     transform: translate(-50%, -50%);
     height: 400px;
@@ -20,7 +20,7 @@ body, .card{
 
 #Divlateral{
         position:block;
-        background-color:rgb(219, 117, 44);
+        background-color:rgb(231, 174, 134);
         float: left;
         color: aliceblue;
         border-bottom-left-radius: 20px;
@@ -30,7 +30,7 @@ body, .card{
 #formulario{
     padding-left: 6px;
     padding-right: 9px;
-    background-color:rgb(100, 50, 14);
+    background-color:rgb(255, 255, 255);
     height: 482px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
@@ -41,4 +41,11 @@ body, .card{
     padding-top: 1px !important;
     padding-left: 1px !important;
 
+}
+
+#inverter {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
 }

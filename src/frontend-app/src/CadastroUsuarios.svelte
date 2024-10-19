@@ -43,13 +43,13 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   
       <div class="card">
-      <div class="container text-center mt-2">
+      <div class="container text-center mt-1">
         <div class="d-flex justify-content-center align-items-center" style="font-family:American Typewriter, serif;">
-            <h1 style="font-size: 90px;">Capflix</h1>
-            <img src="">
+            <h1 style="font-size: 140px;">Capflix</h1>
+            <img src="imagens/capivara.png"  style="width: 10%;" id="inverter">
         </div>
       </div>
-        <div class="mt-5 container" id="div_de_boasvindas" style="width:40%;">
+        <div class="mt-1 container" id="div_de_boasvindas" style="width:40%;">
                 <div class="mt-1 d-flex justify-content-center align-items-center" id="Divlateral" style="height:482px; width:30%; text-center" >
                   <h1>Bem-Vindo</h1>
                 </div>
