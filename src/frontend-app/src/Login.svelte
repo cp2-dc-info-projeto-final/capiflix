@@ -6,7 +6,41 @@
     let senha = "";
     let error = null;
     let resultado = null;
-    const api_base_url = "http://localhost:3000";
+    const API_BASE_URL = "http://localhost:3000";
+
+    // habilita envio das credenciais via cookies em toda requisição axios
+    // também configura a base URL padrão para todos os requests usando essa instância
+    const axiosInstance = axios.create({
+        withCredentials: true,
+        baseURL: API_BASE_URL,
+        responseType: "json",
+        headers: {
+                Accept: "application/json",
+            }
+    });
+    
+    const loginUsuario = async () => {
+      try {
+        let res = await axiosInstance.post("/login",
+          {
+            email,
+            senha
+          }
+        );
+
+        resultado = res.data;
+
+        // Redirecionar para uma página protegida após login bem-sucedido
+        if (resultado && resultado.status === "success") { 
+            window.location.href = "/index.html";  
+        }
+        error = null; // Limpa o erro se a requisição for bem-sucedida
+      } catch (err) {
+        error = err.response?.data?.message || err.message;
+        resultado = null; // Limpa o resultado em caso de erro
+      }
+      
+    };
 
 </script>
 
@@ -25,7 +59,7 @@
           <div class="mb-4 mt-5">
             <div id="div_de_boasvindas" class="form-floating mb-5 mt-3 position-flex;">
             </div>
-            <form class="row g-1 needs-validation" id="formulario">
+              <form class="row g-1 needs-validation" id="formulario" on:submit|preventDefault={loginUsuario}>
                 <div class="form-floating mt-1 mb-3">
                     <input type="text" class="form-control shadow p-3 bg-body rounded " id="email" placeholder="Email" name="email" required  bind:value={email}>
                     <label for="email">Email</label>
@@ -35,6 +69,15 @@
                     <label for="senha">Senha</label>
                 </div>
                   <button id="button_emviar"type="submit" class="btn btn-dark"  style="--bs-btn-padding-y: .70rem; --bs-btn-padding-x: .70rem; --bs-btn-font-size: .90rem; margin-bottom: 30px;">Enviar</button>
-            </form>
+                  {#if error}
+                  <p style="color: red;">{error}</p>
+                  {/if}
+                  {#if resultado && resultado.message}
+                      <p style="color: green;">{resultado.message}</p>
+                  {/if}
+                <div>
+                  <button type="submit">Login</button>
+                </div>
+                </form>
           </div>
 </main>
