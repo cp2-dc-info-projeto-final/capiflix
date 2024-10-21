@@ -44,40 +44,43 @@
 
 </script>
 
-<main>
-
+<main class=".bg-primário-sutil">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
     <div class="card">
-    <div class="container text-center mt-3">
-      <div class="d-flex justify-content-center align-items-center">
-          <h1 style="font-size: 90px;">Capflix</h1>
+    <div class="container text-center mt-1">
+      <div class="d-flex justify-content-center align-items-center" style="font-family:American Typewriter, serif;">
+          <h1 style="font-size: 140px;">Capflix</h1>
+          <img src="imagens/capivara.png"  style="width: 10%;" id="inverter">
       </div>
     </div>
-      <div style="width:35%;" class="form-floating mb-5 mt-3 position-flex" id="div_cadastro">
-          <h1 style="font-size: 200%; text-align: center;" class="form-floating mb-3 mt-3 position-flex">LOGIN:</h1>
-          <div class="mb-4 mt-5">
-            <div id="div_de_boasvindas" class="form-floating mb-5 mt-3 position-flex;">
+      <div class="mt-1 container" id="div_de_boasvindas" style="width:30%;">
+              <form class="row g-3 needs-validation mt-1" id="formulario"  on:submit|preventDefault={cadastrarUsuario}>
+                  <div class="form-floating mt-4 mb-1" style="width: 100%;">
+                      <input class=" form-control bg-body rounded" id="nome" placeholder="Nome" name="nome" required bind:value={nome}>
+                      <label for="nome">Nome</label>
+                  </div>
+                  <div class="form-floating mt-2 mb-2" style="width: 100%;" >
+                      <input class="form-control bg-body rounded " id="email" placeholder="Email" name="email" required  bind:value={email}>
+                      <label for="email">Email</label>
+
+                  </div>
+                  <div class="form-floating mt-2 mb-2" style="width: 100%;">
+                      <input type="password" class="form-control  bg-body rounded" id="senha" placeholder="Enter password" name="pswd" required  bind:value={senha}>
+                      <label for="senha">Senha</label>
+                  </div>
+                  <div class="form-floating mt-2 mb-5" style="width: 100%;">
+                    <input type="password" class="form-control  bg-body rounded" id="confirma_senha" placeholder="Enter password" name="pswd" required bind:value={conf_senha}>
+                    <label for="confirma_senha">Confirmar senha</label>
+                  </div>
+                    <button id="button_enviar" type="submit" class="btn btn-dark mt-2 mb-1"  style="--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .70rem; --bs-btn-font-size: .90rem; margin-bottom:50px; width:100%; height:50px;">Enviar</button>
+                  
+                  </form>
+                  <p id="message"></p>
+                  <a href="./administrador.html">clique aqui</a><br>
+                  <a href="./menu.html">clique para ver o menu</a>
+                  <a href="./login.html"></a>
             </div>
-              <form class="row g-1 needs-validation" id="formulario" on:submit|preventDefault={loginUsuario}>
-                <div class="form-floating mt-1 mb-3">
-                    <input type="text" class="form-control shadow p-3 bg-body rounded " id="email" placeholder="Email" name="email" required  bind:value={email}>
-                    <label for="email">Email</label>
-                </div>
-                <div class="form-floating mt-1 mb-3">
-                    <input type="password" class="form-control shadow p-3 bg-body rounded " id="senha" placeholder="Enter password" name="pswd" required  bind:value={senha}>
-                    <label for="senha">Senha</label>
-                </div>
-                  <button id="button_emviar"type="submit" class="btn btn-dark"  style="--bs-btn-padding-y: .70rem; --bs-btn-padding-x: .70rem; --bs-btn-font-size: .90rem; margin-bottom: 30px;">Enviar</button>
-                  {#if error}
-                  <p style="color: red;">{error}</p>
-                  {/if}
-                  {#if resultado && resultado.message}
-                      <p style="color: green;">{resultado.message}</p>
-                  {/if}
-                <div>
-                  <button type="submit">Login</button>
-                </div>
-                </form>
           </div>
 </main>

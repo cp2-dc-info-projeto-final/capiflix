@@ -30,22 +30,27 @@ body, .card{
 #formulario{
     padding-left: 6px;
     padding-right: 9px;
-    background-color:rgb(255, 255, 255);
     height: 482px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
 }
 
-
-.basic-addon2{
-    padding-top: 1px !important;
-    padding-left: 1px !important;
-
+#formulario_login{
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    top: 400%;
+    left: 90%;
+    transform: translate(-50%, -50%);
 }
+
 
 #inverter {
     -moz-transform: scaleX(-1);
     -o-transform: scaleX(-1);
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
+}
+
+#email, #senha, #nome, #confirma_senha{
+    box-shadow: rgba(0, 0, 0, 0.788) -5px 5px;
 }
