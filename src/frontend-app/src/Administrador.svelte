@@ -12,6 +12,7 @@
     let colunas_usuarios = null;
     const api_base_url = "http://localhost:3000";
     
+    /** FUNÇÃO PARA CARREGAR USUÁRIOS */
     const carregarUsuarios = async () => {
       try {
         let res = await axios.get(api_base_url + "/usuarios", {
@@ -94,8 +95,28 @@
   carregarUsuarios()
 };
 
+    /** FUNÇÃO PARA CARREGAR FILMES */
+    const carregarFilmes = async () => {
+      try {
+        let res = await axios.get(api_base_url + "/filmes", {
+          responseType: "json",
+          headers: {
+            Accept: "application/json",
+          },
+        });
+        usuarios = res.data.usuarios;
+        colunas_usuarios = Object.keys(usuarios[0]);
+        error = null; // Limpa o erro se a requisição for bem-sucedida
+      } catch (err) {
+        error = "Erro ao buscar dados: " + err.response?.data?.message || err.message;;
+        console.error(err);
+        usuarios = null; // Limpa o resultado em caso de erro
+      }
+    };
+
 
   carregarUsuarios()
+  carregarFilmes()
 </script>
 <main>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">

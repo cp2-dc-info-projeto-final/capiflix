@@ -486,73 +486,98 @@ app.get('/home', (req, res) => {
   }
 });
 
+
+// uso do middleware verificaToken e exibir filmes
+app.get('/filme', verificaToken, (req, res) => {
+  let db = geraConexaoDeBancoDeDados();
+
+  // Seleciona todos os usuários da tabela 'usuario'
+  db.all('SELECT * FROM filme', [], (err, rows) => {
+    if (err) {
+      return res.status(500).json({
+        status: 'failed',
+        message: 'Erro ao consultar o banco de dados!',
+        error: err.message
+      });
+    }
+
+    // Fecha a conexão com o banco de dados
+    db.close((err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Fechou a conexão com o banco de dados.');
+    });
+
+    // Retorna os dados dos usuários em formato JSON
+    res.status(200).json({
+      status: 'success',
+      usuarios: rows
+    });
+  });
+});
+
 app.post('/filmes/novo', (req, res) => {
-  const { titulo, descricao, ano, calssificacao, genero, senha, conf_senha } = req.body;
-  console.log(req);
-  // Aqui começa a validação dos campos do formulário
+  const { titulo, descricao, ano, id_genero, classificacao } = req.body;
+
+  // Validação dos campos do formulário
   let erro = "";
-  if (titulo.length < 1 || descricao.length < 1 || ano.length < 1 || calssificacao.length || genero.length < 1 || senha.length < 1 || conf_senha.length < 1) {
+  if (!titulo || !descricao || !ano || !id_genero || !classificacao) {
     erro += 'Por favor, preencha todos os campos corretamente!';
   }
-  if (senha != conf_senha) {
-    erro += 'As senhas digitadas não são iguais!';
-  }
-  if (senha.length < 6 && conf_senha.length < 6){
-    erro += 'por favor, preencha os campos com pelo menos 6 digitos';
-  }
+
   if (erro) {
-    res.status(500).json({
+    return res.status(400).json({
       status: 'failed',
       message: erro,
     });
   }
-  else {
-    // aqui começa o código para inserir o registro no banco de dados
-    let db = new sqlite3.Database(databasePath, (err) => {
-      if (err) {
-        return console.error(err.message);
-      }
-      console.log('Conectou no banco de dados!');
-    });
-    db.get('SELECT titulo FROM filme WHERE titulo = ?', [titulo], async (error, result) => {
-      if (error) {
-        console.log(error)
-      }
-      else if (result) {
-        db.close((err) => {
-          if (err) {
-            return console.error(err.message);
+
+  // Inserindo o registro no banco de dados
+  let db = new sqlite3.Database(databasePath, (err) => {
+    if (err) {
+      return console.error(err.message);
+    }
+    console.log('Conectou no banco de dados!');
+  });
+
+  db.get('SELECT titulo FROM filme WHERE titulo = ?', [titulo], (error, result) => {
+    if (error) {
+      console.error(error);
+      db.close();
+      return res.status(500).json({
+        status: 'failed',
+        message: 'Erro ao verificar o título no banco de dados.',
+      });
+    } else if (result) {
+      db.close();
+      return res.status(400).json({
+        status: 'failed',
+        message: 'Este título já está em uso!',
+      });
+    } else {
+      db.run('INSERT INTO filme (titulo, descricao, ano, id_genero, classificacao) VALUES (?, ?, ?, ?, ?)', 
+        [titulo, descricao, ano, id_genero, classificacao], (error2) => {
+          if (error2) {
+            console.error(error2);
+            db.close();
+            return res.status(500).json({
+              status: 'failed',
+              message: 'Erro ao inserir o filme.',
+            });
+          } else {
+            db.close();
+            return res.status(200).json({
+              status: 'success',
+              message: 'Registro feito com sucesso!',
+              campos: req.body
+            });
           }
-          console.log('Fechou a conexão com o banco de dados.');
         });
-        return res.status(500).json({
-          status: 'failed',
-          message: 'Este e-mail já está em uso!',
-        });
-      } else {
-        let senha_criptografada = await bcrypt.hash(senha, 8)
-        db.run('INSERT INTO filme(titulo, descricao, ano, classificacao, genero) VALUES (?, ?, ?)', [nome,
-          email, senha_criptografada], (error2) => {
-            if (error2) {
-              console.log(error2)
-            } else {
-              db.close((err) => {
-                if (err) {
-                  return console.error(err.message);
-                }
-                console.log('Fechou a conexão com o banco de dados.');
-              });
-              return res.status(200).json({
-                status: 'success',
-                message: 'Registro feito com sucesso!',
-                campos: req.body
-              });
-            }
-          });
-      }
-    });
-  }
+    }
+  });
 });
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
