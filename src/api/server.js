@@ -486,6 +486,74 @@ app.get('/home', (req, res) => {
   }
 });
 
+app.post('/filmes/novo', (req, res) => {
+  const { titulo, descricao, ano, calssificacao, genero, senha, conf_senha } = req.body;
+  console.log(req);
+  // Aqui começa a validação dos campos do formulário
+  let erro = "";
+  if (titulo.length < 1 || descricao.length < 1 || ano.length < 1 || calssificacao.length || genero.length < 1 || senha.length < 1 || conf_senha.length < 1) {
+    erro += 'Por favor, preencha todos os campos corretamente!';
+  }
+  if (senha != conf_senha) {
+    erro += 'As senhas digitadas não são iguais!';
+  }
+  if (senha.length < 6 && conf_senha.length < 6){
+    erro += 'por favor, preencha os campos com pelo menos 6 digitos';
+  }
+  if (erro) {
+    res.status(500).json({
+      status: 'failed',
+      message: erro,
+    });
+  }
+  else {
+    // aqui começa o código para inserir o registro no banco de dados
+    let db = new sqlite3.Database(databasePath, (err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Conectou no banco de dados!');
+    });
+    db.get('SELECT titulo FROM filme WHERE titulo = ?', [titulo], async (error, result) => {
+      if (error) {
+        console.log(error)
+      }
+      else if (result) {
+        db.close((err) => {
+          if (err) {
+            return console.error(err.message);
+          }
+          console.log('Fechou a conexão com o banco de dados.');
+        });
+        return res.status(500).json({
+          status: 'failed',
+          message: 'Este e-mail já está em uso!',
+        });
+      } else {
+        let senha_criptografada = await bcrypt.hash(senha, 8)
+        db.run('INSERT INTO filme(titulo, descricao, ano, classificacao, genero) VALUES (?, ?, ?)', [nome,
+          email, senha_criptografada], (error2) => {
+            if (error2) {
+              console.log(error2)
+            } else {
+              db.close((err) => {
+                if (err) {
+                  return console.error(err.message);
+                }
+                console.log('Fechou a conexão com o banco de dados.');
+              });
+              return res.status(200).json({
+                status: 'success',
+                message: 'Registro feito com sucesso!',
+                campos: req.body
+              });
+            }
+          });
+      }
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

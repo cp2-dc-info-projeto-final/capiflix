@@ -5,3 +5,12 @@ CREATE TABLE usuario (
     senha TEXT NOT NULL
 );
 
+CREATE TABLE filme (
+    id_filme INTEGER PRIMARY KEY AUTOINCREMENT,
+    titulo TEXT NOT NULL,
+    descricao TEXT,
+    ano INTEGER,
+    classificacao INTEGER,
+    genero TEXT
+);
+
