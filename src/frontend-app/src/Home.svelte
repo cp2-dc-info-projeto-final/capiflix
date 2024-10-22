@@ -1,7 +1,13 @@
 <script>
-      import "./app.css"
-      const api_base_url = "http://localhost:3000";
+      // import { onMount } from 'svelte';
+    import "./app.css"
+    import axios from "axios";
+    import Menu from "./Menu.svelte"
+    
+
+
+
 </script>
 <main>
-    <h1></h1>
+    <Menu></Menu>
 </main>

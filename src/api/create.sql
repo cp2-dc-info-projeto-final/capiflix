@@ -4,3 +4,4 @@ CREATE TABLE usuario (
     email TEXT NOT NULL UNIQUE,
     senha TEXT NOT NULL
 );
+

@@ -1,11 +1,11 @@
 <script>
     // import { onMount } from 'svelte';
-    import "./app.css"
     import axios from "axios";
     let email = "";
     let senha = "";
     let error = null;
     let resultado = null;
+
     const API_BASE_URL = "http://localhost:3000";
 
     // habilita envio das credenciais via cookies em toda requisição axios
@@ -56,11 +56,7 @@
       </div>
     </div>
       <div class="mt-1 container" id="div_de_boasvindas" style="width:30%;">
-              <form class="row g-3 needs-validation mt-1" id="formulario"  on:submit|preventDefault={cadastrarUsuario}>
-                  <div class="form-floating mt-4 mb-1" style="width: 100%;">
-                      <input class=" form-control bg-body rounded" id="nome" placeholder="Nome" name="nome" required bind:value={nome}>
-                      <label for="nome">Nome</label>
-                  </div>
+              <form on:submit|preventDefault={loginUsuario} class="row g-3 needs-validation mt-1" id="formulario">
                   <div class="form-floating mt-2 mb-2" style="width: 100%;" >
                       <input class="form-control bg-body rounded " id="email" placeholder="Email" name="email" required  bind:value={email}>
                       <label for="email">Email</label>
@@ -69,10 +65,6 @@
                   <div class="form-floating mt-2 mb-2" style="width: 100%;">
                       <input type="password" class="form-control  bg-body rounded" id="senha" placeholder="Enter password" name="pswd" required  bind:value={senha}>
                       <label for="senha">Senha</label>
-                  </div>
-                  <div class="form-floating mt-2 mb-5" style="width: 100%;">
-                    <input type="password" class="form-control  bg-body rounded" id="confirma_senha" placeholder="Enter password" name="pswd" required bind:value={conf_senha}>
-                    <label for="confirma_senha">Confirmar senha</label>
                   </div>
                     <button id="button_enviar" type="submit" class="btn btn-dark mt-2 mb-1"  style="--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .70rem; --bs-btn-font-size: .90rem; margin-bottom:50px; width:100%; height:50px;">Enviar</button>
                   
