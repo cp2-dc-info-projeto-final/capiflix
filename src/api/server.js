@@ -488,7 +488,7 @@ app.get('/home', (req, res) => {
 
 
 // uso do middleware verificaToken e exibir filmes
-app.get('/filme', verificaToken, (req, res) => {
+app.get('/filmes', verificaToken, (req, res) => {
   let db = geraConexaoDeBancoDeDados();
 
   // Seleciona todos os usuários da tabela 'usuario'

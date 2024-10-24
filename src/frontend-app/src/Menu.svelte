@@ -19,11 +19,12 @@
             </a>
     
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
-              <li><a href="#" class="nav-link px-2 text-white">Filmes</a></li>
-              <li><a href="#" class="nav-link px-2 text-white">Gêneros</a></li>
-              <li><a href="#" class="nav-link px-2 text-white">Trailers</a></li>
-              <li><a href="#" class="nav-link px-2 text-white">Conta</a></li>
+              <li><a href="/index.html" class="nav-link px-2 text-secondary">Home</a></li>
+              <li><a href="/filmes.html" class="nav-link px-2 text-white">Filmes</a></li>
+              <li><a href="/generos.html" class="nav-link px-2 text-white">Gêneros</a></li>
+              <li><a href="/trailers.html" class="nav-link px-2 text-white">Trailers</a></li>
+              <li><a href="/conta.html" class="nav-link px-2 text-white">Conta</a></li>
+              <li><a href="/administrador.html" class="nav-link px-2 text-white">ad emi</a></li>
             </ul>
     
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
@@ -31,8 +32,8 @@
             </form>
     
             <div class="text-end">
-              <button type="button" class="btn btn-outline-light me-2">Login</button>
-              <button type="button" class="btn btn-warning">Sign-up</button>
+              <button type="button" class="btn btn-outline-light me-2">entrar</button>
+              <button type="button" class="btn btn-warning">cadastre-se</button>
             </div>
           </div>
         </div>
