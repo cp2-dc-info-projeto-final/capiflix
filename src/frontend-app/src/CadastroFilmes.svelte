@@ -2,24 +2,26 @@
     // import { onMount } from 'svelte';
     import "./app.css"
     import axios from "axios";
-    let nome = "";
-    let email = "";
-    let senha = "";
-    let conf_senha = "";
-    let error = null;
+    let titulo = "";
+    let descricao = "";
+    let ano = "";
+    let id_genero = "";
+    let classificacao = null;
     let resultado = null;
+    let error = null;
     import Menu from "./Menu.svelte"
     const api_base_url = "http://localhost:3000";
   
     const cadastrarUsuario = async () => {
       try {
         let res = await axios.post(
-          api_base_url + "/usuarios/novo",
+          api_base_url + "/filmes/novo",
           {
-            nome,
-            email,
-            senha,
-            conf_senha,
+            titulo,
+            descricao,
+            ano,
+            id_genero,
+            classificacao
           },
           {
             headers: {
@@ -54,20 +56,20 @@
         <div class="mt-1 container" id="div_de_boasvindas" style="width:30%;">
                 <form class="row g-3 needs-validation mt-1" id="formulario"  on:submit|preventDefault={cadastrarUsuario}>
                     <div class="form-floating mt-4 mb-1" style="width: 100%;">
-                        <input class=" form-control bg-body rounded" id="nome" placeholder="Nome" name="nome" required bind:value={nome}>
-                        <label for="nome">Nome</label>
+                        <input class=" form-control bg-body rounded" id="titulo" placeholder="Titulo" name="titulo" required bind:value={titulo}>
+                        <label for="titulo">Titulo</label>
                     </div>
                     <div class="form-floating mt-2 mb-2" style="width: 100%;" >
-                        <input class="form-control bg-body rounded " id="email" placeholder="Email" name="email" required  bind:value={email}>
-                        <label for="email">Email</label>
+                        <input class="form-control bg-body rounded " id="descricao" placeholder="Descricao" name="descricao" required  bind:value={descricao}>
+                        <label for="email">Descrição</label>
                     </div>
                     <div class="form-floating mt-2 mb-2" style="width: 100%;">
-                        <input type="password" class="form-control  bg-body rounded" id="senha" placeholder="Enter password" name="pswd" required  bind:value={senha}>
-                        <label for="senha">Senha</label>
+                        <input type="password" class="form-control  bg-body rounded" id="ano" placeholder="Ano" name="ano" required  bind:value={ano}>
+                        <label for="ano">Ano</label>
                     </div>
                     <div class="form-floating mt-2 mb-5" style="width: 100%;">
-                      <input type="password" class="form-control  bg-body rounded" id="confirma_senha" placeholder="Enter password" name="pswd" required bind:value={conf_senha}>
-                      <label for="confirma_senha">Confirmar senha</label>
+                      <input type="password" class="form-control  bg-body rounded" id="classificacao" placeholder="classificação" name="classificacao" required bind:value={classificacao}>
+                      <label for="classificacao">classificação</label>
                     </div>
                       <button id="button_enviar" type="submit" class="btn btn-dark mt-2 mb-1"  style="--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .70rem; --bs-btn-font-size: .90rem; margin-bottom:50px; width:100%; height:50px;">Enviar</button>
                   </form>

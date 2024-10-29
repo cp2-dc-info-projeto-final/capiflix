@@ -9,13 +9,27 @@
     let error = null;
     let resultado = null;
     let usuarios = null;
+    let filmes = null;
     let colunas_usuarios = null;
-    const api_base_url = "http://localhost:3000";
+    let colunas_filmes = null;
+    import Menu from "./Menu.svelte"
+    const API_BASE_URL = "http://localhost:3000";
+
+
+    const axiosInstance = axios.create({
+    withCredentials: true,
+    baseURL: API_BASE_URL,
+    responseType: "json",
+    headers: {
+          Accept: "application/json",
+      }
+  });
+
     
     /** FUNÇÃO PARA CARREGAR USUÁRIOS */
     const carregarUsuarios = async () => {
       try {
-        let res = await axios.get(api_base_url + "/usuarios", {
+        let res = await axiosInstance.get(API_BASE_URL + "/usuarios", {
           responseType: "json",
           headers: {
             Accept: "application/json",
@@ -34,7 +48,7 @@
     // Função para deletar o usuário pelo ID
     const deletarUsuario = async (id) => {
       try {
-        let res = await axios.delete(`${api_base_url}/usuarios/${id}`, {
+        let res = await axiosInstance.delete(`${API_BASE_URL}/usuarios/${id}`, {
           headers: {
             Accept: "application/json",
           },
@@ -56,7 +70,7 @@
   try {
     console.log("Enviando:", { nome: novoNome }); // Log para verificar o que está sendo enviado
 
-    let res = await axios.put(`${api_base_url}/usuarios/mudar-nome/${id}`, {
+    let res = await axiosInstance.put(`${API_BASE_URL}/usuarios/mudar-nome/${id}`, {
       nome: novoNome // Assegure-se de que aqui está o nome correto
     }, {
       headers: {
@@ -75,7 +89,7 @@
   try {
     console.log("Enviando:", { senhaAtual, novaSenha }); // Log para verificar o que está sendo enviado
 
-    let res = await axios.put(`${api_base_url}/usuarios/mudar-senha/${id}`, {
+    let res = await axiosInstance.put(`${API_BASE_URL}/usuarios/mudar-senha/${id}`, {
       senhaAtual,
       novaSenha,
     }, {
@@ -95,30 +109,10 @@
   carregarUsuarios()
 };
 
-    /** FUNÇÃO PARA CARREGAR FILMES */
-    const carregarFilmes = async () => {
-      try {
-        let res = await axios.get(api_base_url + "/filmes", {
-          responseType: "json",
-          headers: {
-            Accept: "application/json",
-          },
-        });
-        usuarios = res.data.usuarios;
-        colunas_usuarios = Object.keys(usuarios[0]);
-        error = null; // Limpa o erro se a requisição for bem-sucedida
-      } catch (err) {
-        error = "Erro ao buscar dados: " + err.response?.data?.message || err.message;;
-        console.error(err);
-        usuarios = null; // Limpa o resultado em caso de erro
-      }
-    };
-
-
   carregarUsuarios()
-  carregarFilmes()
 </script>
 <main>
+  <Menu></Menu>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <div class="container text-center mt-3">
@@ -128,7 +122,7 @@
       </div>
 
       
-    <div class="card">
+      <div class="card">
         {#if usuarios}
           <table>
             <thead>
@@ -147,7 +141,7 @@
                   {/each}
                   <td>
                     <button on:click={() => deletarUsuario(linha_usuario.id_usuario)}>Remover</button>
-                    <div class="dropdown">
+                    <div class="dropdown dropend">
                       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Editar</button>
                       <ul class="dropdown-menu">
                         <li>

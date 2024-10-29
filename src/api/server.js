@@ -179,7 +179,7 @@ app.get('/usuarios/me', verificaToken, (req, res) => {
 });
 
 // uso do middleware verificaToken
-app.get('/usuarios', verificaToken, (req, res) => {
+app.get('/usuarios', verificaToken,  (req, res) => {
   let db = geraConexaoDeBancoDeDados();
 
   // Seleciona todos os usuários da tabela 'usuario'
