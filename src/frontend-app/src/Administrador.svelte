@@ -68,47 +68,55 @@
     // Função para editar nome do usuário pelo ID
     const editarNomeUsuario = async (id, novoNome) => {
   try {
-    console.log("Enviando:", { nome: novoNome }); // Log para verificar o que está sendo enviado
-
-    let res = await axiosInstance.put(`${API_BASE_URL}/usuarios/mudar-nome/${id}`, {
-      nome: novoNome // Assegure-se de que aqui está o nome correto
-    }, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
+    console.log("Enviando:", { nome: novoNome });
+    await axiosInstance.put(`${API_BASE_URL}/usuarios/mudar-nome/${id}`, {
+      nome: novoNome
     });
+    novoNome = ""; // Limpa o campo após a edição
+    await carregarUsuarios(); // Aguarda a recarga após editar
   } catch (error) {
-    console.error("Erro ao editar nome:", error); // Adicione tratamento de erro se necessário
+    console.error("Erro ao editar nome:", error);
   }
-  carregarUsuarios()
 };
 
     // Função para editar senha do usuário pelo ID
     const mudarSenhaUsuario = async (id, senhaAtual, novaSenha) => {
   try {
-    console.log("Enviando:", { senhaAtual, novaSenha }); // Log para verificar o que está sendo enviado
-
-    let res = await axiosInstance.put(`${API_BASE_URL}/usuarios/mudar-senha/${id}`, {
+    console.log("Enviando:", { senhaAtual, novaSenha });
+    await axiosInstance.put(`${API_BASE_URL}/usuarios/mudar-senha/${id}`, {
       senhaAtual,
       novaSenha,
-    }, {
+    });
+    senhaAtual = ""; // Limpa o campo após a mudança
+    novaSenha = ""; // Limpa o campo após a mudança
+    await carregarUsuarios(); // Aguarda a recarga após editar
+  } catch (error) {
+    console.error("Erro ao mudar a senha:", error.response ? error.response.data : error.message);
+    error = "Erro ao mudar a senha"; // Exibe um erro amigável
+  }
+};
+
+
+  /** FUNÇÃO PARA CARREGAR FILMES */
+const carregarFilmes = async () => {
+  try {
+    let res = await axiosInstance.get(API_BASE_URL + "/filmes", {
+      responseType: "json",
       headers: {
-        "Content-Type": "application/json",
         Accept: "application/json",
       },
     });
-
-    console.log("Resposta do servidor:", res.data); // Log para verificar a resposta
-    return res.data; // Retorna a resposta do servidor
-
-  } catch (error) {
-    console.error("Erro ao mudar a senha:", error.response ? error.response.data : error.message);
-    throw error; // Lança o erro para ser tratado onde a função for chamada
+    filmes = res.data.filmes; // Assume que a resposta tem uma chave 'filmes'
+    colunas_filmes = Object.keys(filmes[0]); // Obtém as colunas dos filmes
+    error = null; // Limpa o erro se a requisição for bem-sucedida
+  } catch (err) {
+    error = "Erro ao buscar dados: " + err.response?.data?.message || err.message;
+    console.error(err);
+    filmes = null; // Limpa o resultado em caso de erro
   }
-  carregarUsuarios()
 };
 
+  carregarFilmes()
   carregarUsuarios()
 </script>
 <main>
