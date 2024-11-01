@@ -5,26 +5,19 @@
     top: 250%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 400px;
 }
 
 
 body, .card{
     background-color:antiquewhite!important;
+    margin: 0;
+    background-color: #000;
+    font-family: Arial;
 
 }
 
 .card{
     border-style: none !important;
-}
-
-#Divlateral{
-        position:block;
-        background-color:rgb(231, 174, 134);
-        float: left;
-        color: aliceblue;
-        border-bottom-left-radius: 20px;
-        border-top-left-radius: 20px;
 }
 
 #formulario{
@@ -33,14 +26,6 @@ body, .card{
     height: 482px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
-}
-
-#formulario_login{
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    top: 400%;
-    left: 90%;
-    transform: translate(-50%, -50%);
 }
 
 
@@ -53,4 +38,13 @@ body, .card{
 
 #email, #senha, #nome, #confirma_senha{
     box-shadow: rgba(0, 0, 0, 0.788) -5px 5px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+h1 {
+  color: red;
+  text-align: center;
 }

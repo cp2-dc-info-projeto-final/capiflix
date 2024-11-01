@@ -32,8 +32,8 @@
             </form>
     
             <div class="text-end">
-              <button type="button" class="btn btn-outline-light me-2">entrar</button>
-              <button type="button" class="btn btn-warning">cadastre-se</button>
+              <a href="./login.html" type="button" class="btn btn-outline-light me-2">entrar</a>
+              <a href="./cadastroUsuarios.html" type="button" class="btn btn-outline-light me-2">cadastra</a>
             </div>
           </div>
         </div>

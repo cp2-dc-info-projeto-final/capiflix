@@ -51,7 +51,7 @@
             <img src="imagens/capivara.png"  style="width: 10%;" id="inverter">
         </div>
       </div>
-        <div class="mt-1 container" id="div_de_boasvindas" style="width:30%;">
+        <div class="mt-4 container" id="div_de_boasvindas" style="width:30%;">
                 <form class="row g-3 needs-validation mt-1" id="formulario"  on:submit|preventDefault={cadastrarUsuario}>
                     <div class="form-floating mt-4 mb-1" style="width: 100%;">
                         <input class=" form-control bg-body rounded" id="nome" placeholder="Nome" name="nome" required bind:value={nome}>
