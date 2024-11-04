@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS usuario (
     nome TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     senha TEXT NOT NULL,
-    admin
+    is_admin BOOLEAN DEFAULT 0,  
 );
 
 CREATE TABLE IF NOT EXISTS genero (
@@ -16,10 +16,13 @@ CREATE TABLE IF NOT EXISTS filme (
     titulo TEXT NOT NULL,
     descricao TEXT,
     ano INTEGER,
-    id_genero INTEGER  NOT NULL,
+    id_genero INTEGER  ,
     classificacao INTEGER,
     FOREIGN KEY(id_genero) REFERENCES genero(id_genero)
-
 );
 
+CREATE TABLE IF NOT EXISTS favorito (
+    id_usuario usuario,
+    id_filme filme
+)
 

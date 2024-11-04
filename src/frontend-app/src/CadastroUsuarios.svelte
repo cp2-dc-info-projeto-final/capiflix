@@ -75,6 +75,7 @@
                     <a href="./administrador.html">clique aqui</a><br>
                     <a href="./menu.html">clique para ver o menu</a><br>
                     <a href="./login.html">clique aqui para ver o login</a>
+                    <a href="./cadastroFilmes.html">filmes</a><br>
               </div>
             </div>
             <div class="form">

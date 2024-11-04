@@ -98,6 +98,59 @@ async function login(req, res) {
   });
 }
 
+
+async function verificaTokenAdmin(req, res, next) {  
+  // se o token (variável SessionID) não estiver presente no cookie o usuário não está logado
+  const token = req.cookies.SessionID;
+  if (!token) {
+    return res.status(401).json({ 
+      status: 'failed', 
+      message: 'Você não é admin trouxa!'
+    });
+  }
+
+  console.log(`token: ${token}`);
+  console.log(`SECRET_ACCESS_TOKEN: ${SECRET_ACCESS_TOKEN}`);
+  jwt.verify(token, SECRET_ACCESS_TOKEN, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({
+        status: 'failed',
+        message: 'Sessão expirada!',
+      });
+    } else {
+      // o conteúdo decodificado do token é o id do usuário
+      let { idUsuario} = decoded;
+      console.log(`decoded: ${decoded}`);
+      console.log(`idUsuario decoded: ${decoded.idUsuario}`);
+
+      db = geraConexaoDeBancoDeDados();
+
+      // recupera dados do usuário que está tentando fazer login
+      db.get('SELECT id_usuario, nome, email FROM usuario WHERE id_usuario = ? AND is_admin = true', [idUsuario], async (error, result) => {
+        if (error) {
+          console.log(error)
+        }
+        else if (result) {
+          const { id_usuario, nome, email } = result
+          req.idUsuario = id_usuario
+          req.email = email
+          req.nome = nome
+
+          db.close((err) => {
+            if (err) {
+              return console.error(err.message)
+            }
+            console.log('Fechou a conexão com o banco de dados.')
+          });
+
+          next();
+        }
+      });
+    }   
+  });
+}
+
+
 // esta função é um middleware, uma chamada que vai entre duas chamadas para verificar se o usuário está logado
 async function verificaToken(req, res, next) {  
   // se o token (variável SessionID) não estiver presente no cookie o usuário não está logado
@@ -488,7 +541,7 @@ app.get('/home', (req, res) => {
 
 
 // uso do middleware verificaToken e exibir filmes
-app.get('/filmes', verificaToken, (req, res) => {
+app.get('/filmes', (req, res) => {
   let db = geraConexaoDeBancoDeDados();
 
   // Seleciona todos os usuários da tabela 'usuario'
