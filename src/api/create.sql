@@ -1,17 +1,9 @@
-CREATE TABLE IF NOT EXISTS admin (
-    id_admin INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL  
-);
-
 CREATE TABLE IF NOT EXISTS usuario (
     id_usuario INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     senha TEXT NOT NULL,
-    id_admin INTEGER,  -- Opção para referenciar um admin, se necessário
-    is_admin BOOLEAN DEFAULT 0,
-    FOREIGN KEY(id_admin) REFERENCES admin(id_admin)
-
+    admin
 );
 
 CREATE TABLE IF NOT EXISTS genero (
