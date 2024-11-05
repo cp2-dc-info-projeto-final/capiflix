@@ -48,7 +48,7 @@
       <div class="container text-center mt-1">
         <div class="d-flex justify-content-center align-items-center" style="font-family:American Typewriter, serif;">
             <h1 style="font-size: 140px;">Capflix</h1>
-            <img src="imagens/capivara.png"  style="width: 10%;" id="inverter">
+            <img src="imagens/capivara.png" alt="" style="width: 10%;" id="inverter">
         </div>
       </div>
         <div class="mt-4 container" id="div_de_boasvindas" style="width:30%;">

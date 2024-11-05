@@ -42,7 +42,7 @@ function geraAcessoJWT(idUsuario) {
     idUsuario: idUsuario
   };
   return jwt.sign(payload, SECRET_ACCESS_TOKEN, {
-    expiresIn: '5m',
+    expiresIn: '10m',
   });
 };
 
@@ -67,7 +67,7 @@ async function login(req, res) {
       }
 
       let options = {
-        maxAge: 5 * 60 * 1000, // minutos * segundos * milissegundos = total 20 minutos
+        maxAge: 10 * 60 * 1000, // minutos * segundos * milissegundos = total 20 minutos
         httpOnly: true, // restringe acesso de js ao cookie
         secure: NODE_ENV === 'production' ? true : false, // secure ativado de acordo com ambiente (desenvolvimento/produção) para uso do https
         sameSite: "Lax", // habilita compartilhamento de cookie entre páginas
@@ -232,7 +232,7 @@ app.get('/usuarios/me', verificaToken, (req, res) => {
 });
 
 // uso do middleware verificaToken
-app.get('/usuarios', verificaToken, (req, res) => {
+app.get('/usuarios', (req, res) => {
   let db = geraConexaoDeBancoDeDados();
 
   // Seleciona todos os usuários da tabela 'usuario'
@@ -332,7 +332,7 @@ app.post('/usuarios/novo', (req, res) => {
 
 // FUNÇÃO DE MUDAR NOME
 
-app.put('/usuarios/mudar-nome/:id_usuario', verificaToken, verificaTokenAdmin, (req, res) => {
+app.put('/usuarios/mudar-nome/:id_usuario', (req, res) => {
   const id_usuario = req.params.id_usuario; // Renomeado para corresponder ao estilo de código
   const { nome } = req.body;
 
@@ -393,7 +393,7 @@ app.put('/usuarios/mudar-nome/:id_usuario', verificaToken, verificaTokenAdmin, (
 
 // FUNÇÃO DE MUDAR SENHA
 
-app.put('/usuarios/mudar-senha/:id_usuario', verificaToken ,(req, res) => {
+app.put('/usuarios/mudar-senha/:id_usuario',(req, res) => {
   const id_usuario = req.params.id_usuario;
   const { senhaAtual, novaSenha } = req.body;
 
@@ -490,14 +490,14 @@ app.put('/usuarios/mudar-senha/:id_usuario', verificaToken ,(req, res) => {
 });
 
 // FUNÇÃO PARA PROMOVER USUÁRIO A ADMIN
-app.put('/usuarios/promover-admin/:id_usuario', verificaToken, (req, res) => {
+app.put('/usuarios/promover-admin/:id_usuario', (req, res) => {
   const id_usuario = req.params.id_usuario; // Pega o id do usuário pela URL
 
   // Conectar ao banco de dados SQLite
   let db = geraConexaoDeBancoDeDados()
 
   // Atualizar o campo is_admin para 1 (verdadeiro) para promover o usuário
-  db.run('UPDATE usuario SET is_admin = 1 WHERE id_usuario = ?', [id_usuario], function (err) {
+  db.run('UPDATE usuario SET é admin = 1 WHERE id_usuario = ?', [id_usuario], function (err) {
     if (err) {
       db.close();
       return res.status(500).json({
@@ -528,6 +528,39 @@ app.put('/usuarios/promover-admin/:id_usuario', verificaToken, (req, res) => {
     return res.status(200).json({
       status: 'success',
       message: `Usuário promovido a administrador com sucesso!`
+    });
+  });
+});
+
+// FUNÇÃO PARA REMOVER USUÁRIO
+app.delete('/usuarios/:id_usuario', (req, res) => {
+  const { id_usuario } = req.params;
+
+  // Conectar ao banco de dados SQLite
+  let db = geraConexaoDeBancoDeDados();
+
+  // Deletar o usuário pelo ID
+  db.run('DELETE FROM usuario WHERE id_usuario = ?', [id_usuario], function (err) {
+    if (err) {
+      return res.status(500).json({
+        status: 'failed',
+        message: `Erro ao tentar remover o usuário ${id_usuario}!`, // Corrigido: interpolação de string com crase
+        error: err.message
+      });
+    }
+
+    // Fechar a conexão com o banco de dados
+    db.close((err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Fechou a conexão com o banco de dados.');
+    });
+
+    // Retornar uma resposta de sucesso
+    return res.status(200).json({
+      status: 'success',
+      message: `Usuário com id ${id_usuario} removido com sucesso!`
     });
   });
 });
@@ -573,11 +606,11 @@ app.get('/filmes', (req, res) => {
 });
 
 app.post('/filmes/novo', (req, res) => {
-  const { titulo, descricao, ano, id_genero, classificacao } = req.body;
+  const { titulo, descricao, ano, classificacao } = req.body;
 
   // Validação dos campos do formulário
   let erro = "";
-  if (!titulo || !descricao || !ano || !id_genero || !classificacao) {
+  if (!titulo || !descricao || !ano || !classificacao) {
     erro += 'Por favor, preencha todos os campos corretamente!';
   }
 
@@ -612,7 +645,7 @@ app.post('/filmes/novo', (req, res) => {
       });
     } else {
       db.run('INSERT INTO filme (titulo, descricao, ano, id_genero, classificacao) VALUES (?, ?, ?, ?, ?)', 
-        [titulo, descricao, ano, id_genero, classificacao], (error2) => {
+        [titulo, descricao, ano, null, classificacao], (error2) => {
           if (error2) {
             console.error(error2);
             db.close();

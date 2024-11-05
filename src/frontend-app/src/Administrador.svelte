@@ -45,25 +45,37 @@
       }
     };
 
-    // Função para deletar o usuário pelo ID
     const deletarUsuario = async (id) => {
-      try {
-        let res = await axiosInstance.delete(`${API_BASE_URL}/usuarios/${id}`, {
-          headers: {
-            Accept: "application/json",
-          },
-        });
-        resultado = res.data;
-        error = null;
-        // recarrega lista de usuários apresentada
-        carregarUsuarios();
-      } catch (err) {
-        error =
-          "Erro ao deletar usuário: " +
-          (err.response?.data?.message || err.message);
-        resultado = null;
-      }
-    };
+  try {
+    // Corrigido: interpolação da URL para passar o id corretamente
+    let res = await axiosInstance.delete(`${API_BASE_URL}/usuarios/${id}`, {
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    // Exibir a resposta do backend no console para diagnóstico
+    console.log('Resposta do backend:', res.data);
+    
+    // Atualiza o resultado com a resposta da API
+    resultado = res.data;
+    error = null;
+    
+    // Recarrega a lista de usuários
+    carregarUsuarios();
+  } catch (err) {
+    // Captura erros e exibe no console
+    error =
+      "Erro ao deletar usuário: " +
+      (err.response?.data?.message || err.message);
+    
+    resultado = null;
+    
+    // Exibe o erro no console para diagnóstico
+    console.error('Erro:', error);
+  }
+};
+
 
     // Função para editar nome do usuário pelo ID
     const editarNomeUsuario = async (id, novoNome) => {
@@ -80,21 +92,18 @@
 };
 
     // Função para editar senha do usuário pelo ID
-    const mudarSenhaUsuario = async (id, senhaAtual, novaSenha) => {
+    const mudarSenhaUsuario = async (id_usuario, senhaAtual, novaSenha) => {
   try {
-    console.log("Enviando:", { senhaAtual, novaSenha });
-    await axiosInstance.put(`${API_BASE_URL}/usuarios/mudar-senha/${id}`, {
-      senhaAtual,
-      novaSenha,
+    const res = await axios.put(`${API_BASE_URL}/usuarios/mudar-senha/${id_usuario}`, {
+      senhaAtual: senhaAtual,
+      novaSenha: novaSenha
     });
-    senhaAtual = ""; // Limpa o campo após a mudança
-    novaSenha = ""; // Limpa o campo após a mudança
-    await carregarUsuarios(); // Aguarda a recarga após editar
-  } catch (error) {
-    console.error("Erro ao mudar a senha:", error.response ? error.response.data : error.message);
-    error = "Erro ao mudar a senha"; // Exibe um erro amigável
+    console.log('Senha alterada com sucesso:', res.data);
+  } catch (err) {
+    console.error('Erro ao mudar a senha:', err.response?.data || err.message);
   }
 };
+
 
 // Função para promover a admin o usuário pelo ID
 const promoverAdmin = async (id) => {
@@ -116,14 +125,33 @@ const promoverAdmin = async (id) => {
       }
     };
 
+  /** FUNÇÃO PARA CARREGAR FILMES */
+ /*  
+  const carregarFilmes = async () => {
+      try {
+        let res = await axiosInstance.get(API_BASE_URL + "/filmes", {
+          responseType: "json",
+          headers: {
+            Accept: "application/json",
+          },
+        });
+        filmes = res.data.filmes;
+        colunas_filmes = Object.keys(filmes[0]);
+        error = null; // Limpa o erro se a requisição for bem-sucedida
+      } catch (err) {
+        error = "Erro ao buscar dados: " + err.response?.data?.message || err.message;;
+        console.error(err);
+        filmes = null; // Limpa o resultado em caso de erro
+      }
+    };
+    */
 
-  
   carregarUsuarios()
 </script>
 <main>
   <Menu></Menu>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <div class="container text-center mt-3">
         <div class="d-flex justify-content-center align-items-center">
             <h1 style="font-size: 90px;">Capflix</h1>
@@ -149,37 +177,39 @@ const promoverAdmin = async (id) => {
                     <td>{linha_usuario[atributo]}</td>
                   {/each}
                   <td>
-                    <button on:click={() => deletarUsuario(linha_usuario.id_usuario)}>Remover</button>
+                    <button on:click={() => deletarUsuario(linha_usuario.id_usuario)} class="btn btn-danger">Remover</button>
+                    
                     <div class="dropdown dropend">
-                      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Editar</button>
-                      <ul class="dropdown-menu">
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id={`dropdownMenuButton_${linha_usuario.id_usuario}`} data-bs-toggle="dropdown" aria-expanded="false">
+                        Editar
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby={`dropdownMenuButton_${linha_usuario.id_usuario}`}>
                         <li>
-                          <label for="novoNome_{linha_usuario.id_usuario}">Nome</label>
-                          <input type="text" id="novoNome_{linha_usuario.id_usuario}" bind:value={novoNome}>  
+                          <label for={`novoNome_${linha_usuario.id_usuario}`}>Nome</label>
+                          <input type="text" id={`novoNome_${linha_usuario.id_usuario}`} bind:value={novoNome}>  
                         </li>
                         <li>
-                          <button on:click={() => editarNomeUsuario(linha_usuario.id_usuario, novoNome)}>Salvar</button>
+                          <button on:click={() => editarNomeUsuario(linha_usuario.id_usuario, novoNome)} class="dropdown-item">Salvar</button>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                          <label for={`senhaAtual_${linha_usuario.id_usuario}`}>Senha Atual</label>
+                          <input type="password" id={`senhaAtual_${linha_usuario.id_usuario}`} bind:value={senhaAtual}>  
                         </li>
                         <li>
-                          <hr class="dropdown-divider">
+                          <label for={`novaSenha_${linha_usuario.id_usuario}`}>Nova Senha</label>
+                          <input type="password" id={`novaSenha_${linha_usuario.id_usuario}`} bind:value={novaSenha}>  
                         </li>
                         <li>
-                          <label for="senhaAtual_{linha_usuario.id_usuario}">Senha Atual</label>
-                          <input type="password" id="senhaAtual_{linha_usuario.id_usuario}" bind:value={senhaAtual}>  
+                          <button on:click={() => mudarSenhaUsuario(linha_usuario.id_usuario, senhaAtual, novaSenha)} class="dropdown-item">Salvar Senha</button>
                         </li>
                         <li>
-                          <label for="novaSenha_{linha_usuario.id_usuario}">Nova Senha</label>
-                          <input type="password" id="novaSenha_{linha_usuario.id_usuario}" bind:value={novaSenha}>  
-                        </li>
-                        <li>
-                          <button on:click={() => mudarSenhaUsuario(linha_usuario.id_usuario, senhaAtual, novaSenha)}>Salvar Senha</button>
-                        </li>
-                        <li>
-                          <button on:click={() => promoverAdmin(linha_usuario.id_usuario,)}>promover</button>
+                          <button on:click={() => promoverAdmin(linha_usuario.id_usuario)} class="dropdown-item">Promover</button>
                         </li>
                       </ul>
                     </div>
                   </td>
+                  
                 </tr>
               {/each}
             </tbody>
