@@ -96,27 +96,28 @@
   }
 };
 
+// Função para promover a admin o usuário pelo ID
+const promoverAdmin = async (id) => {
+      try {
+        let res = await axiosInstance.put(`${API_BASE_URL}/usuarios/promover-admin/${id}`, {
+          headers: {
+            Accept: "application/json",
+          },
+        });
+        resultado = res.data;
+        error = null;
+        // recarrega lista de usuários apresentada
+        carregarUsuarios();
+      } catch (err) {
+        error =
+          "Erro ao deletar usuário: " +
+          (err.response?.data?.message || err.message);
+        resultado = null;
+      }
+    };
 
-  /** FUNÇÃO PARA CARREGAR FILMES */
-const carregarFilmes = async () => {
-  try {
-    let res = await axiosInstance.get(API_BASE_URL + "/filmes", {
-      responseType: "json",
-      headers: {
-        Accept: "application/json",
-      },
-    });
-    filmes = res.data.filmes; // Assume que a resposta tem uma chave 'filmes'
-    colunas_filmes = Object.keys(filmes[0]); // Obtém as colunas dos filmes
-    error = null; // Limpa o erro se a requisição for bem-sucedida
-  } catch (err) {
-    error = "Erro ao buscar dados: " + err.response?.data?.message || err.message;
-    console.error(err);
-    filmes = null; // Limpa o resultado em caso de erro
-  }
-};
 
-  carregarFilmes()
+  
   carregarUsuarios()
 </script>
 <main>
@@ -153,8 +154,8 @@ const carregarFilmes = async () => {
                       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Editar</button>
                       <ul class="dropdown-menu">
                         <li>
-                          <label for="novoNome">Nome</label>
-                          <input type="text" id="novoNome" bind:value={novoNome}>  
+                          <label for="novoNome_{linha_usuario.id_usuario}">Nome</label>
+                          <input type="text" id="novoNome_{linha_usuario.id_usuario}" bind:value={novoNome}>  
                         </li>
                         <li>
                           <button on:click={() => editarNomeUsuario(linha_usuario.id_usuario, novoNome)}>Salvar</button>
@@ -163,15 +164,18 @@ const carregarFilmes = async () => {
                           <hr class="dropdown-divider">
                         </li>
                         <li>
-                          <label for="senhaAtual">Senha Atual</label>
-                          <input type="password" id="senhaAtual" bind:value={senhaAtual}>  
+                          <label for="senhaAtual_{linha_usuario.id_usuario}">Senha Atual</label>
+                          <input type="password" id="senhaAtual_{linha_usuario.id_usuario}" bind:value={senhaAtual}>  
                         </li>
                         <li>
-                          <label for="novaSenha">Nova Senha</label>
-                          <input type="password" id="novaSenha" bind:value={novaSenha}>  
+                          <label for="novaSenha_{linha_usuario.id_usuario}">Nova Senha</label>
+                          <input type="password" id="novaSenha_{linha_usuario.id_usuario}" bind:value={novaSenha}>  
                         </li>
                         <li>
                           <button on:click={() => mudarSenhaUsuario(linha_usuario.id_usuario, senhaAtual, novaSenha)}>Salvar Senha</button>
+                        </li>
+                        <li>
+                          <button on:click={() => promoverAdmin(linha_usuario.id_usuario,)}>promover</button>
                         </li>
                       </ul>
                     </div>

@@ -42,7 +42,7 @@ function geraAcessoJWT(idUsuario) {
     idUsuario: idUsuario
   };
   return jwt.sign(payload, SECRET_ACCESS_TOKEN, {
-    expiresIn: '20m',
+    expiresIn: '5m',
   });
 };
 
@@ -67,7 +67,7 @@ async function login(req, res) {
       }
 
       let options = {
-        maxAge: 20 * 60 * 1000, // minutos * segundos * milissegundos = total 20 minutos
+        maxAge: 5 * 60 * 1000, // minutos * segundos * milissegundos = total 20 minutos
         httpOnly: true, // restringe acesso de js ao cookie
         secure: NODE_ENV === 'production' ? true : false, // secure ativado de acordo com ambiente (desenvolvimento/produção) para uso do https
         sameSite: "Lax", // habilita compartilhamento de cookie entre páginas
@@ -105,7 +105,7 @@ async function verificaTokenAdmin(req, res, next) {
   if (!token) {
     return res.status(401).json({ 
       status: 'failed', 
-      message: 'Você não é admin trouxa!'
+      message: 'Você não é um admin!'
     });
   }
 
@@ -232,7 +232,7 @@ app.get('/usuarios/me', verificaToken, (req, res) => {
 });
 
 // uso do middleware verificaToken
-app.get('/usuarios', verificaToken,  (req, res) => {
+app.get('/usuarios', verificaToken, (req, res) => {
   let db = geraConexaoDeBancoDeDados();
 
   // Seleciona todos os usuários da tabela 'usuario'
@@ -332,7 +332,7 @@ app.post('/usuarios/novo', (req, res) => {
 
 // FUNÇÃO DE MUDAR NOME
 
-app.put('/usuarios/mudar-nome/:id_usuario', verificaToken, (req, res) => {
+app.put('/usuarios/mudar-nome/:id_usuario', verificaToken, verificaTokenAdmin, (req, res) => {
   const id_usuario = req.params.id_usuario; // Renomeado para corresponder ao estilo de código
   const { nome } = req.body;
 
@@ -489,32 +489,33 @@ app.put('/usuarios/mudar-senha/:id_usuario', verificaToken ,(req, res) => {
   });
 });
 
-// FUNÇÃO DE MUDAR DELETAR USUARIO
-
-app.delete('/usuarios/:id_usuario', verificaToken, (req, res) => {
-  const { id_usuario } = req.params;
+// FUNÇÃO PARA PROMOVER USUÁRIO A ADMIN
+app.put('/usuarios/promover-admin/:id_usuario', verificaToken, (req, res) => {
+  const id_usuario = req.params.id_usuario; // Pega o id do usuário pela URL
 
   // Conectar ao banco de dados SQLite
-  let db = new sqlite3.Database(databasePath, (err) => {
-    if (err) {
-      return res.status(500).json({
-        status: 'failed',
-        message: 'Erro ao conectar ao banco de dados!',
-        error: err.message
-      });
-    }
-    console.log('Conectou no banco de dados!');
-  });
+  let db = geraConexaoDeBancoDeDados()
 
-  // Deletar o usuário pelo ID
-  db.run('DELETE FROM usuario WHERE id_usuario = ?', [id_usuario], function (err) {
+  // Atualizar o campo is_admin para 1 (verdadeiro) para promover o usuário
+  db.run('UPDATE usuario SET is_admin = 1 WHERE id_usuario = ?', [id_usuario], function (err) {
     if (err) {
+      db.close();
       return res.status(500).json({
         status: 'failed',
-        message: 'Erro ao tentar remover o usuário ${id_usuario}!',
+        message: `Erro ao tentar promover o usuário ${id_usuario} a admin!`,
         error: err.message
       });
     }
+
+    // Verifica se alguma linha foi afetada (se o usuário foi encontrado)
+    if (this.changes === 0) {
+      db.close();
+      return res.status(404).json({
+        status: 'failed',
+        message: 'Usuário não encontrado!'
+      });
+    }
+
     // Fechar a conexão com o banco de dados
     db.close((err) => {
       if (err) {
@@ -526,10 +527,11 @@ app.delete('/usuarios/:id_usuario', verificaToken, (req, res) => {
     // Retornar uma resposta de sucesso
     return res.status(200).json({
       status: 'success',
-      message: `Usuário com id ${id_usuario} removido com sucesso!`
+      message: `Usuário promovido a administrador com sucesso!`
     });
   });
 });
+
 
 app.get('/home', (req, res) => {
   if (req.session.userId) {

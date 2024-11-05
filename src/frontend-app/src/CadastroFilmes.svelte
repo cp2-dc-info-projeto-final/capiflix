@@ -12,7 +12,7 @@
     import Menu from "./Menu.svelte"
     const api_base_url = "http://localhost:3000";
   
-    const cadastrarUsuario = async () => {
+    const cadastrarFilme = async () => {
       try {
         let res = await axios.post(
           api_base_url + "/filmes/novo",
@@ -80,7 +80,7 @@
               </div>
             </div>
             <div class="form">
-              <form on:submit|preventDefault={cadastrarUsuario}>
+              <form on:submit|preventDefault={cadastrarFilme}>
               {#if error}
                 <p style="color: red;">{error}</p>
               {/if}
