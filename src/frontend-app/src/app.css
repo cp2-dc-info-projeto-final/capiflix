@@ -40,11 +40,4 @@ body, .card{
     box-shadow: rgba(0, 0, 0, 0.788) -5px 5px;
 }
 
-html {
-  scroll-behavior: smooth;
-}
 
-h1 {
-  color: red;
-  text-align: center;
-}

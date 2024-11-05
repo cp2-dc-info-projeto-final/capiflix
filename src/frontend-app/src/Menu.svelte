@@ -26,11 +26,6 @@
               <li><a href="/conta.html" class="nav-link px-2 text-white">Conta</a></li>
               <li><a href="/administrador.html" class="nav-link px-2 text-white">ad emi</a></li>
             </ul>
-    
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-              <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
-            </form>
-    
             <div class="text-end">
               <a href="./login.html" type="button" class="btn btn-outline-light me-2">entrar</a>
               <a href="./cadastroUsuarios.html" type="button" class="btn btn-outline-light me-2">cadastra</a>
