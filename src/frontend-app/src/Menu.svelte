@@ -26,7 +26,16 @@
               <li><a href="/conta.html" class="nav-link px-2 text-white">Conta</a></li>
               <li><a href="/administrador.html" class="nav-link px-2 text-white">ad emi</a></li>
             </ul>
-            <div class="text-end">
+            <form class="d-flex" style="padding-right:30px;">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <!-- Botão de pesquisa com hover laranja -->
+                <button style="border-color: blanchedalmond; color: blanchedalmond;" class="btn btn-hover-laranja" type="submit">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                  </svg>
+                </button>
+            </form>
+            <div class="text-end" style="padding-left:2px;">
               <a href="./login.html" type="button" class="btn btn-outline-light me-2">entrar</a>
               <a href="./cadastroUsuarios.html" type="button" class="btn btn-outline-light me-2">cadastra</a>
             </div>

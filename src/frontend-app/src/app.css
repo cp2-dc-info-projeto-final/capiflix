@@ -41,3 +41,9 @@ body, .card{
 }
 
 
+/* Estilo para o efeito de hover laranja */
+.btn-hover-laranja:hover {
+    background-color: orange !important;   /* Cor laranja quando o mouse passar por cima */
+    border-color: orange !important;      /* Mudando também a cor da borda */
+    color: white !important;              /* Texto branco para boa visibilidade */
+}
