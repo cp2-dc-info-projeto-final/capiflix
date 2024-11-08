@@ -80,16 +80,16 @@
     font-size: 3em;
     cursor: pointer;
     padding: 0.5em;
+    color: darkorange;
     margin-top: 200px;
-    color:darkorange
   }
 </style>
 
 <main>
-  <div  class="carousel">
+  <div class="carousel">
     <!-- Botões de controle -->
     <div class="controls">
-      <button  id="inverter" on:click={prev}>➤</button>
+      <button id="inverter" on:click={prev}>➤</button>
       <button on:click={next}>➤</button>
     </div>
 

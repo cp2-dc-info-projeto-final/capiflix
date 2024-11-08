@@ -41,9 +41,17 @@ body, .card{
 }
 
 
-/* Estilo para o efeito de hover laranja */
-.btn-hover-laranja:hover {
-    background-color: orange !important;   /* Cor laranja quando o mouse passar por cima */
-    border-color: orange !important;      /* Mudando também a cor da borda */
-    color: white !important;              /* Texto branco para boa visibilidade */
+                    /* Adiciona o hover para o botão */
+.btn-outline-light:hover {
+    background-color: orange;  /* Fundo laranja */
+    border-color: orange;      /* Bordas também ficam laranjas */
+}
+                  
+                    /* Altera a cor do ícone quando o botão for hovered */
+.btn-outline-light:hover svg {
+    fill: orange !important; /* Garante que a cor do ícone seja laranja */
+}
+            
+.btn-outline-light svg {
+    fill: white; /* Cor inicial do ícone */
 }
