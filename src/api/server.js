@@ -579,8 +579,21 @@ app.get('/home', (req, res) => {
 app.get('/filmes', (req, res) => {
   let db = geraConexaoDeBancoDeDados();
 
-  // Seleciona todos os usuários da tabela 'usuario'
-  db.all('SELECT * FROM filme', [], (err, rows) => {
+  // Consulta ajustada para incluir o nome do gênero
+  const sql = `
+    SELECT 
+      f.id_filme, 
+      f.titulo, 
+      f.descricao, 
+      f.ano, 
+      f.classificacao, 
+      g.nome AS genero 
+    FROM filme f
+    LEFT JOIN genero g ON f.id_genero = g.id_genero
+  `;
+
+  // Executa a consulta
+  db.all(sql, [], (err, rows) => {
     if (err) {
       return res.status(500).json({
         status: 'failed',
@@ -597,13 +610,15 @@ app.get('/filmes', (req, res) => {
       console.log('Fechou a conexão com o banco de dados.');
     });
 
-    // Retorna os dados dos usuários em formato JSON
+    // Retorna os dados dos filmes em formato JSON
     res.status(200).json({
       status: 'success',
-      usuarios: rows
+      filmes: rows
     });
   });
 });
+
+
 
 app.post('/filmes/novo', (req, res) => {
   const { titulo, descricao, ano, classificacao } = req.body;

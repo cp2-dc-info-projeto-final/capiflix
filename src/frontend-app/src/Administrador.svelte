@@ -125,27 +125,41 @@ const promoverAdmin = async (id) => {
       }
     };
 
-  /** FUNÇÃO PARA CARREGAR FILMES */
- /*  
+  /** FUNÇÃO PARA CARREGAR FILMES */  
   const carregarFilmes = async () => {
-      try {
-        let res = await axiosInstance.get(API_BASE_URL + "/filmes", {
-          responseType: "json",
-          headers: {
-            Accept: "application/json",
-          },
-        });
-        filmes = res.data.filmes;
-        colunas_filmes = Object.keys(filmes[0]);
-        error = null; // Limpa o erro se a requisição for bem-sucedida
-      } catch (err) {
-        error = "Erro ao buscar dados: " + err.response?.data?.message || err.message;;
-        console.error(err);
-        filmes = null; // Limpa o resultado em caso de erro
-      }
-    };
-    */
+  try {
+    let res = await axiosInstance.get(API_BASE_URL + "/filmes", {
+      responseType: "json",
+      headers: {
+        Accept: "application/json",
+      },
+    });
 
+    console.log('Resposta da API:', res.data);  // Verifique o conteúdo da resposta
+
+    // Verifica se 'filmes' existe na resposta da API
+  if (Array.isArray(res.data.filmes) && res.data.filmes.length > 0) {
+    filmes = res.data.filmes;  // Aqui, corrigimos 'usuarios' para 'filmes'
+    colunas_filmes = Object.keys(filmes[0]); // Pega as chaves do primeiro objeto (colunas)
+    error = null;  // Limpa o erro se a requisição for bem-sucedida
+  } else {
+    filmes = [];
+    colunas_filmes = [];
+    error = "Nenhum filme encontrado.";
+  }
+
+
+  } catch (err) {
+    error = "Erro ao buscar dados: " + (err.response?.data?.message || err.message);
+    console.error(err);
+    filmes = null;  // Limpa o resultado em caso de erro
+    colunas_filmes = [];
+  }
+};
+
+
+
+  carregarFilmes()  
   carregarUsuarios()
 </script>
 <main>
@@ -158,8 +172,7 @@ const promoverAdmin = async (id) => {
         </div>
       </div>
 
-      
-      <div class="card">
+        <div class="card">
         {#if usuarios}
           <table>
             <thead>
@@ -205,6 +218,65 @@ const promoverAdmin = async (id) => {
                         </li>
                         <li>
                           <button on:click={() => promoverAdmin(linha_usuario.id_usuario)} class="dropdown-item">Promover</button>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  
+                </tr>
+              {/each}
+            </tbody>
+          </table>
+        {/if}
+      </div>
+      
+
+      <div class="card">
+        {#if filmes}
+          <table>
+            <thead>
+              <tr>
+                {#each colunas_filmes as titulo_coluna}
+                  <th>{titulo_coluna}</th>
+                {/each}
+                <th></th>
+              </tr><tr />
+            </thead>
+            <tbody>
+              {#each Object.values(filmes) as linha_filme}
+                <tr>
+                  {#each colunas_filmes as atributo}
+                    <td>{linha_filme[atributo]}</td>
+                  {/each}
+                  <td>
+                    <button on:click={() => deletarUsuario(linha_filme.id_filme)} class="btn btn-danger">Remover</button>
+                    
+                    <div class="dropdown dropend">
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id={`dropdownMenuButton_${linha_filme.id_filme}`} data-bs-toggle="dropdown" aria-expanded="false">
+                        Editar
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby={`dropdownMenuButton_${linha_filme.id_filme}`}>
+                        <li>
+                          <label for={`novoNome_${linha_filme.id_filme}`}>Nome</label>
+                          <input type="text" id={`novoNome_${linha_filme.id_filme}`} bind:value={novoNome}>  
+                        </li>
+                        <li>
+                          <button on:click={() => editarNomeUsuario(linha_filme.id_filme, novoNome)} class="dropdown-item">Salvar</button>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                          <label for={`senhaAtual_${linha_filme.id_filme}`}>Senha Atual</label>
+                          <input type="password" id={`senhaAtual_${linha_filme.id_filme}`} bind:value={senhaAtual}>  
+                        </li>
+                        <li>
+                          <label for={`novaSenha_${linha_filme.id_filme}`}>Nova Senha</label>
+                          <input type="password" id={`novaSenha_${linha_filme.id_filme}`} bind:value={novaSenha}>  
+                        </li>
+                        <li>
+                          <button on:click={() => mudarSenhaUsuario(linha_filme.id_filme, senhaAtual, novaSenha)} class="dropdown-item">Salvar Senha</button>
+                        </li>
+                        <li>
+                          <button on:click={() => promoverAdmin(linha_filme.id_filme)} class="dropdown-item">Promover</button>
                         </li>
                       </ul>
                     </div>
