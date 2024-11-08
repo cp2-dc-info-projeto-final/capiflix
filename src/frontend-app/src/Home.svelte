@@ -9,6 +9,6 @@
 </script>
 <main>
     <Menu></Menu>
-    <h1 style="text-align: center; color:black; font-size:90px;">Catálogo de Filmes</h1>
+    <h1 style="text-align: center; color:darkorange; font-size:90px;">Catálogo de Filmes</h1>
     <MovieCarrossel></MovieCarrossel>
 </main>

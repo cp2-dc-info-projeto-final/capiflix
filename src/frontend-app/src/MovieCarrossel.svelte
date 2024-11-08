@@ -80,7 +80,8 @@
     font-size: 3em;
     cursor: pointer;
     padding: 0.5em;
-    margin-top: 200px
+    margin-top: 200px;
+    color:darkorange
   }
 </style>
 
@@ -88,8 +89,8 @@
   <div  class="carousel">
     <!-- Botões de controle -->
     <div class="controls">
-      <button on:click={prev}>&lt;</button>
-      <button on:click={next}>&gt;</button>
+      <button  id="inverter" on:click={prev}>➤</button>
+      <button on:click={next}>➤</button>
     </div>
 
     <!-- Slides dos filmes -->
