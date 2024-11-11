@@ -2,25 +2,19 @@
     // import { onMount } from 'svelte';
     import "./app.css"
     import axios from "axios";
-    let titulo = "";
-    let descricao = "";
-    let ano = "";
+    let nome = "";
     let id_genero = "";
-    let classificacao = null;
     let resultado = null;
     let error = null;
     import Menu from "./Menu.svelte"
     const api_base_url = "http://localhost:3000";
   
-    const cadastrarFilme = async () => {
+    const cadastrarGenero = async () => {
       try {
         let res = await axios.post(
-          api_base_url + "/filmes/novo",
+          api_base_url + "/genero/novo",
           {
-            titulo,
-            descricao,
-            ano,
-            classificacao
+            nome,
           },
           {
             headers: {
@@ -53,22 +47,10 @@
         </div>
       </div>
         <div class="mt-1 container" id="div_de_boasvindas" style="width:30%;">
-                <form class="row g-3 needs-validation mt-1" id="formulario"  on:submit|preventDefault={cadastrarFilme}>
+                <form class="row g-3 needs-validation mt-1" id="formulario"  on:submit|preventDefault={cadastrarGenero}>
                     <div class="form-floating mt-4 mb-1" style="width: 100%;">
-                        <input class=" form-control bg-body rounded" id="titulo" placeholder="Titulo" name="titulo" required bind:value={titulo}>
-                        <label for="titulo">Titulo</label>
-                    </div>
-                    <div class="form-floating mt-2 mb-2" style="width: 100%;" >
-                        <input class="form-control bg-body rounded " id="descricao" placeholder="Descricao" name="descricao" required  bind:value={descricao}>
-                        <label for="email">Descrição</label>
-                    </div>
-                    <div class="form-floating mt-2 mb-2" style="width: 100%;">
-                        <input type="date" class="form-control  bg-body rounded" id="ano" placeholder="Ano" name="ano" required  bind:value={ano}>
-                        <label for="ano">Ano</label>
-                    </div>
-                    <div class="form-floating mt-2 mb-5" style="width: 100%;">
-                      <input type="number" class="form-control  bg-body rounded" id="classificacao" placeholder="classificação" name="classificacao" required bind:value={classificacao}>
-                      <label for="classificacao">classificação</label>
+                        <input class=" form-control bg-body rounded" id="nome" placeholder="nome" name="nome" required bind:value={nome}>
+                        <label for="nome">nome</label>
                     </div>
                       <button id="button_enviar" type="submit" class="btn btn-dark mt-2 mb-1"  style="--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .70rem; --bs-btn-font-size: .90rem; margin-bottom:50px; width:100%; height:50px;">Enviar</button>
                   </form>
