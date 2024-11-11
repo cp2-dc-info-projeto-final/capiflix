@@ -331,7 +331,6 @@ app.post('/usuarios/novo', (req, res) => {
 });
 
 // FUNÇÃO DE MUDAR NOME
-
 app.put('/usuarios/mudar-nome/:id_usuario', (req, res) => {
   const id_usuario = req.params.id_usuario; // Renomeado para corresponder ao estilo de código
   const { nome } = req.body;
@@ -618,8 +617,39 @@ app.get('/filmes', (req, res) => {
   });
 });
 
+// FUNÇÃO PARA REMOVER FILME
+app.delete('/filme/:id_usuario', (req, res) => {
+  const { id_filme } = req.params;
 
+  let db = geraConexaoDeBancoDeDados();
 
+  // Deletar o usuário pelo ID
+  db.run('DELETE FROM filme WHERE id_filme = ?', [id_filme], function (err) {
+    if (err) {
+      return res.status(500).json({
+        status: 'failed',
+        message: `Erro ao tentar remover o filme ${id_filme}!`, // Corrigido: interpolação de string com crase
+        error: err.message
+      });
+    }
+
+    // Fechar a conexão com o banco de dados
+    db.close((err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Fechou a conexão com o banco de dados.');
+    });
+
+    // Retornar uma resposta de sucesso
+    return res.status(200).json({
+      status: 'success',
+      message: `filme com id ${id_filme} removido com sucesso!`
+    });
+  });
+});
+  
+// CRIAR FILME
 app.post('/filmes/novo', (req, res) => {
   const { titulo, descricao, ano, classificacao } = req.body;
 
@@ -681,6 +711,205 @@ app.post('/filmes/novo', (req, res) => {
   });
 });
 
+// FUNÇÃO DE MUDAR TITULO
+app.put('/filmes/mudar-titulo/:id_filme', (req, res) => {
+  const id_filme = req.params.id_filme; // Renomeado para corresponder ao estilo de código
+  const { titulo } = req.body;
+
+  if (!titulo) {
+    return res.status(400).json({
+      status: 'failed',
+      message: 'titulo é obrigatório!'
+    });
+  }
+
+  let db = geraConexaoDeBancoDeDados();
+
+  // Modificar o nome do usuário pelo ID
+  db.run('UPDATE filme SET titulo = ? WHERE id_filme = ?', [titulo, id_filme], function (err) {
+    if (err) {
+      db.close();
+      return res.status(500).json({
+        status: 'failed',
+        message: `Erro ao tentar modificar o nome do usuário ${id_filme}!`,
+        error: err.message
+      });
+    }
+
+    // Verifica se alguma linha foi afetada
+    if (this.changes === 0) {
+      db.close();
+      return res.status(404).json({
+        status: 'failed',
+        message: 'filme não encontrado!'
+      });
+    }
+
+    // Fechar a conexão com o banco de dados
+    db.close((err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Fechou a conexão com o banco de dados.');
+    });
+
+    // Retornar uma resposta de sucesso
+    return res.status(200).json({
+      status: 'success',
+      message: `Nome do usuário atualizado com sucesso!`
+    });
+  });
+});
+
+// FUNÇÃO DE MUDAR DESCRIÇAO
+app.put('/filmes/mudar-descricao/:id_filme', (req, res) => {
+  const id_filme = req.params.id_filme; // Renomeado para corresponder ao estilo de código
+  const { descricao } = req.body;
+
+  if (!titulo) {
+    return res.status(400).json({
+      status: 'failed',
+      message: 'titulo é obrigatório!'
+    });
+  }
+
+  let db = geraConexaoDeBancoDeDados();
+
+  // Modificar o nome do usuário pelo ID
+  db.run('UPDATE filme SET descricao = ? WHERE id_filme = ?', [descricao, id_filme], function (err) {
+    if (err) {
+      db.close();
+      return res.status(500).json({
+        status: 'failed',
+        message: `Erro ao tentar modificar a descricao do filme ${id_filme}!`,
+        error: err.message
+      });
+    }
+
+    // Verifica se alguma linha foi afetada
+    if (this.changes === 0) {
+      db.close();
+      return res.status(404).json({
+        status: 'failed',
+        message: 'filme não encontrado!'
+      });
+    }
+
+    // Fechar a conexão com o banco de dados
+    db.close((err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Fechou a conexão com o banco de dados.');
+    });
+
+    // Retornar uma resposta de sucesso
+    return res.status(200).json({
+      status: 'success',
+      message: `descriçao atualizada com sucesso!`
+    });
+  });
+});
+
+// FUNÇÃO DE MUDAR ANO
+app.put('/filmes/mudar-ano/:id_filme', (req, res) => {
+  const id_filme = req.params.id_filme; // Renomeado para corresponder ao estilo de código
+  const { ano } = req.body;
+
+  if (!titulo) {
+    return res.status(400).json({
+      status: 'failed',
+      message: 'ano é obrigatório!'
+    });
+  }
+
+  let db = geraConexaoDeBancoDeDados();
+
+  // Modificar o nome do usuário pelo ID
+  db.run('UPDATE filme SET ano = ? WHERE id_filme = ?', [ano, id_filme], function (err) {
+    if (err) {
+      db.close();
+      return res.status(500).json({
+        status: 'failed',
+        message: `Erro ao tentar modificar o ano do filme ${id_filme}!`,
+        error: err.message
+      });
+    }
+
+    // Verifica se alguma linha foi afetada
+    if (this.changes === 0) {
+      db.close();
+      return res.status(404).json({
+        status: 'failed',
+        message: 'filme não encontrado!'
+      });
+    }
+
+    // Fechar a conexão com o banco de dados
+    db.close((err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Fechou a conexão com o banco de dados.');
+    });
+
+    // Retornar uma resposta de sucesso
+    return res.status(200).json({
+      status: 'success',
+      message: `Nome do usuário atualizado com sucesso!`
+    });
+  });
+});
+
+// FUNÇÃO DE MUDAR CLASSIFICAÇÃO
+app.put('/filmes/mudar-classificacao/:id_filme', (req, res) => {
+  const id_filme = req.params.id_filme; // Renomeado para corresponder ao estilo de código
+  const { classificacao } = req.body;
+
+  if (!titulo) {
+    return res.status(400).json({
+      status: 'failed',
+      message: 'classificação é obrigatório!'
+    });
+  }
+
+  let db = geraConexaoDeBancoDeDados();
+
+  // Modificar o nome do usuário pelo ID
+  db.run('UPDATE filme SET classificacao = ? WHERE id_filme = ?', [classificacao, id_filme], function (err) {
+    if (err) {
+      db.close();
+      return res.status(500).json({
+        status: 'failed',
+        message: `Erro ao tentar modificar a classificacao do filme ${id_filme}!`,
+        error: err.message
+      });
+    }
+
+    // Verifica se alguma linha foi afetada
+    if (this.changes === 0) {
+      db.close();
+      return res.status(404).json({
+        status: 'failed',
+        message: 'filme não encontrado!'
+      });
+    }
+
+    // Fechar a conexão com o banco de dados
+    db.close((err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Fechou a conexão com o banco de dados.');
+    });
+
+    // Retornar uma resposta de sucesso
+    return res.status(200).json({
+      status: 'success',
+      message: `Nome do usuário atualizado com sucesso!`
+    });
+  });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

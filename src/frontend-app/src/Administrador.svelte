@@ -12,6 +12,10 @@
     let filmes = null;
     let colunas_usuarios = null;
     let colunas_filmes = null;
+    let novoTitulo = null;
+    let novaClassificacao = null;
+    let novoAno = null; 
+    let novaDescricao = null;
     import Menu from "./Menu.svelte"
     const API_BASE_URL = "http://localhost:3000";
 
@@ -157,15 +161,101 @@ const promoverAdmin = async (id) => {
   }
 };
 
+// FUNÇÃO DELETAR FILME
+const deletarFilme = async (id) => {
+  try {
+    // Corrigido: interpolação da URL para passar o id corretamente
+    let res = await axiosInstance.delete(`${API_BASE_URL}/filmes/${id}`, {
+      headers: {
+        Accept: "application/json",
+      },
+    });
 
+    // Exibir a resposta do backend no console para diagnóstico
+    console.log('Resposta do backend:', res.data);
+    
+    // Atualiza o resultado com a resposta da API
+    resultado = res.data;
+    error = null;
+    
+    // Recarrega a lista de usuários
+    carregarFilmes();
+  } catch (err) {
+    // Captura erros e exibe no console
+    error =
+      "Erro ao deletar filme: " +
+      (err.response?.data?.message || err.message);
+    
+    resultado = null;
+    
+    // Exibe o erro no console para diagnóstico
+    console.error('Erro:', error);
+  }
+};
+
+// Função para editar titulo do filme pelo ID
+const editarTituloFilme = async (id, novoTitulo) => {
+  try {
+    console.log("Enviando:", { titulo: novoTitulo });
+    await axiosInstance.put(`${API_BASE_URL}/filmes/mudar-titulo/:id_filme${id}`, {
+      titulo: novoTitulo
+    });
+    novoTitulo = ""; // Limpa o campo após a edição
+    await carregarFilmes(); // Aguarda a recarga após editar
+  } catch (error) {
+    console.error("Erro ao editar Titulo:", error);
+  }
+};
+
+// Função para editar descrição do filme pelo ID
+const editarDescricaoFilme = async (id, novaDescricao) => {
+  try {
+    console.log("Enviando:", { descricao: novaDescricao });
+    await axiosInstance.put(`${API_BASE_URL}/filmes/mudar-descricao/:id_filme${id}`, {
+      descricao: novaDescricao
+    });
+    novaDescricao = ""; // Limpa o campo após a edição
+    await carregarFilmes(); // Aguarda a recarga após editar
+  } catch (error) {
+    console.error("Erro ao editar descriçaõ:", error);
+  }
+};
+
+// Função para editar ano do filme pelo ID
+const editarAnoFilme = async (id, ano) => {
+  try {
+    console.log("Enviando:", { ano: novoAno });
+    await axiosInstance.put(`${API_BASE_URL}/filmes/mudar-ano/:id_filme${id}`, {
+      ano: novoAno
+    });
+    novoAno = ""; // Limpa o campo após a edição
+    await carregarFilmes(); // Aguarda a recarga após editar
+  } catch (error) {
+    console.error("Erro ao editar ano:", error);
+  }
+};
+
+// Função para classificação ano do filme pelo ID
+const editarClassificacaoFilme = async (id, classificacao) => {
+  try {
+    console.log("Enviando:", { classificacao: novaClassificacao });
+    await axiosInstance.put(`${API_BASE_URL}/filmes/mudar-classificacao/:id_filme${id}`, {
+      classificacao: novaClassificacao
+    });
+    novaClassificacao = ""; // Limpa o campo após a edição
+    await carregarFilmes(); // Aguarda a recarga após editar
+  } catch (error) {
+    console.error("Erro ao editar classificação:", error);
+  }
+};
 
   carregarFilmes()  
   carregarUsuarios()
 </script>
 <main>
   <Menu></Menu>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <div class="container text-center mt-3">
         <div class="d-flex justify-content-center align-items-center">
             <h1 style="font-size: 90px;">Capflix</h1>
@@ -193,8 +283,8 @@ const promoverAdmin = async (id) => {
                     <button on:click={() => deletarUsuario(linha_usuario.id_usuario)} class="btn btn-danger">Remover</button>
                     
                     <div class="dropdown dropend">
-                      <button class="btn btn-secondary dropdown-toggle" type="button" id={`dropdownMenuButton_${linha_usuario.id_usuario}`} data-bs-toggle="dropdown" aria-expanded="false">
-                        Editar
+                      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        editar
                       </button>
                       <ul class="dropdown-menu" aria-labelledby={`dropdownMenuButton_${linha_usuario.id_usuario}`}>
                         <li>
@@ -249,7 +339,7 @@ const promoverAdmin = async (id) => {
                     <td>{linha_filme[atributo]}</td>
                   {/each}
                   <td>
-                    <button on:click={() => deletarUsuario(linha_filme.id_filme)} class="btn btn-danger">Remover</button>
+                    <button on:click={() => deletarFilme(linha_filme.id_filme)} class="btn btn-danger">Remover</button>
                     
                     <div class="dropdown dropend">
                       <button class="btn btn-secondary dropdown-toggle" type="button" id={`dropdownMenuButton_${linha_filme.id_filme}`} data-bs-toggle="dropdown" aria-expanded="false">
@@ -257,27 +347,37 @@ const promoverAdmin = async (id) => {
                       </button>
                       <ul class="dropdown-menu" aria-labelledby={`dropdownMenuButton_${linha_filme.id_filme}`}>
                         <li>
-                          <label for={`novoNome_${linha_filme.id_filme}`}>Nome</label>
-                          <input type="text" id={`novoNome_${linha_filme.id_filme}`} bind:value={novoNome}>  
+                          <label for={`novoTitulo_${linha_filme.id_filme}`}>Titulo</label>
+                          <input type="text" id={`novoTitulo${linha_filme.id_filme}`} bind:value={novoTitulo}>  
                         </li>
                         <li>
-                          <button on:click={() => editarNomeUsuario(linha_filme.id_filme, novoNome)} class="dropdown-item">Salvar</button>
+                          <button on:click={() => editarTituloFilme(linha_filme.id_filme, novoTitulo)} class="dropdown-item">Salvar</button>
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
-                          <label for={`senhaAtual_${linha_filme.id_filme}`}>Senha Atual</label>
-                          <input type="password" id={`senhaAtual_${linha_filme.id_filme}`} bind:value={senhaAtual}>  
+                          <label for={`novaClassificacao${linha_filme.id_filme}`}>classificação</label>
+                          <input type="text" id={`novaClassificacao${linha_filme.id_filme}`} bind:value={novaClassificacao}>  
                         </li>
                         <li>
-                          <label for={`novaSenha_${linha_filme.id_filme}`}>Nova Senha</label>
-                          <input type="password" id={`novaSenha_${linha_filme.id_filme}`} bind:value={novaSenha}>  
+                          <button on:click={() => editarClassificacaoFilme(linha_filme.id_filme, novaClassificacao)} class="dropdown-item">Salvar</button>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                          <label for={`novoAno${linha_filme.id_filme}`}>Ano</label>
+                          <input type="text" id={`novoAno${linha_filme.id_filme}`} bind:value={novoAno}>  
                         </li>
                         <li>
-                          <button on:click={() => mudarSenhaUsuario(linha_filme.id_filme, senhaAtual, novaSenha)} class="dropdown-item">Salvar Senha</button>
+                          <button on:click={() => editarAnoFilme(linha_filme.id_filme, novoAno)} class="dropdown-item">Salvar</button>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                          <label for={`novaDescricao${linha_filme.id_filme}`}>Ano</label>
+                          <input type="text" id={`novaDescricao${linha_filme.id_filme}`} bind:value={novaDescricao}>  
                         </li>
                         <li>
-                          <button on:click={() => promoverAdmin(linha_filme.id_filme)} class="dropdown-item">Promover</button>
+                          <button on:click={() => editarDescricaoFilme(linha_filme.id_filme, novaDescricao)} class="dropdown-item">Salvar</button>
                         </li>
+                        <li><hr class="dropdown-divider"></li>
                       </ul>
                     </div>
                   </td>
