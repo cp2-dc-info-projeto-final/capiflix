@@ -618,7 +618,7 @@ app.get('/filmes', (req, res) => {
 });
 
 // FUNÇÃO PARA REMOVER FILME
-app.delete('/filme/:id_usuario', (req, res) => {
+app.delete('/filmes/:id_filme', (req, res) => {
   const { id_filme } = req.params;
 
   let db = geraConexaoDeBancoDeDados();
