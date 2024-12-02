@@ -911,6 +911,69 @@ app.put('/filmes/mudar-classificacao/:id_filme', (req, res) => {
   });
 });
 
+// CRIAR GÊNERO
+
+app.post('/generos/novo', (req, res) => {
+  const { nome } = req.body;
+  console.log(req);
+  // Aqui começa a validação dos campos do formulário
+  let erro = "";
+  if (nome.length < 1 ) {
+    erro += 'Por favor, preencha todos os campos corretamente!';
+  }
+  if (erro) {
+    res.status(500).json({
+      status: 'failed',
+      message: erro,
+    });
+  }
+  else {
+    // aqui começa o código para inserir o registro no banco de dados
+    let db = new sqlite3.Database(databasePath, (err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Conectou no banco de dados!');
+    });
+    db.get('SELECT nome FROM genero WHERE nome = ?', [nome], async (error, result) => {
+      if (error) {
+        console.log(error)
+      }
+      else if (result) {
+        db.close((err) => {
+          if (err) {
+            return console.error(err.message);
+          }
+          console.log('Fechou a conexão com o banco de dados.');
+        });
+        return res.status(500).json({
+          status: 'failed',
+          message: 'Este nome já está em uso!',
+        });
+      } else {
+        db.run('INSERT INTO genero(nome) VALUES (?)', [nome,
+          ], (error2) => {
+            if (error2) {
+              console.log(error2)
+            } else {
+              db.close((err) => {
+                if (err) {
+                  return console.error(err.message);
+                }
+                console.log('Fechou a conexão com o banco de dados.');
+              });
+              return res.status(200).json({
+                status: 'success',
+                message: 'Registro feito com sucesso!',
+                campos: req.body
+              });
+            }
+          });
+      }
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

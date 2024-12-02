@@ -388,6 +388,6 @@ const editarClassificacaoFilme = async (id, classificacao) => {
           </table>
         {/if}
       </div>
-
+      
       <p id="message"></p>
 </main>
