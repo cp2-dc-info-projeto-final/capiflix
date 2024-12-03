@@ -11,12 +11,12 @@ export default defineConfig({
         menu: 'menu.html',
         cadastroUsuarios: './cadastroUsuarios.html',
         login: './login.html',
-        administrador: './administrador.html'
-        // cadastroUsuarios: './cadastroUsuarios.html'
+        administrador: './administrador.html',
+        cadastroGeneros: './cadastroGeneros.html'
       },
     },
   },
   server: {
-    open: '/cadastroUsuarios.html',
+    open: '/index.html',
   },
 })

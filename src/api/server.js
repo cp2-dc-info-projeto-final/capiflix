@@ -651,13 +651,13 @@ app.delete('/filmes/:id_filme', (req, res) => {
   
 // CRIAR FILME
 app.post('/filmes/novo', (req, res) => {
-  const { titulo, descricao, ano, classificacao } = req.body;
-
+  const { titulo, descricao, ano, classificacao, id_genero } = req.body;
   // Validação dos campos do formulário
   let erro = "";
-  if (!titulo || !descricao || !ano || !classificacao) {
-    erro += 'Por favor, preencha todos os campos corretamente!';
-  }
+if (!titulo || !descricao || !ano || !classificacao || !id_genero) {
+  erro += 'Por favor, preencha todos os campos corretamente!';
+}
+
 
   if (erro) {
     return res.status(400).json({
@@ -689,8 +689,8 @@ app.post('/filmes/novo', (req, res) => {
         message: 'Este título já está em uso!',
       });
     } else {
-      db.run('INSERT INTO filme (titulo, descricao, ano, id_genero, classificacao) VALUES (?, ?, ?, ?, ?)', 
-        [titulo, descricao, ano, null, classificacao], (error2) => {
+      db.run('INSERT INTO filme (titulo, descricao, ano, classificacao, id_genero) VALUES (?, ?, ?, ?, ?)', 
+        [titulo, descricao, ano, classificacao, id_genero], (error2) => {
           if (error2) {
             console.error(error2);
             db.close();
@@ -907,6 +907,35 @@ app.put('/filmes/mudar-classificacao/:id_filme', (req, res) => {
     return res.status(200).json({
       status: 'success',
       message: `Nome do usuário atualizado com sucesso!`
+    });
+  });
+});
+
+app.get('/generos', (req, res) => {
+  let db = geraConexaoDeBancoDeDados();
+
+  // Seleciona todos os usuários da tabela 'usuario'
+  db.all('SELECT * FROM genero', [], (err, rows) => {
+    if (err) {
+      return res.status(500).json({
+        status: 'failed',
+        message: 'Erro ao consultar o banco de dados!',
+        error: err.message
+      });
+    }
+
+    // Fecha a conexão com o banco de dados
+    db.close((err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Fechou a conexão com o banco de dados.');
+    });
+
+    // Retorna os dados dos usuários em formato JSON
+    res.status(200).json({
+      status: 'success',
+      generos: rows
     });
   });
 });

@@ -12,7 +12,7 @@
     const cadastrarGenero = async () => {
       try {
         let res = await axios.post(
-          api_base_url + "/genero/novo",
+          api_base_url + "/generos/novo",
           {
             nome,
           },

@@ -5,22 +5,33 @@
     let titulo = "";
     let descricao = "";
     let ano = "";
+    let generos = "";
     let id_genero = "";
     let classificacao = null;
     let resultado = null;
     let error = null;
     import Menu from "./Menu.svelte"
-    const api_base_url = "http://localhost:3000";
+    const API_BASE_URL = "http://localhost:3000";
+
+    const axiosInstance = axios.create({
+    withCredentials: true,
+    baseURL: API_BASE_URL,
+    responseType: "json",
+    headers: {
+          Accept: "application/json",
+      }
+  });
   
     const cadastrarFilme = async () => {
       try {
         let res = await axios.post(
-          api_base_url + "/filmes/novo",
+          API_BASE_URL + "/filmes/novo",
           {
             titulo,
             descricao,
             ano,
-            classificacao
+            classificacao,
+            id_genero
           },
           {
             headers: {
@@ -38,6 +49,26 @@
       }
       
     };
+
+    /** FUNÇÃO PARA CARREGAR GÊNEROS */
+    const carregarGeneros = async () => {
+      try {
+        let res = await axiosInstance.get(API_BASE_URL + "/generos", {
+          responseType: "json",
+          headers: {
+            Accept: "application/json",
+          },
+        });
+        generos = res.data.generos;
+        error = null; // Limpa o erro se a requisição for bem-sucedida
+      } catch (err) {
+        error = "Erro ao buscar dados: " + err.response?.data?.message || err.message;;
+        console.error(err);
+        generos = null; // Limpa o resultado em caso de erro
+      }
+    };
+
+    carregarGeneros()
   </script>
 
   <main class=".bg-primário-sutil">
@@ -66,10 +97,15 @@
                         <input type="date" class="form-control  bg-body rounded" id="ano" placeholder="Ano" name="ano" required  bind:value={ano}>
                         <label for="ano">Ano</label>
                     </div>
-                    <div class="form-floating mt-2 mb-5" style="width: 100%;">
+                    <div class="form-floating mt-2 mb-2" style="width: 100%;">
                       <input type="number" class="form-control  bg-body rounded" id="classificacao" placeholder="classificação" name="classificacao" required bind:value={classificacao}>
                       <label for="classificacao">classificação</label>
                     </div>
+                      <select class="form-select form-select-lg mb-5 " aria-label="Large select example" name="id_genero" required bind:value={id_genero}>
+                        {#each generos as genero}
+                        <option value="{genero.id_genero}">{genero.nome}</option>
+                        {/each}
+                      </select>
                       <button id="button_enviar" type="submit" class="btn btn-dark mt-2 mb-1"  style="--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .70rem; --bs-btn-font-size: .90rem; margin-bottom:50px; width:100%; height:50px;">Enviar</button>
                   </form>
                     <p id="message"></p>
