@@ -249,19 +249,26 @@ const editarClassificacaoFilme = async (id, classificacao) => {
   }
 };
 
+// Função para ativar o dropdown manualmente
+document.querySelectorAll('.dropdown-toggle').forEach(button => {
+    button.addEventListener('click', function () {
+      const menu = this.nextElementSibling;
+      // Alterna a classe 'show' para abrir/fechar o menu
+      menu.classList.toggle('show');
+    });
+  });
+
   carregarFilmes()  
   carregarUsuarios()
 </script>
 <main>
   <Menu></Menu>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
     <div class="container text-center mt-3">
         <div class="d-flex justify-content-center align-items-center">
             <h1 style="font-size: 90px;">Capflix</h1>
         </div>
       </div>
-
         <div class="card">
         {#if usuarios}
           <table>
@@ -281,11 +288,12 @@ const editarClassificacaoFilme = async (id, classificacao) => {
                   {/each}
                   <td>
                     <button on:click={() => deletarUsuario(linha_usuario.id_usuario)} class="btn btn-danger">Remover</button>
-                    
+
                     <div class="dropdown dropend">
-                      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        editar
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id={`dropdownMenuButton_${linha_usuario.id_usuario}`} data-bs-toggle="dropdown" aria-expanded="false">
+                        Editar
                       </button>
+                      
                       <ul class="dropdown-menu" aria-labelledby={`dropdownMenuButton_${linha_usuario.id_usuario}`}>
                         <li>
                           <label for={`novoNome_${linha_usuario.id_usuario}`}>Nome</label>
@@ -311,8 +319,8 @@ const editarClassificacaoFilme = async (id, classificacao) => {
                         </li>
                       </ul>
                     </div>
+                    
                   </td>
-                  
                 </tr>
               {/each}
             </tbody>
@@ -388,6 +396,5 @@ const editarClassificacaoFilme = async (id, classificacao) => {
           </table>
         {/if}
       </div>
-      
       <p id="message"></p>
 </main>
