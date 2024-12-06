@@ -42,17 +42,22 @@ function geraConexaoDeBancoDeDados() {
 // Configuração do multer para salvar as imagens na pasta 'uploads'
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'capas/'); 
+    cb(null, 'capas/'); // Diretório para salvar as imagens
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // Nome único para a imagem
+    // Atribuindo o título do filme no nome do arquivo (remover espaços e usar um nome único)
+    const nomeDoArquivo = req.body.titulo.replace(/\s+/g, '_'); // Substitui espaços por "_"
+    const extensao = path.extname(file.originalname); // Obtém a extensão do arquivo (ex: .jpg, .png)
+    
+    // Cria o nome do arquivo com o título do filme e o timestamp para garantir que seja único
+    cb(null, nomeDoArquivo + '_' + Date.now() + extensao);
   }
 });
-const capa = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } }); // Limite de 5MB para o arquivo
+
 
 const capa = multer({
   storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // Limite de 5MB
+  limits: { fileSize: 10 * 1024 * 1024 }, // Limite de 10MB para o arquivo
   fileFilter: function (req, file, cb) {
     const allowedTypes = ['image/jpeg', 'image/png'];
     if (!allowedTypes.includes(file.mimetype)) {
@@ -61,6 +66,7 @@ const capa = multer({
     cb(null, true);
   }
 });
+
 
 
 function geraAcessoJWT(idUsuario) {
