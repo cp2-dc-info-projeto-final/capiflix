@@ -1,8 +1,22 @@
 <script>
-  // import { onMount } from 'svelte';
   import "./app.css"
   import axios from "axios";
   const api_base_url = "http://localhost:3000"
+  import EditarPerfil from './EditarPerfil.svelte'; 
+
+  // Importe o componente do modal
+  let showModal = false;
+
+  // Função para abrir o modal
+  const openModal = () => {
+    showModal = true;
+  };
+
+  // Função para fechar o modal
+  const closeModal = () => {
+    showModal = false;
+  };
+
 </script>
 
 <main>
@@ -13,6 +27,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
   <header class="p-3 text-bg-dark">
+    <div>
+      </div>
       <div>
           <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
               <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
@@ -57,7 +73,7 @@
                       <div class="offcanvas-body">
                           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                               <li class="nav-item">
-                                  <a class="nav-link active" aria-current="page" href="#">Editar perfil</a>
+                                <button style="background-color:transparent; border-color:transparent; color:black" type="button" class="btn btn-primary mt-3" on:click={openModal}>EditarPerfil</button>
                               </li>
                               <li class="nav-item">
                                   <a class="nav-link" href="#">Filmes Curtidos ❤️</a>
@@ -81,4 +97,6 @@
           </div>
       </div>
   </header>
+  <!-- Aqui está a importação do modal -->
+  <EditarPerfil {showModal} closeModal={closeModal} />
 </main>
