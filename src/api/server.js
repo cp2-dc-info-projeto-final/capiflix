@@ -9,6 +9,8 @@ const bcrypt = require("bcryptjs")
 const jwt = require('jsonwebtoken');
 const e = require('express');
 const cookieParser = require('cookie-parser');
+const multer = require('multer');
+
 
 databasePath = './capiflix.db'
 
@@ -36,6 +38,30 @@ function geraConexaoDeBancoDeDados() {
   });
   return db;
 }
+
+// Configuração do multer para salvar as imagens na pasta 'uploads'
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'capas/'); 
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // Nome único para a imagem
+  }
+});
+const capa = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } }); // Limite de 5MB para o arquivo
+
+const capa = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // Limite de 5MB
+  fileFilter: function (req, file, cb) {
+    const allowedTypes = ['image/jpeg', 'image/png'];
+    if (!allowedTypes.includes(file.mimetype)) {
+      return cb(new Error('Somente imagens JPEG, PNG e GIF são permitidas.'));
+    }
+    cb(null, true);
+  }
+});
+
 
 function geraAcessoJWT(idUsuario) {
   let payload = {
@@ -650,14 +676,19 @@ app.delete('/filmes/:id_filme', (req, res) => {
 });
   
 // CRIAR FILME
-app.post('/filmes/novo', (req, res) => {
+app.post('/filmes/novo', capa.single('imagem'), (req, res) => {
   const { titulo, descricao, ano, classificacao, id_genero } = req.body;
-  // Validação dos campos do formulário
   let erro = "";
-if (!titulo || !descricao || !ano || !classificacao || !id_genero) {
-  erro += 'Por favor, preencha todos os campos corretamente!';
-}
 
+  // Validação dos campos do formulário
+  if (!titulo || !descricao || !ano || !classificacao || !id_genero) {
+    erro += 'Por favor, preencha todos os campos corretamente!';
+  }
+
+  // Validando a imagem
+  if (!req.file) {
+    erro += 'A imagem é obrigatória!';
+  }
 
   if (erro) {
     return res.status(400).json({
@@ -666,7 +697,10 @@ if (!titulo || !descricao || !ano || !classificacao || !id_genero) {
     });
   }
 
-  // Inserindo o registro no banco de dados
+  // Obtendo o caminho da imagem
+  const imagemUrl = '/capas/' + req.file.filename; // Caminho da imagem armazenada
+
+  // Conectando ao banco de dados
   let db = new sqlite3.Database(databasePath, (err) => {
     if (err) {
       return console.error(err.message);
@@ -674,6 +708,7 @@ if (!titulo || !descricao || !ano || !classificacao || !id_genero) {
     console.log('Conectou no banco de dados!');
   });
 
+  // Verificando se o título já existe
   db.get('SELECT titulo FROM filme WHERE titulo = ?', [titulo], (error, result) => {
     if (error) {
       console.error(error);
@@ -689,8 +724,9 @@ if (!titulo || !descricao || !ano || !classificacao || !id_genero) {
         message: 'Este título já está em uso!',
       });
     } else {
-      db.run('INSERT INTO filme (titulo, descricao, ano, classificacao, id_genero) VALUES (?, ?, ?, ?, ?)', 
-        [titulo, descricao, ano, classificacao, id_genero], (error2) => {
+      // Inserindo o filme no banco de dados
+      db.run('INSERT INTO filme (titulo, descricao, ano, classificacao, id_genero, imagem_url) VALUES (?, ?, ?, ?, ?, ?)', 
+        [titulo, descricao, ano, classificacao, id_genero, imagemUrl], (error2) => {
           if (error2) {
             console.error(error2);
             db.close();
@@ -703,13 +739,15 @@ if (!titulo || !descricao || !ano || !classificacao || !id_genero) {
             return res.status(200).json({
               status: 'success',
               message: 'Registro feito com sucesso!',
-              campos: req.body
+              campos: req.body,
+              imagemUrl: imagemUrl // Retorna o caminho da imagem
             });
           }
         });
     }
   });
 });
+
 
 // FUNÇÃO DE MUDAR TITULO
 app.put('/filmes/mudar-titulo/:id_filme', (req, res) => {

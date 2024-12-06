@@ -16,8 +16,9 @@ CREATE TABLE IF NOT EXISTS filme (
     titulo TEXT NOT NULL,
     descricao TEXT,
     ano INTEGER,
-    id_genero INTEGER  ,
+    id_genero INTEGER,
     classificacao INTEGER,
+    imagem_url TEXT, 
     FOREIGN KEY(id_genero) REFERENCES genero(id_genero)
 );
 
