@@ -7,6 +7,7 @@
     let ano = "";
     let generos = "";
     let id_genero = "";
+    let imagemFile = null;
     let classificacao = null;
     let resultado = null;
     let error = null;
@@ -22,33 +23,33 @@
       }
   });
   
-    const cadastrarFilme = async () => {
-      try {
-        let res = await axios.post(
-          API_BASE_URL + "/filmes/novo",
-          {
-            titulo,
-            descricao,
-            ano,
-            classificacao,
-            id_genero
-          },
-          {
-            headers: {
-              Accept: "application/json",
-            },
-          },
-        );
-        resultado = res.data;
-        error = null; // Limpa o erro se a requisição for bem-sucedida
-        // recarrega lista de usuários apresentada
-      } catch (err) {
-        error =
-          "Erro ao enviar dados: " + err.response?.data?.message || err.message;
-        resultado = null; // Limpa o resultado em caso de erro
-      }
-      
-    };
+  const cadastrarFilme = async () => {
+  const formData = new FormData();
+  
+  formData.append("titulo", titulo);
+  formData.append("descricao", descricao);
+  formData.append("ano", ano);
+  formData.append("classificacao", classificacao);
+  formData.append("id_genero", id_genero);
+  formData.append("imagem", imagemFile); 
+
+  try {
+    let res = await axios.post(API_BASE_URL + "/filmes/novo", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", 
+        Accept: "application/json",
+      },
+    });
+
+    resultado = res.data;
+    error = null;
+  } catch (err) {
+    error =
+      "Erro ao enviar dados: " + (err.response?.data?.message || err.message);
+    resultado = null; 
+  }
+};
+
 
     /** FUNÇÃO PARA CARREGAR GÊNEROS */
     const carregarGeneros = async () => {
@@ -106,6 +107,10 @@
                         <option value="{genero.id_genero}">{genero.nome}</option>
                         {/each}
                       </select>
+                      <div class="form-floating mt-2 mb-2" style="width: 100%;">
+                        <input type="file" class="form-control bg-body rounded" id="imagem" name="imagem" accept="image/*" on:change={e => imagemFile = e.target.files[0]}>
+                        <label for="imagem">capa</label>
+                      </div>
                       <button id="button_enviar" type="submit" class="btn btn-dark mt-2 mb-1"  style="--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .70rem; --bs-btn-font-size: .90rem; margin-bottom:50px; width:100%; height:50px;">Enviar</button>
                   </form>
                     <p id="message"></p>

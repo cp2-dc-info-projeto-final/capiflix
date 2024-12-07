@@ -3,7 +3,7 @@ const dotenv = require('dotenv').config()
 const { SECRET_ACCESS_TOKEN, NODE_ENV } = process.env;
 const express = require('express');
 const cors = require('cors');
-
+const path = require('path')
 const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require("bcryptjs")
 const jwt = require('jsonwebtoken');
@@ -617,7 +617,8 @@ app.get('/filmes', (req, res) => {
       f.titulo, 
       f.descricao, 
       f.ano, 
-      f.classificacao, 
+      f.classificacao,
+      f.imagem_url, 
       g.nome AS genero 
     FROM filme f
     LEFT JOIN genero g ON f.id_genero = g.id_genero
