@@ -12,7 +12,8 @@ export default defineConfig({
         cadastroUsuarios: './cadastroUsuarios.html',
         login: './login.html',
         administrador: './administrador.html',
-        cadastroGeneros: './cadastroGeneros.html'
+        cadastroGeneros: './cadastroGeneros.html',
+        perfil: './perfil.html'
       },
     },
   },

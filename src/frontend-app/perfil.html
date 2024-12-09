@@ -1,4 +1,4 @@
-<!doctype html>
+<!Doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,14 +8,14 @@
   <body>
     <script type="module">
           import './src/app.css';
-          import EditarPerfil from './src/EditarPerfil.svelte';
+          import Perfil from './src/Perfil.svelte';
 
-          const editarperfil = new EditarPerfil({
-            target: document.getElementById('editarperfil'),
+          const perfil = new Perfil({
+            target: document.getElementById('perfil'),
           })
 
-          export default editarperfil
+          export default perfil
     </script>
-    <div id="editarperfil"></div>
+    <div id="perfil"></div>
   </body>
 </html>

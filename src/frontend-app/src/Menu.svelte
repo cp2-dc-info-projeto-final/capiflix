@@ -2,28 +2,11 @@
   import "./app.css"
   import axios from "axios";
   const api_base_url = "http://localhost:3000"
-  import EditarPerfil from './EditarPerfil.svelte'; 
-
-  // Importe o componente do modal
-  let showModal = false;
-
-  // Função para abrir o modal
-  const openModal = () => {
-    showModal = true;
-  };
-
-  // Função para fechar o modal
-  const closeModal = () => {
-    showModal = false;
-  };
 
 </script>
 
 <main>
-  <!-- Link para o CSS do Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-
-  <!-- JavaScript do Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
   <header class="p-3 text-bg-dark">
@@ -73,7 +56,7 @@
                       <div class="offcanvas-body">
                           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                               <li class="nav-item">
-                                <button style="background-color:transparent; border-color:transparent; color:black" type="button" class="btn btn-primary mt-3" on:click={openModal}>EditarPerfil</button>
+                                <a class="nav-link" href="./perfil.html">Editar Perfil</a>
                               </li>
                               <li class="nav-item">
                                   <a class="nav-link" href="#">Filmes Curtidos ❤️</a>
@@ -97,6 +80,4 @@
           </div>
       </div>
   </header>
-  <!-- Aqui está a importação do modal -->
-  <EditarPerfil {showModal} closeModal={closeModal} />
 </main>
