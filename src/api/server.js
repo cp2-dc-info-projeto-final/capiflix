@@ -21,10 +21,6 @@ const port = 3000;
 
 app.use('/capas', express.static(path.join(__dirname, 'capas')));
 
-app.listen(3000, () => {
-  console.log('Servidor rodando na porta 3000');
-});
-
 app.use(cors({
   origin: 'http://localhost:5173', // Habilita apenas URL do frontend svelte
   credentials: true, 
