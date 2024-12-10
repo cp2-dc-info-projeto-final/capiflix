@@ -19,11 +19,8 @@ const app = express();
 const port = 3000;
 
 
-app.use('/capas', express.static(path.join(__dirname, 'capas')));
 
-app.listen(3000, () => {
-  console.log('Servidor rodando na porta 3000');
-});
+app.use('/capas', express.static(path.join(__dirname, 'capas')));
 
 app.use(cors({
   origin: 'http://localhost:5173', // Habilita apenas URL do frontend svelte
@@ -817,10 +814,10 @@ app.put('/filmes/mudar-descricao/:id_filme', (req, res) => {
   const id_filme = req.params.id_filme; // Renomeado para corresponder ao estilo de código
   const { descricao } = req.body;
 
-  if (!titulo) {
+  if (!descricao) {
     return res.status(400).json({
       status: 'failed',
-      message: 'titulo é obrigatório!'
+      message: 'descrição é obrigatório!'
     });
   }
 
@@ -830,7 +827,7 @@ app.put('/filmes/mudar-descricao/:id_filme', (req, res) => {
   db.run('UPDATE filme SET descricao = ? WHERE id_filme = ?', [descricao, id_filme], function (err) {
     if (err) {
       db.close();
-      return res.status(500).json({
+      return res.status(400).json({
         status: 'failed',
         message: `Erro ao tentar modificar a descricao do filme ${id_filme}!`,
         error: err.message
@@ -1056,4 +1053,5 @@ app.post('/generos/novo', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
+  console.log(path.join(__dirname, 'capas'));
 });

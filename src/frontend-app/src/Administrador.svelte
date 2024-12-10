@@ -197,7 +197,7 @@ const deletarFilme = async (id) => {
 const editarTituloFilme = async (id, novoTitulo) => {
   try {
     console.log("Enviando:", { titulo: novoTitulo });
-    await axiosInstance.put(`${API_BASE_URL}/filmes/mudar-titulo/:id_filme${id}`, {
+    await axiosInstance.put(`${API_BASE_URL}/filmes/mudar-titulo/${id}`, {
       titulo: novoTitulo
     });
     novoTitulo = ""; // Limpa o campo após a edição
@@ -211,13 +211,14 @@ const editarTituloFilme = async (id, novoTitulo) => {
 const editarDescricaoFilme = async (id, novaDescricao) => {
   try {
     console.log("Enviando:", { descricao: novaDescricao });
-    await axiosInstance.put(`${API_BASE_URL}/filmes/mudar-descricao/:id_filme${id}`, {
+    await axiosInstance.put(`${API_BASE_URL}/filmes/mudar-descricao/${id}`, {
       descricao: novaDescricao
     });
     novaDescricao = ""; // Limpa o campo após a edição
     await carregarFilmes(); // Aguarda a recarga após editar
   } catch (error) {
     console.error("Erro ao editar descriçaõ:", error);
+    alert(`Erro: ${error.response ? error.response.data.message : error.message}`);
   }
 };
 
@@ -225,7 +226,7 @@ const editarDescricaoFilme = async (id, novaDescricao) => {
 const editarAnoFilme = async (id, ano) => {
   try {
     console.log("Enviando:", { ano: novoAno });
-    await axiosInstance.put(`${API_BASE_URL}/filmes/mudar-ano/:id_filme${id}`, {
+    await axiosInstance.put(`${API_BASE_URL}/filmes/mudar-ano/${id}`, {
       ano: novoAno
     });
     novoAno = ""; // Limpa o campo após a edição
@@ -239,10 +240,10 @@ const editarAnoFilme = async (id, ano) => {
 const editarClassificacaoFilme = async (id, classificacao) => {
   try {
     console.log("Enviando:", { classificacao: novaClassificacao });
-    await axiosInstance.put(`${API_BASE_URL}/filmes/mudar-classificacao/:id_filme${id}`, {
+    await axiosInstance.put(`${API_BASE_URL}/filmes/mudar-classificacao/${id}`, {
       classificacao: novaClassificacao
     });
-    novaClassificacao = ""; // Limpa o campo após a edição
+    classificacao = ""; // Limpa o campo após a edição
     await carregarFilmes(); // Aguarda a recarga após editar
   } catch (error) {
     console.error("Erro ao editar classificação:", error);
@@ -346,7 +347,7 @@ document.querySelectorAll('.dropdown-toggle').forEach(button => {
                   {#each colunas_filmes as atributo}
                   {#if atributo === "imagem_url"}
                   <td>
-                    <img src={`/capas/${linha_filme[atributo]}`} alt="Imagem do banco de dados" />
+                    <img src={`${API_BASE_URL}${linha_filme[atributo]}`} alt="Imagem do banco de dados" />
                   </td>
                   {:else}
                     <td>{linha_filme[atributo]}</td>
@@ -367,14 +368,14 @@ document.querySelectorAll('.dropdown-toggle').forEach(button => {
                         <li>
                           <button on:click={() => editarTituloFilme(linha_filme.id_filme, novoTitulo)} class="dropdown-item">Salvar</button>
                         </li>
+                        <li>
+                          <label for={`novaDescricao${linha_filme.id_filme}`}>descrição</label>
+                          <input type="text" id={`novaDescricao${linha_filme.id_filme}`} bind:value={novaDescricao}>  
+                        </li>
+                        <li>
+                          <button on:click={() => editarDescricaoFilme(linha_filme.id_filme, novaDescricao)} class="dropdown-item">Salvar</button>
+                        </li>
                         <li><hr class="dropdown-divider"></li>
-                        <li>
-                          <label for={`novaClassificacao${linha_filme.id_filme}`}>classificação</label>
-                          <input type="text" id={`novaClassificacao${linha_filme.id_filme}`} bind:value={novaClassificacao}>  
-                        </li>
-                        <li>
-                          <button on:click={() => editarClassificacaoFilme(linha_filme.id_filme, novaClassificacao)} class="dropdown-item">Salvar</button>
-                        </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                           <label for={`novoAno${linha_filme.id_filme}`}>Ano</label>
@@ -385,11 +386,11 @@ document.querySelectorAll('.dropdown-toggle').forEach(button => {
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
-                          <label for={`novaDescricao${linha_filme.id_filme}`}>Ano</label>
-                          <input type="text" id={`novaDescricao${linha_filme.id_filme}`} bind:value={novaDescricao}>  
+                          <label for={`novaClassificacao${linha_filme.id_filme}`}>classificação</label>
+                          <input type="text" id={`novaClassificacao${linha_filme.id_filme}`} bind:value={novaClassificacao}>  
                         </li>
                         <li>
-                          <button on:click={() => editarDescricaoFilme(linha_filme.id_filme, novaDescricao)} class="dropdown-item">Salvar</button>
+                          <button on:click={() => editarClassificacaoFilme(linha_filme.id_filme, novaClassificacao)} class="dropdown-item">Salvar</button>
                         </li>
                         <li><hr class="dropdown-divider"></li>
                       </ul>
