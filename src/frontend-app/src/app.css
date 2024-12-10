@@ -55,3 +55,12 @@ body, .card{
 .btn-outline-light svg {
     fill: white; /* Cor inicial do ícone */
 }
+
+#div_de_perfil{
+    padding-left: 1px !important;
+    padding-right: 1px !important;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
