@@ -81,7 +81,18 @@
                     window.location.href = "./index.html"}
                 {/if}
               </form>
+            </div>     
+            <div class="form">
+              <form on:submit|preventDefault={cadastrarUsuario}>
+              {#if error}
+                <p style="color: red;">{error}</p>
+              {/if}
+              {#if resultado && resultado.message}
+                <p style="color: green;">{resultado.message}</p>
+               {/if}
+                {#if resultado && resultado.status === "success"} { 
+                    window.location.href = "./index.html"}
+                {/if}
+              </form>
             </div>
-            
-        
   </main>

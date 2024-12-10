@@ -19,6 +19,12 @@ const app = express();
 const port = 3000;
 
 
+app.use('/capas', express.static(path.join(__dirname, 'capas')));
+
+app.listen(3000, () => {
+  console.log('Servidor rodando na porta 3000');
+});
+
 app.use(cors({
   origin: 'http://localhost:5173', // Habilita apenas URL do frontend svelte
   credentials: true, 
@@ -528,7 +534,7 @@ app.put('/usuarios/promover-admin/:id_usuario', (req, res) => {
   let db = geraConexaoDeBancoDeDados()
 
   // Atualizar o campo is_admin para 1 (verdadeiro) para promover o usuário
-  db.run('UPDATE usuario SET é admin = 1 WHERE id_usuario = ?', [id_usuario], function (err) {
+  db.run('UPDATE usuario SET is_admin = 1 WHERE id_usuario = ?', [id_usuario], function (err) {
     if (err) {
       db.close();
       return res.status(500).json({

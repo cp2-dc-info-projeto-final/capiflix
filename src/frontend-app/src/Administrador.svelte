@@ -335,7 +335,7 @@ document.querySelectorAll('.dropdown-toggle').forEach(button => {
             <thead>
               <tr>
                 {#each colunas_filmes as titulo_coluna}
-                  <th>{titulo_coluna}</th>
+                  <th>{titulo_coluna}</th>   
                 {/each}
                 <th></th>
               </tr><tr />
@@ -344,7 +344,13 @@ document.querySelectorAll('.dropdown-toggle').forEach(button => {
               {#each Object.values(filmes) as linha_filme}
                 <tr>
                   {#each colunas_filmes as atributo}
+                  {#if atributo === "imagem_url"}
+                  <td>
+                    <img src={`/capas/${linha_filme[atributo]}`} alt="Imagem do banco de dados" />
+                  </td>
+                  {:else}
                     <td>{linha_filme[atributo]}</td>
+                  {/if}
                   {/each}
                   <td>
                     <button on:click={() => deletarFilme(linha_filme.id_filme)} class="btn btn-danger">Remover</button>
@@ -397,4 +403,14 @@ document.querySelectorAll('.dropdown-toggle').forEach(button => {
         {/if}
       </div>
       <p id="message"></p>
+      <div class="form">
+        <form on:submit|preventDefault={error}>
+        {#if error}
+          <p style="color: red;">{error}</p>
+        {/if}
+        {#if resultado && resultado.message}
+          <p style="color: green;">{resultado.message}</p>
+         {/if}
+        </form>
+      </div>
 </main>
