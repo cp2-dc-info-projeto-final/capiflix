@@ -78,7 +78,7 @@
             <div class="form">
               <form on:submit|preventDefault={cadastrarUsuario}>
                 {#if resultado && resultado.status === "success"} { 
-                    window.location.href = "./index.html"}
+                    window.location.href = "./login.html"}
                 {/if}
               </form>
             </div>     
@@ -91,7 +91,7 @@
                 <p style="color: green;">{resultado.message}</p>
                {/if}
                 {#if resultado && resultado.status === "success"} { 
-                    window.location.href = "./index.html"}
+                    window.location.href = "./login.html"}
                 {/if}
               </form>
             </div>

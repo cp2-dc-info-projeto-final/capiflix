@@ -20,8 +20,11 @@ const port = 3000;
 
 
 
+<<<<<<< HEAD
 app.use('/capas', express.static(path.join(__dirname, 'capas')));
 
+=======
+>>>>>>> 78db414238f7fb5be116b7551c91a4b882e26706
 app.use(cors({
   origin: 'http://localhost:5173', // Habilita apenas URL do frontend svelte
   credentials: true, 
