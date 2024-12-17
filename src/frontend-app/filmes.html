@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capiflix</title>
+</head>
+<body>
+    <script type="module">
+        import './src/app.css';
+        import Filme from './src/Filmes.svelte';
+
+        const filme = new Filme({
+          target: document.getElementById('filme'),
+        })
+
+        export default filme
+  </script>
+  <div id="filme"></div>
+</body>
+</html>

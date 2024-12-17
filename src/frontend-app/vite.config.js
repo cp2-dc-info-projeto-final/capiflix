@@ -7,13 +7,14 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        home: 'home.html',
+        home: 'index.html',
         menu: 'menu.html',
         cadastroUsuarios: './cadastroUsuarios.html',
         login: './login.html',
         administrador: './administrador.html',
         cadastroGeneros: './cadastroGeneros.html',
-        perfil: './perfil.html'
+        perfil: './perfil.html',
+        filme: './filmes.html'
       },
     },
   },

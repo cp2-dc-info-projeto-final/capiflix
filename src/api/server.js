@@ -18,13 +18,8 @@ const app = express();
 
 const port = 3000;
 
-
-
-<<<<<<< HEAD
 app.use('/capas', express.static(path.join(__dirname, 'capas')));
 
-=======
->>>>>>> 78db414238f7fb5be116b7551c91a4b882e26706
 app.use(cors({
   origin: 'http://localhost:5173', // Habilita apenas URL do frontend svelte
   credentials: true, 
@@ -962,6 +957,37 @@ app.put('/filmes/mudar-classificacao/:id_filme', (req, res) => {
   });
 });
 
+app.get('/filmes/busca', (req, res) => {
+  const titulo = req.query.titulo;
+
+  let db = geraConexaoDeBancoDeDados();
+
+  db.all('SELECT imagem_url, titulo FROM filme WHERE titulo LIKE ?', [`%${titulo}%`], (error, rows) => {
+    if (error) {
+      console.error(error);
+      db.close();
+      return res.status(500).json({
+        status: 'failed',
+        message: 'Erro ao verificar o título no banco de dados.',
+      });
+    }
+
+    if (rows.length === 0) {
+      db.close();
+      return res.status(400).json({
+        status: 'failed',
+        message: 'Este título não foi encontrado!',
+      });
+    } else {
+      db.close();
+      return res.status(200).json({
+        status: 'success',
+        filmes: rows, // agora retorna a lista com as URLs das imagens
+      });
+    }
+  });
+});
+
 app.get('/generos', (req, res) => {
   let db = geraConexaoDeBancoDeDados();
 
@@ -1056,5 +1082,4 @@ app.post('/generos/novo', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
-  console.log(path.join(__dirname, 'capas'));
 });
