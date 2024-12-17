@@ -59,11 +59,10 @@ body, .card{
 #div_de_perfil{
     border-color: #000;
     border: solid;
-    border-radius: 20px;
     padding-left: 1px !important;
     padding-right: 1px !important;
     position: absolute;
-    top: 58%;
+    top: 51%;
     left: 50%;
     transform: translate(-50%, -50%);
 }

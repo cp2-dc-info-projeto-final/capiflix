@@ -236,6 +236,12 @@ async function verificaToken(req, res, next) {
   });
 }
 
+app.put('/usuarios/me', (req, res) => {
+  console.log('Requisição PUT recebida para /usuarios/me');
+  // Continue com a lógica
+});
+
+
 app.post("/login", login);
 
 app.post('/logout', (req, res) => {
