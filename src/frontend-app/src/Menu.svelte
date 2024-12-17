@@ -25,7 +25,6 @@
                   <li><a href="/filmes.html" class="nav-link px-1 text-white">Filmes</a></li>
                   <li><a href="/generos.html" class="nav-link px-1 text-white">Gêneros</a></li>
                   <li><a href="/trailers.html" class="nav-link px-1 text-white">Trailers</a></li>
-                  <li><a href="/conta.html" class="nav-link px-1 text-white">Conta</a></li>
                   <li><a href="/administrador.html" class="nav-link px-1 text-white">Admin</a></li>
               </ul>
               <form class="d-flex" style="padding-right:30px;">
@@ -42,9 +41,7 @@
                   <a href="./cadastroUsuarios.html" type="button" class="btn btn-outline-light me-1">Cadastrar</a>
                   <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                       <span class="navbar-toggler-icon fs-3">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                              <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
-                          </svg>
+                        <img src="imagens/foto_de_perfil.png" alt="imagem de uma capivara comendo pipoca" style="width: 100%;" id="inverter" />
                       </span>
                   </button>
 
@@ -61,18 +58,9 @@
                               <li class="nav-item">
                                   <a class="nav-link" href="#">Filmes Curtidos ❤️</a>
                               </li>
-                              <li class="nav-item dropdown">
-                                  <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                      Dropdown
-                                  </a>
-                                  <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
-                                      <li><a class="icon-link icon-link-hover" style="--bs-link-hover-color-rgb: 25, 135, 84; padding-left:15px;" href="#">
-                                        Icon link
-                                        <svg class="bi" aria-hidden="true"><use xlink:href="#arrow-right"></use></svg>
-                                      </a>
-                                      <li><a class="dropdown-item" href="#">Excluir conta</a></li>
-                                  </ul>
-                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="#">Excluir conta</a>
+                            </li>
                           </ul>
                       </div>
                   </div>

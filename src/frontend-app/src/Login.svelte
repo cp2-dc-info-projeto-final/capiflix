@@ -6,7 +6,6 @@
     let error = null;
     let resultado = null;
     import Menu from "./Menu.svelte"
-
     const API_BASE_URL = "http://localhost:3000";
 
     // habilita envio das credenciais via cookies em toda requisição axios
@@ -20,28 +19,31 @@
             }
     });
     
-    const loginUsuario = async () => {
-      try {
-        let res = await axiosInstance.post("/login",
-          {
-            email,
-            senha
-          }
-        );
+  const loginUsuario = async () => {
+    try {
+      let res = await axiosInstance.post("/login", {
+        email,
+        senha,
+      });
 
-        resultado = res.data;
+      resultado = res.data;
 
-        // Redirecionar para uma página protegida após login bem-sucedido
-        if (resultado && resultado.status === "success") { 
-            window.location.href = "/index.html";  
-        }
-        error = null; // Limpa o erro se a requisição for bem-sucedida
-      } catch (err) {
-        error = err.response?.data?.message || err.message;
-        resultado = null; // Limpa o resultado em caso de erro
+      // Verifica se o login foi bem-sucedido
+      if (resultado && resultado.status === "success") {
+        // Exibe o alerta antes de redirecionar
+        alert("Login bem-sucedido! Você será redirecionado para a página inicial.");
+
+        // Redireciona para a página inicial
+        window.location.href = "/index.html";
       }
-      
-    };
+
+      error = null; // Limpa o erro se a requisição for bem-sucedida
+    } catch (err) {
+      error = err.response?.data?.message || err.message;
+      resultado = null; // Limpa o resultado em caso de erro
+    }
+};
+
 
 </script>
 
@@ -73,5 +75,15 @@
                   <a href="./menu.html">clique para ver o menu</a>
                   <a href="./login.html"></a>
             </div>
+          </div>
+          <div class="form">
+            <form on:submit|preventDefault={error}>
+            {#if error}
+              <p style="color: red;">{error}</p>
+            {/if}
+            {#if resultado && resultado.message}
+              <p style="color: green;">{resultado.message}</p>
+             {/if}
+            </form>
           </div>
 </main>
