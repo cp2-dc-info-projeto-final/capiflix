@@ -1,21 +1,24 @@
 <script>
-  let movies = [
-    { title: "Filme 1", image: "/caminho/para/imagem1.jpg" },
-    { title: "Filme 2", image: "/caminho/para/imagem2.jpg" },
-    { title: "Filme 3", image: "/caminho/para/imagem3.jpg" },
-    { title: "Filme 4", image: "/caminho/para/imagem4.jpg" },
-    { title: "Filme 5", image: "/caminho/para/imagem5.jpg" },
-    { title: "Filme 6", image: "/caminho/para/imagem6.jpg" },
-    { title: "Filme 7", image: "/caminho/para/imagem4.jpg" },
-    { title: "Filme 8", image: "/caminho/para/imagem5.jpg" },
-    { title: "Filme 9", image: "/caminho/para/imagem6.jpg" },
-    { title: "Filme 10", image: "/caminho/para/imagem4.jpg" },
-    { title: "Filme 11", image: "/caminho/para/imagem5.jpg" },
-    { title: "Filme 12", image: "/caminho/para/imagem6.jpg" },
-  ];
-
+  import axios from "axios";
+  
+  const API_BASE_URL = "http://localhost:3000";
+  const filmesPorPagina = 7; // O número de filmes por página
   const visibleMovies = 4;  // Número de filmes visíveis
   let currentIndex = 0;
+  let movies = [];  // Array para armazenar os filmes
+
+  // Função para buscar filmes da API
+  async function fetchMovies(pagina = 1) {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/filmes/carrossel`, {
+        params: { pagina }
+      });
+      movies = response.data.filmes;
+      updateCarousel();  // Atualiza o carrossel após a busca
+    } catch (error) {
+      console.error("Erro ao carregar filmes:", error);
+    }
+  }
 
   // Função para avançar
   function next() {
@@ -24,6 +27,7 @@
     } else {
       currentIndex = 0; // Voltar para o início
     }
+    updateCarousel();
   }
 
   // Função para voltar
@@ -33,14 +37,24 @@
     } else {
       currentIndex = movies.length - visibleMovies; // Ir para o final
     }
+    updateCarousel();
   }
 
-  // Adiciona cópias dos primeiros filmes no final para o efeito infinito
-  let moviesWithClone = [...movies, ...movies.slice(0, visibleMovies)];
+  // Atualiza o carrossel com a lista de filmes e o índice
+  function updateCarousel() {
+    // Adiciona cópias dos primeiros filmes no final para o efeito infinito
+    let moviesWithClone = [...movies, ...movies.slice(0, visibleMovies)];
+    // Re-renderiza a parte do carrossel (isso pode ser feito de forma reativa no framework que você usa)
+    // Exemplo no Svelte ou Vue seria algo como uma atualização automática
+  }
+
+  // Carrega os filmes da primeira página ao carregar o script
+  fetchMovies();
+
 </script>
 
 <style>
-  .carousel {
+   .carousel {
     position: relative;
     width: 100%;
     overflow: hidden;
@@ -84,12 +98,11 @@
     margin-top: 200px;
   }
 </style>
-
 <main>
   <div class="carousel">
     <!-- Botões de controle -->
     <div class="controls">
-      <button id="inverter" on:click={prev}>➤</button>
+      <button on:click={prev}>➤</button>
       <button on:click={next}>➤</button>
     </div>
 
@@ -98,10 +111,13 @@
       class="movie-cards"
       style="transform: translateX(calc(-100% / {visibleMovies} * {currentIndex}));"
     >
-      {#each moviesWithClone as movie}
+      {#each movies as movie}
         <div class="movie-card">
-          <img src={movie.image} alt={movie.title} />
-          <h3>{movie.title}</h3>
+          <div style="background-color: blue; width:75%; height: 250px; text-aling: center">
+            <h3>{movie.titulo}</h3>
+            <img  src={ API_BASE_URL + movie.imagem_url} alt="Imagem do filme" style="width:100%; height: 250px;">
+          </div>
+          
         </div>
       {/each}
     </div>

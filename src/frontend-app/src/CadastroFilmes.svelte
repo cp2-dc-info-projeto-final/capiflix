@@ -49,8 +49,6 @@
     resultado = null; 
   }
 };
-
-
     /** FUNÇÃO PARA CARREGAR GÊNEROS */
     const carregarGeneros = async () => {
       try {

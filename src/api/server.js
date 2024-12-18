@@ -617,7 +617,6 @@ app.get('/home', (req, res) => {
 app.get('/filmes', (req, res) => {
   let db = geraConexaoDeBancoDeDados();
 
-  // Consulta ajustada para incluir o nome do gênero
   const sql = `
     SELECT 
       f.id_filme, 
@@ -653,6 +652,35 @@ app.get('/filmes', (req, res) => {
     res.status(200).json({
       status: 'success',
       filmes: rows
+    });
+  });
+});
+
+// FUNÇÂO CARROSSEL
+const filmesPorPagina = 7;
+app.get('/filmes/carrossel', (req, res) => {
+
+  let db = geraConexaoDeBancoDeDados();
+
+  const pagina = parseInt(req.query.pagina) || 1;
+  const offset = (pagina - 1) * filmesPorPagina;
+  db.all('SELECT f.titulo, f.imagem_url AS imagem_url FROM filme f LEFT JOIN genero g ON f.id_genero = g.id_genero LIMIT ? OFFSET ?', [filmesPorPagina, offset], (err, rows) => {
+    if (err) {
+      return res.status(500).json({
+        status: 'failed',
+        message: 'Erro ao consultar o banco de dados!',
+        error: err.message
+      });
+    }
+    res.status(200).json({
+      status: 'success',
+      filmes: rows
+    });
+    db.close((err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Fechou a conexão com o banco de dados.');
     });
   });
 });
