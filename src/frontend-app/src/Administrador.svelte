@@ -108,7 +108,6 @@
   }
 };
 
-
 // Função para promover a admin o usuário pelo ID
 const promoverAdmin = async (id) => {
       try {

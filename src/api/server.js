@@ -323,12 +323,8 @@ app.post('/usuarios/novo', (req, res) => {
   }
   else {
     // aqui começa o código para inserir o registro no banco de dados
-    let db = new sqlite3.Database(databasePath, (err) => {
-      if (err) {
-        return console.error(err.message);
-      }
-      console.log('Conectou no banco de dados!');
-    });
+    let db = geraConexaoDeBancoDeDados();
+
     db.get('SELECT email FROM usuario WHERE email = ?', [email], async (error, result) => {
       if (error) {
         console.log(error)
@@ -382,16 +378,7 @@ app.put('/usuarios/mudar-nome/:id_usuario', (req, res) => {
   }
 
   // Conectar ao banco de dados SQLite
-  let db = new sqlite3.Database(databasePath, (err) => {
-    if (err) {
-      return res.status(500).json({
-        status: 'failed',
-        message: 'Erro ao conectar ao banco de dados!',
-        error: err.message
-      });
-    }
-    console.log('Conectou no banco de dados!');
-  });
+  let db = geraConexaoDeBancoDeDados();
 
   // Modificar o nome do usuário pelo ID
   db.run('UPDATE usuario SET nome = ? WHERE id_usuario = ?', [nome, id_usuario], function (err) {
@@ -430,11 +417,11 @@ app.put('/usuarios/mudar-nome/:id_usuario', (req, res) => {
 });
 
 // FUNÇÃO DE MUDAR SENHA
-
-app.put('/usuarios/mudar-senha/:id_usuario',(req, res) => {
+app.put('/usuarios/mudar-senha/:id_usuario', async (req, res) => {
   const id_usuario = req.params.id_usuario;
   const { senhaAtual, novaSenha } = req.body;
 
+  // Validação dos parâmetros
   if (!senhaAtual || !novaSenha) {
     return res.status(400).json({
       status: 'failed',
@@ -442,27 +429,15 @@ app.put('/usuarios/mudar-senha/:id_usuario',(req, res) => {
     });
   }
 
-  // Conectar ao banco de dados SQLite
-  let db = new sqlite3.Database(databasePath, (err) => {
-    if (err) {
-      return res.status(500).json({
-        status: 'failed',
-        message: 'Erro ao conectar ao banco de dados!',
-        error: err.message
+  try {
+    let db = geraConexaoDeBancoDeDados(); // Certifique-se de que essa função gera a conexão corretamente
+    // Alteração aqui: consulta à tabela 'usuario' em vez de 'usuarios'
+    const row = await new Promise((resolve, reject) => {
+      db.get('SELECT senha FROM usuario WHERE id_usuario = ?', [id_usuario], (err, row) => { // Corrigido aqui para 'usuario'
+        if (err) reject(err);  // Caso ocorra um erro na consulta
+        resolve(row);           // Retorna o resultado da consulta
       });
-    }
-    console.log('Conectou no banco de dados!');
-  });
-
-  // Verificar se a senha atual está correta
-  db.get('SELECT senha FROM usuarios WHERE id = ?', [id_usuario], (err, row) => {
-    if (err) {
-      return res.status(500).json({
-        status: 'failed',
-        message: 'Erro ao consultar o banco de dados!',
-        error: err.message
-      });
-    }
+    });
 
     if (!row) {
       return res.status(404).json({
@@ -471,60 +446,35 @@ app.put('/usuarios/mudar-senha/:id_usuario',(req, res) => {
       });
     }
 
-    const senhaCorreta = row.senha;
+    const senhaValida = await bcrypt.compare(senhaAtual, row.senha);
+    if (!senhaValida) {
+      return res.status(401).json({
+        status: 'failed',
+        message: 'Senha atual está incorreta!'
+      });
+    }
 
-    // Comparar a senha atual com a senha armazenada (hash)
-    bcrypt.compare(senhaAtual, senhaCorreta, (err, resultado) => {
-      if (err) {
-        return res.status(500).json({
-          status: 'failed',
-          message: 'Erro ao verificar a senha!',
-          error: err.message
-        });
-      }
+    const hashNovaSenha = await bcrypt.hash(novaSenha, 10);
 
-      if (!resultado) {
-        return res.status(401).json({
-          status: 'failed',
-          message: 'Senha atual está incorreta!'
-        });
-      }
-
-      // Hash a nova senha antes de armazená-la
-      bcrypt.hash(novaSenha, 10, (err, hashNovaSenha) => {
-        if (err) {
-          return res.status(500).json({
-            status: 'failed',
-            message: 'Erro ao hash a nova senha!',
-            error: err.message
-          });
-        }
-
-        // Atualizar a senha no banco de dados
-        db.run('UPDATE usuarios SET senha = ? WHERE id = ?', [hashNovaSenha, id_usuario], function(err) {
-          if (err) {
-            return res.status(500).json({
-              status: 'failed',
-              message: 'Erro ao atualizar a senha!',
-              error: err.message
-            });
-          }
-
-          return res.status(200).json({
-            status: 'success',
-            message: 'Senha atualizada com sucesso!'
-          });
-        });
+    // Alteração aqui: atualização da senha na tabela 'usuario' em vez de 'usuarios'
+    await new Promise((resolve, reject) => {
+      db.run('UPDATE usuario SET senha = ? WHERE id_usuario = ?', [hashNovaSenha, id_usuario], function (err) { // Corrigido aqui para 'usuario'
+        if (err) reject(err);  // Caso ocorra um erro ao atualizar a senha
+        resolve();              // Caso a atualização seja bem-sucedida
       });
     });
-  });
 
-  // Fechar a conexão com o banco de dados
-  db.close((err) => {
-    if (err) {
-      console.error('Erro ao fechar a conexão com o banco de dados:', err.message);
-    }
-  });
+    return res.status(200).json({
+      status: 'success',
+      message: 'Senha atualizada com sucesso!'
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: 'failed',
+      message: 'Erro ao processar a requisição!',
+      error: err.message
+    });
+  }
 });
 
 // FUNÇÃO PARA PROMOVER USUÁRIO A ADMIN
