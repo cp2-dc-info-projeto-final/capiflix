@@ -19,11 +19,10 @@
     baseURL: API_BASE_URL,
     responseType: "json",
     headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-    },
+          Accept: "application/json",
+      }
   });
-
+  
   let conteudoAtivo = "perfil";
 
   function editarPerfil() {

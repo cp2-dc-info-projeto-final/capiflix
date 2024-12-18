@@ -88,7 +88,7 @@
   }
 
   button {
-    background-color: antiquewhite;
+    background: none;
     border: none;
     color: rgb(0, 0, 0);
     font-size: 3em;
@@ -102,7 +102,7 @@
   <div class="carousel">
     <!-- Botões de controle -->
     <div class="controls">
-      <button on:click={prev}>➤</button>
+      <button  id="inverter" on:click={prev}>➤</button>
       <button on:click={next}>➤</button>
     </div>
 
@@ -113,11 +113,10 @@
     >
       {#each movies as movie}
         <div class="movie-card">
-          <div style="background-color: blue; width:75%; height: 250px; text-aling: center">
-            <h3>{movie.titulo}</h3>
-            <img  src={ API_BASE_URL + movie.imagem_url} alt="Imagem do filme" style="width:100%; height: 250px;">
+          <div class="image-container">            
+            <img  src={ API_BASE_URL + movie.imagem_url} alt="Imagem do filme" >
           </div>
-          
+             <h3>{movie.titulo}</h3>
         </div>
       {/each}
     </div>
