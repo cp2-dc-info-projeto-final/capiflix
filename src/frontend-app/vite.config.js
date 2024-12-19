@@ -9,12 +9,12 @@ export default defineConfig({
       input: {
         home: 'index.html',
         menu: 'menu.html',
-        cadastroUsuarios: './cadastroUsuarios.html',
+        cadastroUsuarios: './cadastrUsuarios.html',
         login: './login.html',
         administrador: './administrador.html',
         cadastroGeneros: './cadastroGeneros.html',
         perfil: './perfil.html',
-        filme: './filmes.html'
+        fime: './filmes.tml'
       },
     },
   },

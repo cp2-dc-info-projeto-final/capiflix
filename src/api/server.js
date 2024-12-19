@@ -371,7 +371,7 @@ app.post('/usuarios/novo', (req, res) => {
 
 // FUNÇÃO DE MUDAR NOME
 app.put('/usuarios/mudar-nome/:id_usuario', (req, res) => {
-  const id_usuario = req.params.id_usuario; // Renomeado para corresponder ao estilo de código
+  const id = req.params.id_usuario; // Renomeado para corresponder ao estilo de código
   const { nome } = req.body;
 
   if (!nome) {
@@ -673,7 +673,7 @@ app.delete('/filmes/:id_filme', (req, res) => {
   
 // CRIAR FILME
 app.post('/filmes/novo', capa.single('imagem'), (req, res) => {
-  const { titulo, descricao, ano, classificacao, id_genero } = req.body;
+  const { titulo, descriçao, ano, classificacao, id_genero } = req.body;
   let erro = "";
 
   // Validação dos campos verdo formulário
