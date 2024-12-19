@@ -16,6 +16,7 @@
     let novaClassificacao = null;
     let novoAno = null; 
     let novaDescricao = null;
+    let adminPageContent = null;
     import Menu from "./Menu.svelte"
     const API_BASE_URL = "http://localhost:3000";
 
@@ -29,7 +30,27 @@
       }
   });
 
-    
+  const acessarAdmin = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/admin`, {
+        withCredentials: true,  // Certifique-se de que o cookie de sessão está sendo enviado
+        headers: {
+          Accept: 'application/json',  // Ou qualquer outro tipo de conteúdo
+        },
+      });
+
+      // Se a requisição for bem-sucedida, armazene o conteúdo HTML ou a resposta
+      adminPageContent = response.data;
+      error = "";  // Limpa qualquer mensagem de erro
+    } catch (err) {
+      // Caso haja um erro (como o token inválido ou outro erro no backend)
+      error = err.response?.data?.message || 'Erro ao acessar a página de administração.';
+      adminPageContent = "";
+      console.error('Erro ao acessar o admin:', err);
+    }
+  };
+  
+
     /** FUNÇÃO PARA CARREGAR USUÁRIOS */
     const carregarUsuarios = async () => {
       try {
@@ -263,7 +284,13 @@ document.querySelectorAll('.dropdown-toggle').forEach(button => {
 </script>
 <main>
   <Menu></Menu>
+  <button on:click={acessarAdmin} >verifique antes de prosseguir</button>
+  {#if error}
+  <div class="alert alert-danger">{error}</div>
+  {/if}
 
+  {#if adminPageContent}
+    <div class="admin-page-content" bind:this={adminPageContent}>
     <div class="container text-center mt-3">
         <div class="d-flex justify-content-center align-items-center">
             <h1 style="font-size: 90px;">Capflix</h1>
@@ -413,4 +440,6 @@ document.querySelectorAll('.dropdown-toggle').forEach(button => {
          {/if}
         </form>
       </div>
+    </div>
+    {/if}
 </main>

@@ -132,16 +132,97 @@ async function login(req, res) {
   });
 }
 
-
-async function verificaTokenAdmin(req, res, next) {  
-  // se o token (variável SessionID) não estiver presente no cookie o usuário não está logado
+async function verificaToken(req, res, next) {  
+  // Verifica se o token (variável SessionID) está presente no cookie
   const token = req.cookies.SessionID;
   if (!token) {
     return res.status(401).json({ 
       status: 'failed', 
-      message: 'Você não é um admin!'
+      message: 'Você não está logado!'
     });
   }
+
+  // Verifica se o token é válido e decodifica os dados
+  jwt.verify(token, SECRET_ACCESS_TOKEN, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ 
+        status: 'failed', 
+        message: 'Sessão expirada!'
+      });
+    } else {
+      req.idUsuario = decoded.idUsuario;  // Salva o ID do usuário decodificado no req
+      next();  // Se o token for válido, passa para o próximo middleware ou rota
+    }
+  });
+} // Fim da função verificaToken
+
+async function verificaTokenAdmin(req, res, next) {  
+  // Verifica se o token (variável SessionID) está presente no cookie
+  const token = req.cookies.SessionID;
+  if (!token) {
+    return res.status(401).json({ 
+      status: 'failed', 
+      message: 'Você não está logado!'
+    });
+  }
+    
+  console.log(`token: ${token}`);
+  console.log(`SECRET_ACCESS_TOKEN: ${SECRET_ACCESS_TOKEN}`);
+  
+  // Verifica o token e faz a decodificação
+  jwt.verify(token, SECRET_ACCESS_TOKEN, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ 
+        status: 'failed', 
+        message: 'Sessão expirada!'
+      });
+    } else {
+      // Agora, além de verificar se o token é válido, checa se o usuário é admin
+      const { idUsuario } = decoded;
+      const db = geraConexaoDeBancoDeDados();
+
+      // Consulta para verificar se o usuário é um administrador
+      db.get('SELECT id_usuario, nome, email, is_admin FROM usuario WHERE id_usuario = ?', [idUsuario], (error, result) => {
+        if (error) {
+          console.log(error);
+          return res.status(500).json({
+            status: 'failed',
+            message: 'Erro ao acessar os dados do usuário.'
+          });
+        }
+
+        if (result) {
+          // Verifica se o usuário tem permissões de administrador
+          if (!result.is_admin) {
+            return res.status(403).json({
+              status: 'failed',
+              message: 'Acesso negado. Você não tem permissões de administrador.'
+            });
+          }
+
+          // Se o usuário for admin, continua o fluxo
+          req.idUsuario = result.id_usuario;
+          req.email = result.email;
+          req.nome = result.nome;
+
+          db.close((err) => {
+            if (err) {
+              console.error(err.message);
+            }
+            console.log('Fechou a conexão com o banco de dados.');
+          });
+
+          next();  // Chama o próximo middleware ou rota
+        } else {
+          return res.status(404).json({
+            status: 'failed',
+            message: 'Usuário não encontrado.'
+          });
+        }
+      });
+    }
+  });
+} // Fim da função verificaTokenAdmin
 
 app.get('/perfil', verificaToken, (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend-app/perfil.html'));
@@ -158,99 +239,6 @@ app.get('/cadastro-generos', verificaTokenAdmin, (req, res) => {
 app.get('/admin', verificaTokenAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend-app/administrador.html'));
 });
-
-console.log(`token: ${token}`);
-console.log(`SECRET_ACCESS_TOKEN: ${SECRET_ACCESS_TOKEN}`);
-jwt.verify(token, SECRET_ACCESS_TOKEN, (err, decoded) => {
-  if (err) {
-    return res.status(401).json({
-      status: 'failed',
-      message: 'Sessão expirada!',
-    });
-  } else {
-    // o conteúdo decodificado do token é o id do usuário
-    let { idUsuario} = decoded;
-    console.log(`decoded: ${decoded}`);
-    console.log(`idUsuario decoded: ${decoded.idUsuario}`);
-
-    db = geraConexaoDeBancoDeDados();
-
-    // recupera dados do usuário que está tentando fazer login
-    db.get('SELECT id_usuario, nome, email FROM usuario WHERE id_usuario = ? AND is_admin = true', [idUsuario], async (error, result) => {
-      if (error) {
-        console.log(error)
-      }
-      else if (result) {
-        const { id_usuario, nome, email } = result
-        req.idUsuario = id_usuario
-        req.email = email
-        req.nome = nome
-
-        db.close((err) => {
-          if (err) {
-            return console.error(err.message)
-          }
-          console.log('Fechou a conexão com o banco de dados.')
-        });
-
-        next();
-      }
-    });
-  }   
- });
-}
-
-// esta função é um middleware, uma chamada que vai entre duas chamadas para verificar se o usuário está logado
-async function verificaToken(req, res, next) {  
-  // se o token (variável SessionID) não estiver presente no cookie o usuário não está logado
-  const token = req.cookies.SessionID;
-  if (!token) {
-    return res.status(401).json({ 
-      status: 'failed', 
-      message: 'Você não está logado!'
-    });
-  }
-
-  console.log(`token: ${token}`);
-  console.log(`SECRET_ACCESS_TOKEN: ${SECRET_ACCESS_TOKEN}`);
-  jwt.verify(token, SECRET_ACCESS_TOKEN, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({
-        status: 'failed',
-        message: 'Sessão expirada!',
-      });
-    } else {
-      // o conteúdo decodificado do token é o id do usuário
-      let { idUsuario} = decoded;
-      console.log(`decoded: ${decoded}`);
-      console.log(`idUsuario decoded: ${decoded.idUsuario}`);
-
-      db = geraConexaoDeBancoDeDados();
-
-      // recupera dados do usuário que está tentando fazer login
-      db.get('SELECT id_usuario, nome, email FROM usuario WHERE id_usuario = ?', [idUsuario], async (error, result) => {
-        if (error) {
-          console.log(error)
-        }
-        else if (result) {
-          const { id_usuario, nome, email } = result
-          req.idUsuario = id_usuario
-          req.email = email
-          req.nome = nome
-
-          db.close((err) => {
-            if (err) {
-              return console.error(err.message)
-            }
-            console.log('Fechou a conexão com o banco de dados.')
-          });
-
-          next();
-        }
-      });
-    }   
-  });
-}
 
 app.put('/usuarios/me', (req, res) => {
   console.log('Requisição PUT recebida para /usuarios/me');
