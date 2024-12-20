@@ -14,7 +14,8 @@ export default defineConfig({
         administrador: './administrador.html',
         cadastroGeneros: './cadastroGeneros.html',
         perfil: './perfil.html',
-        fime: './filmes.tml'
+        buscaFilme: './buscaFilmes.html',
+        filme: './filme.svelte'
       },
     },
   },

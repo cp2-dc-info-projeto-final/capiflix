@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capiflix</title>
+</head>
+<body>
+    <script type="module">
+        import './src/app.css';
+        import BuscaFilme from './src/BuscaFilme.svelte';
+
+        const buscaFilme = new BuscaFilme({
+          target: document.getElementById('buscaFilme'),
+        })
+
+        export default buscaFilme
+  </script>
+  <div id="buscaFilme"></div>
+</body>
+</html>

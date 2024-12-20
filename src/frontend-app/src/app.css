@@ -8,6 +8,17 @@
 }
 
 
+
+#div_de_boasvindas_2{
+    padding-left: 1px !important;
+    padding-right: 1px !important;
+    position: absolute;
+    top: 300%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
 body, .card{
     background-color:antiquewhite!important;
     margin: 0;
@@ -56,13 +67,13 @@ body, .card{
     fill: white; /* Cor inicial do ícone */
 }
 
-#div_de_perfil{
+#div_perfil{
     border-color: #000;
     border: solid;
     padding-left: 1px !important;
     padding-right: 1px !important;
-    position: absolute;
-    top: 51%;
+    position:absolute;
+    top: 20% !important;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -83,4 +94,5 @@ body, .card{
     height: 100%;
     object-fit: cover; /* Ajusta a imagem para cobrir o contêiner mantendo a proporção */
   }
+
   

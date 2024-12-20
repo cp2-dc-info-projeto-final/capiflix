@@ -44,8 +44,9 @@
       <Menu></Menu>
       <div class="card">
       <div class="container text-center mt-1">
-        <div class="d-flex justify-content-center align-items-center" style="font-family:American Typewriter, serif;">
-            <h1 style="font-size: 140px;">Capflix</h1>
+        <div class="d-flex justify-content-center align-items-center" style="font-family: American Typewriter, serif;">
+          <h1 style="font-size: 7rem; color: #333;">
+            Cadastro</h1>
             <img src="imagens/capivara.png" alt="" style="width: 10%;" id="inverter">
         </div>
       </div>
@@ -69,11 +70,6 @@
                     </div>
                       <button id="button_enviar" type="submit" class="btn btn-dark mt-2 mb-1"  style="--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .70rem; --bs-btn-font-size: .90rem; margin-bottom:50px; width:100%; height:50px;">Enviar</button>
                   </form>
-                    <p id="message"></p>
-                    <a href="./administrador.html">clique aqui</a><br>
-                    <a href="./menu.html">clique para ver o menu</a><br>
-                    <a href="./login.html">clique aqui para ver o login</a>
-                    <a href="./cadastroFilmes.html">filmes</a><br>
               </div>
             <div class="form">
               <form on:submit|preventDefault={cadastrarUsuario}>

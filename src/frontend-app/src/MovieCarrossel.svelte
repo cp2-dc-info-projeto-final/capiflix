@@ -1,8 +1,8 @@
 <script>
   import axios from "axios";
-  
+
   const API_BASE_URL = "http://localhost:3000";
-  const filmesPorPagina = 7; // O número de filmes por página
+  const filmesPorPagina = 7; // Número de filmes por página
   const visibleMovies = 4;  // Número de filmes visíveis
   let currentIndex = 0;
   let movies = [];  // Array para armazenar os filmes
@@ -13,6 +13,7 @@
       const response = await axios.get(`${API_BASE_URL}/filmes/carrossel`, {
         params: { pagina }
       });
+      console.log("Filmes recebidos:", response.data.filmes); // Verifique os filmes recebidos
       movies = response.data.filmes;
       updateCarousel();  // Atualiza o carrossel após a busca
     } catch (error) {
@@ -20,7 +21,7 @@
     }
   }
 
-  // Função para avançar
+  // Função para avançar no carrossel
   function next() {
     if (currentIndex < movies.length - visibleMovies) {
       currentIndex++;
@@ -30,7 +31,7 @@
     updateCarousel();
   }
 
-  // Função para voltar
+  // Função para voltar no carrossel
   function prev() {
     if (currentIndex > 0) {
       currentIndex--;
@@ -44,17 +45,25 @@
   function updateCarousel() {
     // Adiciona cópias dos primeiros filmes no final para o efeito infinito
     let moviesWithClone = [...movies, ...movies.slice(0, visibleMovies)];
-    // Re-renderiza a parte do carrossel (isso pode ser feito de forma reativa no framework que você usa)
-    // Exemplo no Svelte ou Vue seria algo como uma atualização automática
+  }
+
+  // Função para navegar para a página de detalhes do filme
+  function goToMovieDetails(idFilme) {
+    console.log("ID do filme:", idFilme);  // Verifique se o ID aparece aqui
+    if (idFilme) {
+      // Modifica a URL diretamente
+      window.location.href = `/filme/${idFilme}`;
+    } else {
+      console.error("ID do filme não encontrado.");
+    }
   }
 
   // Carrega os filmes da primeira página ao carregar o script
   fetchMovies();
-
 </script>
 
 <style>
-   .carousel {
+  .carousel {
     position: relative;
     width: 100%;
     overflow: hidden;
@@ -98,26 +107,31 @@
     margin-top: 200px;
   }
 </style>
+
 <main>
   <div class="carousel">
     <!-- Botões de controle -->
     <div class="controls">
-      <button  id="inverter" on:click={prev}>➤</button>
+      <button id="inverter" on:click={prev}>➤</button>
       <button on:click={next}>➤</button>
     </div>
 
     <!-- Slides dos filmes -->
     <div
       class="movie-cards"
-      style="transform: translateX(calc(-100% / {visibleMovies} * {currentIndex}));"
+      style="transform: translateX(-{(100 / visibleMovies) * currentIndex}%);"
     >
       {#each movies as movie}
-        <div class="movie-card">
+        <button 
+          class="movie-card" 
+          on:click={() => goToMovieDetails(movie.id_filme)} 
+          on:keydown={(e) => e.key === 'Enter' && goToMovieDetails(movie.id_filme)}
+        >
           <div class="image-container">            
-            <img  src={ API_BASE_URL + movie.imagem_url} alt="Imagem do filme" >
+            <img src={API_BASE_URL + movie.imagem_url} alt={`Capa do filme ${movie.titulo}`} />
           </div>
-             <h3>{movie.titulo}</h3>
-        </div>
+          <h3>{movie.titulo}</h3>
+        </button>
       {/each}
     </div>
   </div>

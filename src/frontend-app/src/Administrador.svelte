@@ -30,14 +30,14 @@
       }
   });
 
-  const acessarAdmin = async () => {
+  /*const acessarAdmin = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/admin`, {
         withCredentials: true,  // Certifique-se de que o cookie de sessão está sendo enviado
         headers: {
           Accept: 'application/json',  // Ou qualquer outro tipo de conteúdo
         },
-      });
+      })
 
       // Se a requisição for bem-sucedida, armazene o conteúdo HTML ou a resposta
       adminPageContent = response.data;
@@ -49,7 +49,15 @@
       console.error('Erro ao acessar o admin:', err);
     }
   };
-  
+  <button on:click={acessarAdmin} >verifique antes de prosseguir</button>
+  {#if error}
+  <div class="alert alert-danger">{error}</div>
+  {/if}
+
+  {#if adminPageContent}
+  onde vai o receber pagina
+  {/if}
+  */
 
     /** FUNÇÃO PARA CARREGAR USUÁRIOS */
     const carregarUsuarios = async () => {
@@ -284,162 +292,129 @@ document.querySelectorAll('.dropdown-toggle').forEach(button => {
 </script>
 <main>
   <Menu></Menu>
-  <button on:click={acessarAdmin} >verifique antes de prosseguir</button>
-  {#if error}
-  <div class="alert alert-danger">{error}</div>
-  {/if}
 
-  {#if adminPageContent}
-    <div class="admin-page-content" bind:this={adminPageContent}>
+  <div class="admin-page-content">
     <div class="container text-center mt-3">
-        <div class="d-flex justify-content-center align-items-center">
-            <h1 style="font-size: 90px;">Capflix</h1>
-        </div>
+      <div class="d-flex justify-content-center align-items-center">
+        <h1>Capflix</h1>
       </div>
-        <div class="card">
-        {#if usuarios}
-          <table>
-            <thead>
-              <tr>
-                {#each colunas_usuarios as nome_coluna}
-                  <th>{nome_coluna}</th>
-                {/each}
-                <th></th>
-              </tr><tr />
-            </thead>
-            <tbody>
-              {#each Object.values(usuarios) as linha_usuario}
-                <tr>
-                  {#each colunas_usuarios as atributo}
-                    <td>{linha_usuario[atributo]}</td>
-                  {/each}
-                  <td>
-                    <button on:click={() => deletarUsuario(linha_usuario.id_usuario)} class="btn btn-danger">Remover</button>
+    </div>
 
-                    <div class="dropdown dropend">
-                      <button class="btn btn-secondary dropdown-toggle" type="button" id={`dropdownMenuButton_${linha_usuario.id_usuario}`} data-bs-toggle="dropdown" aria-expanded="false">
-                        Editar
-                      </button>
-                      
-                      <ul class="dropdown-menu" aria-labelledby={`dropdownMenuButton_${linha_usuario.id_usuario}`}>
-                        <li>
-                          <label for={`novoNome_${linha_usuario.id_usuario}`}>Nome</label>
-                          <input type="text" id={`novoNome_${linha_usuario.id_usuario}`} bind:value={novoNome}>  
-                        </li>
-                        <li>
-                          <button on:click={() => editarNomeUsuario(linha_usuario.id_usuario, novoNome)} class="dropdown-item">Salvar</button>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                          <label for={`senhaAtual_${linha_usuario.id_usuario}`}>Senha Atual</label>
-                          <input type="password" id={`senhaAtual_${linha_usuario.id_usuario}`} bind:value={senhaAtual}>  
-                        </li>
-                        <li>
-                          <label for={`novaSenha_${linha_usuario.id_usuario}`}>Nova Senha</label>
-                          <input type="password" id={`novaSenha_${linha_usuario.id_usuario}`} bind:value={novaSenha}>  
-                        </li>
-                        <li>
-                          <button on:click={() => mudarSenhaUsuario(linha_usuario.id_usuario, senhaAtual, novaSenha)} class="dropdown-item">Salvar Senha</button>
-                        </li>
-                        <li>
-                          <button on:click={() => promoverAdmin(linha_usuario.id_usuario)} class="dropdown-item">Promover</button>
-                        </li>
-                      </ul>
-                    </div>
-                    
-                  </td>
-                </tr>
+    <!-- Tabela de Usuários -->
+    <div class="card">
+      {#if usuarios}
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              {#each colunas_usuarios as nome_coluna}
+                <th>{nome_coluna}</th>
               {/each}
-            </tbody>
-          </table>
-        {/if}
-      </div>
-      
-
-      <div class="card">
-        {#if filmes}
-          <table>
-            <thead>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {#each Object.values(usuarios) as linha_usuario}
               <tr>
-                {#each colunas_filmes as titulo_coluna}
-                  <th>{titulo_coluna}</th>   
+                {#each colunas_usuarios as atributo}
+                  <td>{linha_usuario[atributo]}</td>
                 {/each}
-                <th></th>
-              </tr><tr />
-            </thead>
-            <tbody>
-              {#each Object.values(filmes) as linha_filme}
-                <tr>
-                  {#each colunas_filmes as atributo}
+                <td>
+                  <button on:click={() => deletarUsuario(linha_usuario.id_usuario)} class="btn btn-danger btn-sm">Remover</button>
+
+                  <div class="dropdown dropend">
+                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id={`dropdownMenuButton_${linha_usuario.id_usuario}`} data-bs-toggle="dropdown" aria-expanded="false">
+                      Editar
+                    </button>
+
+                    <ul class="dropdown-menu" aria-labelledby={`dropdownMenuButton_${linha_usuario.id_usuario}`}>
+                      <li>
+                        <label for={`novoNome_${linha_usuario.id_usuario}`}>Nome</label>
+                        <input type="text" id={`novoNome_${linha_usuario.id_usuario}`} bind:value={novoNome}>
+                      </li>
+                      <li>
+                        <button on:click={() => editarNomeUsuario(linha_usuario.id_usuario, novoNome)} class="dropdown-item">Salvar</button>
+                      </li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li>
+                        <label for={`senhaAtual_${linha_usuario.id_usuario}`}>Senha Atual</label>
+                        <input type="password" id={`senhaAtual_${linha_usuario.id_usuario}`} bind:value={senhaAtual}>
+                      </li>
+                      <li>
+                        <label for={`novaSenha_${linha_usuario.id_usuario}`}>Nova Senha</label>
+                        <input type="password" id={`novaSenha_${linha_usuario.id_usuario}`} bind:value={novaSenha}>
+                      </li>
+                      <li>
+                        <button on:click={() => mudarSenhaUsuario(linha_usuario.id_usuario, senhaAtual, novaSenha)} class="dropdown-item">Salvar Senha</button>
+                      </li>
+                      <li>
+                        <button on:click={() => promoverAdmin(linha_usuario.id_usuario)} class="dropdown-item">Promover</button>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            {/each}
+          </tbody>
+        </table>
+      {/if}
+    </div>
+
+    <!-- Tabela de Filmes -->
+    <div class="card">
+      {#if filmes}
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              {#each colunas_filmes as titulo_coluna}
+                <th>{titulo_coluna}</th>
+              {/each}
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {#each Object.values(filmes) as linha_filme}
+              <tr>
+                {#each colunas_filmes as atributo}
                   {#if atributo === "imagem_url"}
-                  <td>
-                    <img src={`${API_BASE_URL}${linha_filme[atributo]}`} alt="Imagem do banco de dados" />
-                  </td>
+                    <td><img src={`${API_BASE_URL}${linha_filme[atributo]}`} alt="Imagem do filme" class="img-fluid" /></td>
                   {:else}
                     <td>{linha_filme[atributo]}</td>
                   {/if}
-                  {/each}
-                  <td>
-                    <button on:click={() => deletarFilme(linha_filme.id_filme)} class="btn btn-danger">Remover</button>
-                    
-                    <div class="dropdown dropend">
-                      <button class="btn btn-secondary dropdown-toggle" type="button" id={`dropdownMenuButton_${linha_filme.id_filme}`} data-bs-toggle="dropdown" aria-expanded="false">
-                        Editar
-                      </button>
-                      <ul class="dropdown-menu" aria-labelledby={`dropdownMenuButton_${linha_filme.id_filme}`}>
-                        <li>
-                          <label for={`novoTitulo_${linha_filme.id_filme}`}>Titulo</label>
-                          <input type="text" id={`novoTitulo${linha_filme.id_filme}`} bind:value={novoTitulo}>  
-                        </li>
-                        <li>
-                          <button on:click={() => editarTituloFilme(linha_filme.id_filme, novoTitulo)} class="dropdown-item">Salvar</button>
-                        </li>
-                        <li>
-                          <label for={`novaDescricao${linha_filme.id_filme}`}>descrição</label>
-                          <input type="text" id={`novaDescricao${linha_filme.id_filme}`} bind:value={novaDescricao}>  
-                        </li>
-                        <li>
-                          <button on:click={() => editarDescricaoFilme(linha_filme.id_filme, novaDescricao)} class="dropdown-item">Salvar</button>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                          <label for={`novoAno${linha_filme.id_filme}`}>Ano</label>
-                          <input type="text" id={`novoAno${linha_filme.id_filme}`} bind:value={novoAno}>  
-                        </li>
-                        <li>
-                          <button on:click={() => editarAnoFilme(linha_filme.id_filme, novoAno)} class="dropdown-item">Salvar</button>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                          <label for={`novaClassificacao${linha_filme.id_filme}`}>classificação</label>
-                          <input type="text" id={`novaClassificacao${linha_filme.id_filme}`} bind:value={novaClassificacao}>  
-                        </li>
-                        <li>
-                          <button on:click={() => editarClassificacaoFilme(linha_filme.id_filme, novaClassificacao)} class="dropdown-item">Salvar</button>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                      </ul>
-                    </div>
-                  </td>
-                  
-                </tr>
-              {/each}
-            </tbody>
-          </table>
-        {/if}
-      </div>
-      <p id="message"></p>
-      <div class="form">
-        <form on:submit|preventDefault={error}>
-        {#if error}
-          <p style="color: red;">{error}</p>
-        {/if}
-        {#if resultado && resultado.message}
-          <p style="color: green;">{resultado.message}</p>
-         {/if}
-        </form>
-      </div>
+                {/each}
+                <td>
+                  <button on:click={() => deletarFilme(linha_filme.id_filme)} class="btn btn-danger btn-sm">Remover</button>
+
+                  <div class="dropdown dropend">
+                    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id={`dropdownMenuButton_${linha_filme.id_filme}`} data-bs-toggle="dropdown" aria-expanded="false">
+                      Editar
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby={`dropdownMenuButton_${linha_filme.id_filme}`}>
+                      <li>
+                        <label for={`novoTitulo_${linha_filme.id_filme}`}>Titulo</label>
+                        <input type="text" id={`novoTitulo${linha_filme.id_filme}`} bind:value={novoTitulo}>
+                      </li>
+                      <li>
+                        <button on:click={() => editarTituloFilme(linha_filme.id_filme, novoTitulo)} class="dropdown-item">Salvar</button>
+                      </li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li>
+                        <label for={`novaDescricao${linha_filme.id_filme}`}>Descrição</label>
+                        <input type="text" id={`novaDescricao${linha_filme.id_filme}`} bind:value={novaDescricao}>
+                      </li>
+                      <li>
+                        <button on:click={() => editarDescricaoFilme(linha_filme.id_filme, novaDescricao)} class="dropdown-item">Salvar</button>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            {/each}
+          </tbody>
+        </table>
+      {/if}
     </div>
-    {/if}
+
+    <p id="message"></p>
+  </div>
+  
 </main>

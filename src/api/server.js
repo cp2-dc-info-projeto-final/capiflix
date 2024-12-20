@@ -132,59 +132,29 @@ async function login(req, res) {
   });
 }
 
-async function verificaToken(req, res, next) {  
-  // Verifica se o token (variável SessionID) está presente no cookie
+async function verificaToken(req, res, next) {
   const token = req.cookies.SessionID;
   if (!token) {
-    return res.status(401).json({ 
-      status: 'failed', 
+    return res.status(401).json({
+      status: 'failed',
       message: 'Você não está logado!'
     });
   }
 
-  // Verifica se o token é válido e decodifica os dados
   jwt.verify(token, SECRET_ACCESS_TOKEN, (err, decoded) => {
     if (err) {
-      return res.status(401).json({ 
-        status: 'failed', 
+      return res.status(401).json({
+        status: 'failed',
         message: 'Sessão expirada!'
       });
     } else {
-      req.idUsuario = decoded.idUsuario;  // Salva o ID do usuário decodificado no req
-      next();  // Se o token for válido, passa para o próximo middleware ou rota
-    }
-  });
-} // Fim da função verificaToken
+      const idUsuario = decoded.idUsuario;  // Salva o idUsuario no req
 
-async function verificaTokenAdmin(req, res, next) {  
-  // Verifica se o token (variável SessionID) está presente no cookie
-  const token = req.cookies.SessionID;
-  if (!token) {
-    return res.status(401).json({ 
-      status: 'failed', 
-      message: 'Você não está logado!'
-    });
-  }
-    
-  console.log(`token: ${token}`);
-  console.log(`SECRET_ACCESS_TOKEN: ${SECRET_ACCESS_TOKEN}`);
-  
-  // Verifica o token e faz a decodificação
-  jwt.verify(token, SECRET_ACCESS_TOKEN, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ 
-        status: 'failed', 
-        message: 'Sessão expirada!'
-      });
-    } else {
-      // Agora, além de verificar se o token é válido, checa se o usuário é admin
-      const { idUsuario } = decoded;
       const db = geraConexaoDeBancoDeDados();
-
-      // Consulta para verificar se o usuário é um administrador
-      db.get('SELECT id_usuario, nome, email, is_admin FROM usuario WHERE id_usuario = ?', [idUsuario], (error, result) => {
+      
+      // Consulta ao banco de dados para pegar os dados do usuário (nome e email)
+      db.get('SELECT nome, email FROM usuario WHERE id_usuario = ?', [idUsuario], (error, result) => {
         if (error) {
-          console.log(error);
           return res.status(500).json({
             status: 'failed',
             message: 'Erro ao acessar os dados do usuário.'
@@ -192,27 +162,13 @@ async function verificaTokenAdmin(req, res, next) {
         }
 
         if (result) {
-          // Verifica se o usuário tem permissões de administrador
-          if (!result.is_admin) {
-            return res.status(403).json({
-              status: 'failed',
-              message: 'Acesso negado. Você não tem permissões de administrador.'
-            });
-          }
-
-          // Se o usuário for admin, continua o fluxo
-          req.idUsuario = result.id_usuario;
-          req.email = result.email;
+          // Adiciona nome e email ao req
+          req.idUsuario = idUsuario;
           req.nome = result.nome;
+          req.email = result.email;
 
-          db.close((err) => {
-            if (err) {
-              console.error(err.message);
-            }
-            console.log('Fechou a conexão com o banco de dados.');
-          });
-
-          next();  // Chama o próximo middleware ou rota
+          db.close();
+          next();  // Passa para o próximo middleware ou rota
         } else {
           return res.status(404).json({
             status: 'failed',
@@ -222,7 +178,42 @@ async function verificaTokenAdmin(req, res, next) {
       });
     }
   });
-} // Fim da função verificaTokenAdmin
+}
+
+async function verificaTokenAdmin(req, res, next) {
+  // Primeiro, chama a função de verificação de token (verificaToken)
+  verificaToken(req, res, () => {
+    const db = geraConexaoDeBancoDeDados();
+
+    // Consulta para verificar se o usuário é um administrador
+    db.get('SELECT is_admin FROM usuario WHERE id_usuario = ?', [req.idUsuario], (error, result) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({
+          status: 'failed',
+          message: 'Erro ao acessar os dados do usuário.'
+        });
+      }
+
+      if (result) {
+        // Verifica se o usuário tem permissões de administrador
+        if (result.is_admin !== 1) {  // Verifica se is_admin é 1 (admin)
+          return res.status(403).json({
+            status: 'failed',
+            message: 'Acesso negado. Você não tem permissões de administrador.'
+          });
+        }
+
+        next();  // Se o usuário for admin, continua o fluxo
+      } else {
+        return res.status(404).json({
+          status: 'failed',
+          message: 'Usuário não encontrado.'
+        });
+      }
+    });
+  });
+}
 
 app.get('/perfil', verificaToken, (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend-app/perfil.html'));
@@ -240,15 +231,9 @@ app.get('/admin', verificaTokenAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend-app/administrador.html'));
 });
 
-app.put('/usuarios/me', (req, res) => {
-  console.log('Requisição PUT recebida para /usuarios/me');
-  // Continue com a lógica
-});
-
-
 app.post("/login", login);
 
-app.post('/logout', (req, res) => {
+app.post('/logout', verificaToken, (req, res) => {
   // Limpa o cookie "SessionID" 
   res.clearCookie("SessionID");
 
@@ -385,7 +370,7 @@ app.put('/usuarios/mudar-nome/:id_usuario', (req, res) => {
   let db = geraConexaoDeBancoDeDados();
 
   // Modificar o nome do usuário pelo ID
-  db.run('UPDATE usuario SET nome = ? WHERE id_usuario = ?', [nome, id_usuario], function (err) {
+  db.run('UPDATE usuario SET nome = ? WHERE id_usuario = ?', [nome, id], function (err) {
     if (err) {
       db.close();
       return res.status(500).json({
@@ -479,6 +464,79 @@ app.put('/usuarios/mudar-senha/:id_usuario', async (req, res) => {
       error: err.message
     });
   }
+});
+
+// FUNÇÃO PARA MUDAR EMAIL
+app.put('/usuarios/mudar-email/:id_usuario', (req, res) => {
+  const id = req.params.id_usuario; // ID do usuário a ser atualizado
+  const { email } = req.body; // Novo email que será atualizado
+
+  // Validação: Verificar se o email foi fornecido
+  if (!email) {
+    return res.status(400).json({
+      status: 'failed',
+      message: 'Email é obrigatório!'
+    });
+  }
+
+  // Conectar ao banco de dados SQLite
+  let db = geraConexaoDeBancoDeDados();
+
+  // Verificar se o e-mail já está em uso
+  db.get('SELECT email FROM usuario WHERE email = ?', [email], (err, result) => {
+    if (err) {
+      db.close();
+      return res.status(500).json({
+        status: 'failed',
+        message: 'Erro ao verificar o e-mail no banco de dados.',
+        error: err.message
+      });
+    }
+
+    // Se o e-mail já estiver em uso
+    if (result) {
+      db.close();
+      return res.status(400).json({
+        status: 'failed',
+        message: 'Este e-mail já está em uso!'
+      });
+    }
+
+    // Atualizar o e-mail do usuário
+    db.run('UPDATE usuario SET email = ? WHERE id_usuario = ?', [email, id], function (err) {
+      if (err) {
+        db.close();
+        return res.status(500).json({
+          status: 'failed',
+          message: `Erro ao tentar modificar o e-mail do usuário ${id}!`,
+          error: err.message
+        });
+      }
+
+      // Verificar se nenhuma linha foi afetada (usuário não encontrado)
+      if (this.changes === 0) {
+        db.close();
+        return res.status(404).json({
+          status: 'failed',
+          message: 'Usuário não encontrado!'
+        });
+      }
+
+      // Fechar a conexão com o banco de dados
+      db.close((err) => {
+        if (err) {
+          return console.error(err.message);
+        }
+        console.log('Fechou a conexão com o banco de dados.');
+      });
+
+      // Retornar uma resposta de sucesso
+      return res.status(200).json({
+        status: 'success',
+        message: `E-mail do usuário atualizado com sucesso!`
+      });
+    });
+  });
 });
 
 // FUNÇÃO PARA PROMOVER USUÁRIO A ADMIN
@@ -610,6 +668,65 @@ app.get('/filmes', (req, res) => {
   });
 });
 
+app.get('/filme/:id', (req, res) => {
+  let db = geraConexaoDeBancoDeDados();
+  const idFilme = parseInt(req.params.id); // Pega o id do filme na URL
+
+  // Verifica se o idFilme é válido
+  if (isNaN(idFilme)) {
+    return res.status(400).json({
+      status: 'failed',
+      message: 'ID do filme inválido'
+    });
+  }
+
+  // Consulta o banco de dados para pegar o filme específico
+  const sql = `
+    SELECT 
+      f.id_filme, 
+      f.titulo, 
+      f.descricao, 
+      f.ano, 
+      f.classificacao, 
+      f.imagem_url, 
+      g.nome AS genero 
+    FROM filme f
+    LEFT JOIN genero g ON f.id_genero = g.id_genero
+    WHERE f.id_filme = ?
+  `;
+
+  db.get(sql, [idFilme], (err, row) => {
+    if (err) {
+      return res.status(500).json({
+        status: 'failed',
+        message: 'Erro ao consultar o banco de dados!',
+        error: err.message
+      });
+    }
+
+    // Fecha a conexão com o banco de dados
+    db.close((err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Fechou a conexão com o banco de dados.');
+    });
+
+    if (!row) {
+      return res.status(404).json({
+        status: 'failed',
+        message: 'Filme não encontrado'
+      });
+    }
+
+    // Retorna o filme encontrado
+    res.status(200).json({
+      status: 'success',
+      filme: row
+    });
+  });
+});
+
 // FUNÇÂO CARROSSEL
 const filmesPorPagina = 7;
 app.get('/filmes/carrossel', (req, res) => {
@@ -618,7 +735,7 @@ app.get('/filmes/carrossel', (req, res) => {
 
   const pagina = parseInt(req.query.pagina) || 1;
   const offset = (pagina - 1) * filmesPorPagina;
-  db.all('SELECT f.titulo, f.imagem_url AS imagem_url FROM filme f LEFT JOIN genero g ON f.id_genero = g.id_genero LIMIT ? OFFSET ?', [filmesPorPagina, offset], (err, rows) => {
+  db.all('SELECT f.id_filme, f.titulo, f.imagem_url AS imagem_url FROM filme f LEFT JOIN genero g ON f.id_genero = g.id_genero LIMIT ? OFFSET ?', [filmesPorPagina, offset], (err, rows) => {
     if (err) {
       return res.status(500).json({
         status: 'failed',
@@ -673,7 +790,7 @@ app.delete('/filmes/:id_filme', (req, res) => {
   
 // CRIAR FILME
 app.post('/filmes/novo', capa.single('imagem'), (req, res) => {
-  const { titulo, descriçao, ano, classificacao, id_genero } = req.body;
+  const { titulo, descricao, ano, classificacao, id_genero } = req.body;
   let erro = "";
 
   // Validação dos campos verdo formulário
