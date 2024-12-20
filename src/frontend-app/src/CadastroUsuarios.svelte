@@ -56,7 +56,7 @@
                         <input class=" form-control bg-body rounded" id="nome" placeholder="Nome" name="nome" required bind:value={nome}>
                         <label for="nome">Nome</label>
                     </div>
-                    <div class="form-floating mt-2 mb-2" style="width: 100%;" >
+                    <div class="form-floating mt-2 mb-2" style="width: 100%;">
                         <input class="form-control bg-body rounded " id="email" placeholder="Email" name="email" required  bind:value={email}>
                         <label for="email">Email</label>
                     </div>
