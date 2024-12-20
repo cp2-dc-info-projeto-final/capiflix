@@ -34,6 +34,7 @@
     } catch (err) {
       error = err.response?.data?.message || err.message;
       resultado = null;
+      alert("Senha ou e-mail errado");
     }
   };
 </script>
