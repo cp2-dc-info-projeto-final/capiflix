@@ -967,7 +967,8 @@ app.put('/filmes/mudar-ano/:id_filme', (req, res) => {
   const id_filme = req.params.id_filme; // Renomeado para corresponder ao estilo de código
   const { ano } = req.body;
 
-  if (!titulo) {
+  // Verifica se o 'ano' foi enviado na requisição
+  if (!ano) {
     return res.status(400).json({
       status: 'failed',
       message: 'ano é obrigatório!'
@@ -976,7 +977,7 @@ app.put('/filmes/mudar-ano/:id_filme', (req, res) => {
 
   let db = geraConexaoDeBancoDeDados();
 
-  // Modificar o nome do usuário pelo ID
+  // Modificar o ano do filme pelo ID
   db.run('UPDATE filme SET ano = ? WHERE id_filme = ?', [ano, id_filme], function (err) {
     if (err) {
       db.close();
@@ -992,7 +993,7 @@ app.put('/filmes/mudar-ano/:id_filme', (req, res) => {
       db.close();
       return res.status(404).json({
         status: 'failed',
-        message: 'filme não encontrado!'
+        message: 'Filme não encontrado!'
       });
     }
 
@@ -1007,42 +1008,45 @@ app.put('/filmes/mudar-ano/:id_filme', (req, res) => {
     // Retornar uma resposta de sucesso
     return res.status(200).json({
       status: 'success',
-      message: `Nome do usuário atualizado com sucesso!`
+      message: `Ano do filme atualizado com sucesso!`
     });
   });
 });
 
 // FUNÇÃO DE MUDAR CLASSIFICAÇÃO
-app.put('/filmes/mudar-classificacao/:id_filme', (req, res) => {
-  const id_filme = req.params.id_filme; // Renomeado para corresponder ao estilo de código
-  const { classificacao } = req.body;
+// Código corrigido do back-end
 
-  if (!titulo) {
+app.put('/filmes/mudar-classificacao/:id_filme', (req, res) => {
+  const id_filme = req.params.id_filme; // ID do filme
+  const { classificacao } = req.body;  // A classificação que queremos atualizar
+
+  // Verificar se o campo 'classificacao' foi enviado
+  if (!classificacao) {
     return res.status(400).json({
       status: 'failed',
-      message: 'classificação é obrigatório!'
+      message: 'Classificação é obrigatória!'
     });
   }
 
   let db = geraConexaoDeBancoDeDados();
 
-  // Modificar o nome do usuário pelo ID
+  // Modificar a classificação do filme pelo ID
   db.run('UPDATE filme SET classificacao = ? WHERE id_filme = ?', [classificacao, id_filme], function (err) {
     if (err) {
       db.close();
       return res.status(500).json({
         status: 'failed',
-        message: `Erro ao tentar modificar a classificacao do filme ${id_filme}!`,
+        message: `Erro ao tentar modificar a classificação do filme ${id_filme}!`,
         error: err.message
       });
     }
 
-    // Verifica se alguma linha foi afetada
+    // Verifica se alguma linha foi afetada (filme encontrado)
     if (this.changes === 0) {
       db.close();
       return res.status(404).json({
         status: 'failed',
-        message: 'filme não encontrado!'
+        message: 'Filme não encontrado!'
       });
     }
 
@@ -1057,10 +1061,11 @@ app.put('/filmes/mudar-classificacao/:id_filme', (req, res) => {
     // Retornar uma resposta de sucesso
     return res.status(200).json({
       status: 'success',
-      message: `Nome do usuário atualizado com sucesso!`
+      message: `Classificação do filme atualizada com sucesso!`
     });
   });
 });
+
 
 app.get('/filmes/busca', (req, res) => {
   const titulo = req.query.titulo;

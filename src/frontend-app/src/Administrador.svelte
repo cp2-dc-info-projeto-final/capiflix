@@ -30,7 +30,7 @@
       }
   });
 
-  /*const acessarAdmin = async () => {
+  const acessarAdmin = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/admin`, {
         withCredentials: true,  // Certifique-se de que o cookie de sessão está sendo enviado
@@ -49,15 +49,6 @@
       console.error('Erro ao acessar o admin:', err);
     }
   };
-  <button on:click={acessarAdmin} >verifique antes de prosseguir</button>
-  {#if error}
-  <div class="alert alert-danger">{error}</div>
-  {/if}
-
-  {#if adminPageContent}
-  onde vai o receber pagina
-  {/if}
-  */
 
     /** FUNÇÃO PARA CARREGAR USUÁRIOS */
     const carregarUsuarios = async () => {
@@ -251,38 +242,44 @@ const editarDescricaoFilme = async (id, novaDescricao) => {
 };
 
 // Função para editar ano do filme pelo ID
-const editarAnoFilme = async (id, ano) => {
+const editarAnoFilme = async (id, novoAno) => {
   try {
+    if (!novoAno) {
+      console.error("O campo 'ano' não pode estar vazio.");
+      return;
+    }
     console.log("Enviando:", { ano: novoAno });
     await axiosInstance.put(`${API_BASE_URL}/filmes/mudar-ano/${id}`, {
       ano: novoAno
     });
-    novoAno = ""; // Limpa o campo após a edição
-    await carregarFilmes(); // Aguarda a recarga após editar
+    novoAno = ""; 
+    await carregarFilmes(); 
   } catch (error) {
-    console.error("Erro ao editar ano:", error);
+    console.error("Erro ao editar ano:", error.response ? error.response.data : error.message);
   }
 };
 
+
 // Função para classificação ano do filme pelo ID
-const editarClassificacaoFilme = async (id, classificacao) => {
+const editarClassificacaoFilme = async (id, novaClassificacao) => {
   try {
+    if (!novaClassificacao) {
+      console.error("O campo 'classificação' não pode estar vazio.");
+      return;
+    }
     console.log("Enviando:", { classificacao: novaClassificacao });
     await axiosInstance.put(`${API_BASE_URL}/filmes/mudar-classificacao/${id}`, {
       classificacao: novaClassificacao
     });
-    classificacao = ""; // Limpa o campo após a edição
-    await carregarFilmes(); // Aguarda a recarga após editar
+    novaClassificacao = ""; 
+    await carregarFilmes(); 
   } catch (error) {
-    console.error("Erro ao editar classificação:", error);
+    console.error("Erro ao editar classificação:", error.response ? error.response.data : error.message);
   }
 };
-
-// Função para ativar o dropdown manualmente
 document.querySelectorAll('.dropdown-toggle').forEach(button => {
     button.addEventListener('click', function () {
       const menu = this.nextElementSibling;
-      // Alterna a classe 'show' para abrir/fechar o menu
       menu.classList.toggle('show');
     });
   });
@@ -292,7 +289,6 @@ document.querySelectorAll('.dropdown-toggle').forEach(button => {
 </script>
 <main>
   <Menu></Menu>
-
   <div class="admin-page-content">
     <div class="container text-center mt-3">
       <div class="d-flex justify-content-center align-items-center">
@@ -404,6 +400,23 @@ document.querySelectorAll('.dropdown-toggle').forEach(button => {
                       <li>
                         <button on:click={() => editarDescricaoFilme(linha_filme.id_filme, novaDescricao)} class="dropdown-item">Salvar</button>
                       </li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li>
+                        <label for={`novoAno_${linha_filme.id_filme}`}>Ano</label>
+                        <input type="date" id={`novoAno_${linha_filme.id_filme}`} bind:value={novoAno}>
+                      </li>  
+                      <li>
+                        <button on:click={() => editarAnoFilme(linha_filme.id_filme, novoAno)} class="dropdown-item">Salvar Ano</button>
+                      </li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li>
+                        <label for={`novaClassificacao${linha_filme.id_filme}`}>Classificação</label>
+                        <input type="number" id={`novaClassificacao${linha_filme.id_filme}`} bind:value={novaClassificacao}>
+                      </li>
+                      <li>
+                        <button on:click={() => editarClassificacaoFilme(linha_filme.id_filme, novaClassificacao)} class="dropdown-item">Salvar</button>
+                      </li>
+                      
                     </ul>
                   </div>
                 </td>

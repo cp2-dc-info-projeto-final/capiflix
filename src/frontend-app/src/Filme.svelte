@@ -6,7 +6,8 @@
   let filme = null;
 
   // Obtendo o id da URL
-  let id = window.location.pathname.split('/').pop();  // Pega o id da URL
+  let id = window.location.search.split('=').pop();  // Pega o id da URL
+  console.log('id recebido é:', id);
 
   // Função para buscar os dados do filme
   onMount(async () => {
@@ -43,7 +44,7 @@
 {#if filme}
   <div class="filme-container">
     <h1>{filme.titulo}</h1>
-    <img src={filme.imagem_url} alt={filme.titulo} />
+    <img src={`${API_BASE_URL}${filme.imagem}`} alt={filme.titulo} />
     <p>{filme.descricao}</p>
     <p><strong>Ano:</strong> {filme.ano}</p>
     <p><strong>Gênero:</strong> {filme.genero}</p>

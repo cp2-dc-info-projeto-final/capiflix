@@ -129,8 +129,9 @@
         >
           <div class="image-container">            
             <img src={API_BASE_URL + movie.imagem_url} alt={`Capa do filme ${movie.titulo}`} />
+           
           </div>
-          <h3>{movie.titulo}</h3>
+          <h3><a href="/filme.html?id={movie.id_filme}">{movie.titulo}</a></h3>
         </button>
       {/each}
     </div>

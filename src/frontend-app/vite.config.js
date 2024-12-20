@@ -15,7 +15,7 @@ export default defineConfig({
         cadastroGeneros: './cadastroGeneros.html',
         perfil: './perfil.html',
         buscaFilme: './buscaFilmes.html',
-        filme: './filme.svelte'
+        filme: './filme.html'
       },
     },
   },
