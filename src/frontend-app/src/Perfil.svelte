@@ -116,7 +116,7 @@
     </div>
 
     <!-- Exibição do conteúdo -->
-    <div class="mt-4" id="div_de_perfil_2" style="background-color: azure; width: 50%; height: 500px; border-color: aquamarine; border-style: solid;">
+    <div class="mt-4" id="div_de_perfil" style="background-color: azure; width: 50%; height: 500px; border-color: aquamarine; border-style: solid;">
       {#if conteudoAtivo === "perfil"}
         <h3>Aqui estão seus filmes curtidos...</h3>
         <ul>

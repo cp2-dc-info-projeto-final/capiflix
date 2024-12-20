@@ -27,7 +27,7 @@
               <li><a href="/filmes.html" class="nav-link px-1 text-white">Filmes</a></li>
               <li><a href="/generos.html" class="nav-link px-1 text-white">Gêneros</a></li>
               <li><a href="/trailers.html" class="nav-link px-1 text-white">Trailers</a></li>
-              <li><a href="/conta.html" class="nav-link px-1 text-white">Conta</a></li>
+              <li><a href="/perfil.html" class="nav-link px-1 text-white">Conta</a></li>
               <li><a href="/administrador.html" class="nav-link px-1 text-white">Admin</a></li>
             </ul>
             <form on:submit|preventDefault={buscarFilmes} class="d-flex" style="padding-right:30px;">
